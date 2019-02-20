@@ -1,11 +1,13 @@
 package base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import game.map.Castle;
 
@@ -79,7 +81,9 @@ public class Graph<T> {
      */
     public List<T> getAllValues() {
         // TODO: Graph<T>#getAllValues()
-        return new ArrayList<>();
+    	return nodes.stream()
+    				.map(n -> n.getValue())
+    				.collect(Collectors.toList());
     }
 
     /**
@@ -91,7 +95,9 @@ public class Graph<T> {
      */
     public List<Edge<T>> getEdges(Node<T> node) {
         // TODO: Graph<T>#getEdges(Node<T>)
-        return new ArrayList<>();
+        return edges.stream()
+        			.filter(e -> e.getNodeA().equals(node) || e.getNodeB().equals(node))
+        			.collect(Collectors.toList());
     }
 
     /**
@@ -113,7 +119,9 @@ public class Graph<T> {
      */
     public Node<T> getNode(T value) {
         // TODO: Graph<T>#getNode(T)
-        return null;
+    	return nodes.stream()
+    				.filter(v -> v.equals(value))
+    				.findFirst().get();
     }
     
     /**
