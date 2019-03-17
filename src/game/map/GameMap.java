@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Diese Klasse representiert das Spielfeld. Sie beinhaltet das Hintergrundbild, welches mit Perlin noise erzeugt wurde,
@@ -147,11 +148,25 @@ public class GameMap {
     }
 
     /**
-     * Hier werden die Kanten erzeugt. Dazu werden zunächst alle Burgen durch eine Linie verbunden und anschließend
-     * jede Burg mit allen anderen in einem bestimmten Radius nochmals verbunden
+     * jede Burg wird mit bis zu 3 anderen in nächster Nähe verbunden
      */
     private void generateEdges() {
-    	 // TODO: GameMap#generateEdges()
+    	List<Node<Castle>> castleNodes = castleGraph.getNodes();
+    	for(Node<Castle> currentCastleNode : castleNodes) {
+    		Castle currentCastle = currentCastleNode.getValue();
+    		List<Node<Castle>> distSortedCastles = castleNodes.stream()
+    														  .filter(x -> x != currentCastleNode)
+    														  .sorted((l,r) -> ((Double) l.getValue().distance(currentCastle)).compareTo((Double) r.getValue().distance(currentCastle)))
+    														  .collect(Collectors.toList());
+    		
+    		int n = 3;
+    		n = (n - castleGraph.getEdges(currentCastleNode).size()) % 4;
+    		for(Node<Castle> possibleNeighboreNode : distSortedCastles) {
+    			if(n<=0) break;
+    			castleGraph.addEdge(currentCastleNode, possibleNeighboreNode); 
+    			n--;
+    		} 
+    	}
     }
 
     /**
