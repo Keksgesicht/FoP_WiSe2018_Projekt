@@ -160,15 +160,8 @@ public class GameMap {
     														  .sorted((l,r) -> ((Double) l.getValue().distance(currentCastle)).compareTo((Double) r.getValue().distance(currentCastle)))
     														  .collect(Collectors.toList());
     		
-    		
-    		
-    		for(Node<Castle> possibleNeighboreNode : distSortedCastles) {
-    			if(castleGraph.getEdge(possibleNeighboreNode, currentCastleNode) != null)
-    				continue;
-    			castleGraph.addEdge(currentCastleNode, possibleNeighboreNode);
-    			break;
-    		} int n = (int) (2 + Math.round(Math.random() - 0.33));
-    		n = (n - castleGraph.getEdges(currentCastleNode).size()) % (n+1);
+    		int n = (int) (2 + Math.round(Math.random() * 1.5 - 0.5));
+    		n = (n - castleGraph.getEdges(currentCastleNode).size());
     		for(Node<Castle> possibleNeighboreNode : distSortedCastles) {
     			if(n<=0) break;
     			if(castleGraph.getEdge(possibleNeighboreNode, currentCastleNode) != null)
@@ -224,7 +217,7 @@ public class GameMap {
         	gameMap.generateCastles(castleCount);
             gameMap.generateEdges();
             gameMap.generateKingdoms(kingdomCount);
-        } while(!gameMap.getGraph().allNodesConnected());
+        } while(!gameMap.getGraph().allNodesConnected()); // user experience backup
 
         return gameMap;
     }
