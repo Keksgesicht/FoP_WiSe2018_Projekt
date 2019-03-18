@@ -148,24 +148,36 @@ public class GameMap {
     }
 
     /**
+     * Hier werden die Kanten erzeugt.
      * jede Burg wird mit bis zu 3 anderen in nächster Nähe verbunden
      */
     private void generateEdges() {
     	List<Node<Castle>> castleNodes = castleGraph.getNodes();
     	for(Node<Castle> currentCastleNode : castleNodes) {
-    		Castle currentCastle = currentCastleNode.getValue();
+			Castle currentCastle = currentCastleNode.getValue();
     		List<Node<Castle>> distSortedCastles = castleNodes.stream()
     														  .filter(x -> x != currentCastleNode)
     														  .sorted((l,r) -> ((Double) l.getValue().distance(currentCastle)).compareTo((Double) r.getValue().distance(currentCastle)))
     														  .collect(Collectors.toList());
     		
-    		int n = 3;
-    		n = (n - castleGraph.getEdges(currentCastleNode).size()) % 4;
+    		
+    		
+    		for(Node<Castle> possibleNeighboreNode : distSortedCastles) {
+    			if(castleGraph.getEdge(possibleNeighboreNode, currentCastleNode) != null)
+    				continue;
+    			castleGraph.addEdge(currentCastleNode, possibleNeighboreNode);
+    			break;
+    		} int n = (int) (2 + Math.round(Math.random() - 0.33));
+    		n = (n - castleGraph.getEdges(currentCastleNode).size()) % (n+1);
     		for(Node<Castle> possibleNeighboreNode : distSortedCastles) {
     			if(n<=0) break;
-    			castleGraph.addEdge(currentCastleNode, possibleNeighboreNode); 
+    			if(castleGraph.getEdge(possibleNeighboreNode, currentCastleNode) != null)
+    				continue;
+    			if(castleGraph.getEdges(possibleNeighboreNode).size() == n)
+    				continue;
+    			castleGraph.addEdge(currentCastleNode, possibleNeighboreNode);
     			n--;
-    		} 
+    		}
     	}
     }
 
@@ -204,17 +216,15 @@ public class GameMap {
         if (scale <= 0 || castleCount <= 0)
             throw new IllegalArgumentException();
 
-        System.out.println(String.format("Generating new map, castles=%d, width=%d, height=%d, kingdoms=%d", castleCount, width, height, kingdomCount));
-        GameMap gameMap = new GameMap(width, height, scale);
-        gameMap.generateBackground();
-        gameMap.generateCastles(castleCount);
-        gameMap.generateEdges();
-        gameMap.generateKingdoms(kingdomCount);
-
-        if(!gameMap.getGraph().allNodesConnected()) {
-            System.out.println("Fehler bei der Verifikation: Es sind nicht alle Knoten miteinander verbunden!");
-            return null;
-        }
+        GameMap gameMap;
+        do {
+        	System.out.println(String.format("Generating new map, castles=%d, width=%d, height=%d, kingdoms=%d", castleCount, width, height, kingdomCount));
+        	gameMap = new GameMap(width, height, scale);
+            gameMap.generateBackground();
+        	gameMap.generateCastles(castleCount);
+            gameMap.generateEdges();
+            gameMap.generateKingdoms(kingdomCount);
+        } while(!gameMap.getGraph().allNodesConnected());
 
         return gameMap;
     }

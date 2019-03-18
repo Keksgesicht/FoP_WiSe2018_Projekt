@@ -7,6 +7,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Diese Klasse representiert einen generischen Graphen mit einer Liste aus Knoten und Kanten.
@@ -108,6 +109,15 @@ public class Graph<T> {
     		if(e.getNodeA().equals(nodeB) && e.getNodeB().equals(nodeA)) return e;
     	} return null;
     }
+    
+    public List<Node<T>> getNodes(Node<T> node) {
+    	List<Edge<T>> edges = getEdges(node);
+    	Stream<Node<T>> a = edges.stream().map(e -> e.getNodeA());
+    	Stream<Node<T>> b = edges.stream().map(e -> e.getNodeB());
+    	return Stream.concat(a, b)
+    				 .filter(n -> n != node)
+    				 .collect(Collectors.toList());
+    }
 
     /**
      * Gibt den ersten Knoten mit dem angegebenen Wert zurück oder null, falls dieser nicht gefunden wurde
@@ -125,6 +135,15 @@ public class Graph<T> {
      * @return true, wenn alle Knoten erreichbar sind
      */
     public boolean allNodesConnected() {
-    	return nodes.stream().filter(n -> getEdges(n).isEmpty()).count() == 0;
+    	return oneNodeConnected(nodes.get(0), new ArrayList<Node<T>>());
+    }
+    
+    private boolean oneNodeConnected(Node<T> startNode, List<Node<T>> connectedNodes) {
+    	connectedNodes.add(startNode);
+    	for(Node<T> n : getNodes(startNode)) {
+    		if(connectedNodes.contains(n))
+    			continue;
+    		oneNodeConnected(n, connectedNodes);
+    	} return connectedNodes.size() == nodes.size();
     }
 }
