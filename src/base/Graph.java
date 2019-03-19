@@ -127,7 +127,8 @@ public class Graph<T> {
     public Node<T> getNode(T value) {
     	return nodes.stream()
     				.filter(v -> v.equals(value))
-    				.findFirst().get();
+    				.findFirst()
+    				.orElse(null);
     }
     
     /**

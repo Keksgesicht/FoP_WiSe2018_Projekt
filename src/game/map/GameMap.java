@@ -155,7 +155,7 @@ public class GameMap {
     	List<Node<Castle>> castleNodes = castleGraph.getNodes();
     	for(Node<Castle> currentCastleNode : castleNodes) {
 			Castle currentCastle = currentCastleNode.getValue();
-    		List<Node<Castle>> distSortedCastles = castleNodes.stream()
+    		List<Node<Castle>> distSortedCastles = castleNodes.stream() // sort all other castles by distance to current castle
     														  .filter(x -> x != currentCastleNode)
     														  .sorted((l,r) -> ((Double) l.getValue().distance(currentCastle)).compareTo((Double) r.getValue().distance(currentCastle)))
     														  .collect(Collectors.toList());
@@ -164,9 +164,9 @@ public class GameMap {
     		n = (n - castleGraph.getEdges(currentCastleNode).size());
     		for(Node<Castle> possibleNeighboreNode : distSortedCastles) {
     			if(n<=0) break;
-    			if(castleGraph.getEdge(possibleNeighboreNode, currentCastleNode) != null)
+    			if(castleGraph.getEdge(possibleNeighboreNode, currentCastleNode) != null) // Knoten werden nicht doppelt verbunden
     				continue;
-    			if(castleGraph.getEdges(possibleNeighboreNode).size() == n)
+    			if(castleGraph.getEdges(possibleNeighboreNode).size() == n) // Knoten nicht mit Kanten überladen
     				continue;
     			castleGraph.addEdge(currentCastleNode, possibleNeighboreNode);
     			n--;
