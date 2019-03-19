@@ -149,7 +149,8 @@ public class GameMap {
 
     /**
      * Hier werden die Kanten erzeugt.
-     * jede Burg wird mit bis zu 3 anderen in nächster Nähe verbunden
+     * jede Burg wird mit bis zu 4 anderen in nächster Nähe verbunden
+     * Schönheit liegt im Auge des Betrachters
      */
     private void generateEdges() {
     	List<Node<Castle>> castleNodes = castleGraph.getNodes();
@@ -160,13 +161,13 @@ public class GameMap {
     														  .sorted((l,r) -> ((Double) l.getValue().distance(currentCastle)).compareTo((Double) r.getValue().distance(currentCastle)))
     														  .collect(Collectors.toList());
     		
-    		int n = (int) (2 + Math.round(Math.random() * 1.5 - 0.5));
+    		int n = (int) (2 + Math.round(Math.random() * 1.3 - 0.42));
     		n = (n - castleGraph.getEdges(currentCastleNode).size());
     		for(Node<Castle> possibleNeighboreNode : distSortedCastles) {
     			if(n<=0) break;
     			if(castleGraph.getEdge(possibleNeighboreNode, currentCastleNode) != null) // Knoten werden nicht doppelt verbunden
     				continue;
-    			if(castleGraph.getEdges(possibleNeighboreNode).size() == n) // Knoten nicht mit Kanten überladen
+    			if(castleGraph.getEdges(possibleNeighboreNode).size() >= 4) // Knoten nicht mit Kanten überladen
     				continue;
     			castleGraph.addEdge(currentCastleNode, possibleNeighboreNode);
     			n--;
