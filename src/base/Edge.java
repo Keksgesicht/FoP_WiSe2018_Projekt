@@ -6,7 +6,7 @@ package base;
  */
 public class Edge<T> {
 
-    private Node<T> nodeA, nodeB;
+    private Node<T> nodeA, nodeB; 
 
     /**
      * Erstellt eine neue Kante zwischen zwei gegebenen Knoten
