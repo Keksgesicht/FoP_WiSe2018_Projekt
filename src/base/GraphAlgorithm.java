@@ -58,8 +58,14 @@ public abstract class GraphAlgorithm<T> {
      * @return Der nächste abzuarbeitende Knoten oder null
      */
     private AlgorithmNode<T> getSmallestNode() {
-        // TODO: GraphAlgorithm<T>#getSmallestNode()
-        return null;
+    	Iterator<Node<T>> iter = availableNodes.iterator();
+    	AlgorithmNode<T> smallest = null;
+    	while(iter.hasNext()) {
+    		AlgorithmNode<T> current = algorithmNodes.get(iter.next());
+    		if (current.value >= 0 && (smallest == null || current.value < smallest.value))
+    			smallest = current;
+    	}
+        return smallest;
     }
 
     /**
@@ -78,7 +84,25 @@ public abstract class GraphAlgorithm<T> {
      * @see Edge#getOtherNode(Node)
      */
     public void run() {
-        // TODO: GraphAlgorithm<T>#run()
+    	AlgorithmNode<T> v = getSmallestNode();
+    	while (v != null) {
+	    	List<Edge<T>> list = graph.getEdges(v.node);
+	    	Iterator<Edge<T>> iter = list.iterator();
+	    	while (iter.hasNext()) {
+	    		Edge<T> e = iter.next(); 
+	    		if (isPassable(e)) {
+	    			double a = v.value + getValue(e);
+	    			AlgorithmNode<T> n = algorithmNodes.get(e.getOtherNode(v.node));
+	    			double cmp = n.value;
+	    			if (cmp == -1 || a < cmp) {
+	    				n.value = a;
+	    				n.previous = v;
+	    			}
+	    		}
+	    	}
+	    	v = getSmallestNode();
+    	}
+    	
     }
 
     /**
