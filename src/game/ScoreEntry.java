@@ -53,7 +53,10 @@ public class ScoreEntry implements Comparable<ScoreEntry> {
      * @param printWriter der PrintWriter, mit dem der Eintrag geschrieben wird
      */
     public void write(PrintWriter printWriter) {
-        // TODO: ScoreEntry#write(PrintWriter)
+    	printWriter.println(this.name + ";" 
+    					  + this.date.getTime() + ";"
+    					  + this.score + ";" 
+    					  + this.gameType);
     }
 
     /**
@@ -62,7 +65,6 @@ public class ScoreEntry implements Comparable<ScoreEntry> {
      * Eine gültige Zeile enthält in der Reihenfolge durch Semikolon getrennt:
      *    den Namen, das Datum als Unix-Timestamp (in Millisekunden), die erreichte Punktzahl, den Spieltypen
      * Gültig wäre beispielsweise: "Florian;1546947397000;100;Eroberung"
-     *
      *
      * @see String#split(String)
      * @see Long#parseLong(String)
@@ -73,8 +75,24 @@ public class ScoreEntry implements Comparable<ScoreEntry> {
      * @return Ein ScoreEntry-Objekt oder null
      */
     public static ScoreEntry read(String line) {
-        // TODO: ScoreEntry#read(String)
-        return null;
+    	String[] attr = line.split(";");
+    	if(attr.length != 4) 									// 4 durch Semikolons abgetrennte Bereiche
+    		return null;
+    	if(!attr[0].matches("\\w([\\w\\s]*\\w)?")) 				// Der Name
+    		return null;
+    	Date date;
+    	try {
+    		date = new Date(Long.parseUnsignedLong(attr[1]));	// check Unix timestamp
+    	} catch(NumberFormatException e) {
+    		return null;
+    	} int score; 
+    	try {
+    		score = Integer.parseUnsignedInt(attr[2]);			// check score	
+    	} catch(NumberFormatException e) {
+    		return null;
+    	} if(!attr[3].matches("\\p{Alpha}+"))					// check Spieltyp
+    		return null;
+    	return new ScoreEntry(attr[0], score, date, attr[3]);
     }
 
     public Date getDate() {

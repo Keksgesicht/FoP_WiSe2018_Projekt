@@ -13,6 +13,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Diese Klasse verwaltet die Resourcen des Spiels, darunter beispielsweise Bilder, Icons und Schriftarten.
@@ -138,7 +139,10 @@ public class Resources {
      * @throws IOException Eine IOException wird geworfen, wenn Probleme beim Schreiben auftreten.
      */
     private void saveScoreEntries() throws IOException {
-        // TODO: Resources#saveScoreEntries()
+    	PrintWriter pw = new PrintWriter("highscores.txt");
+    	for(ScoreEntry se : scoreEntries) {
+    		se.write(pw);
+    	}
     }
 
     /**
@@ -151,7 +155,15 @@ public class Resources {
      * @see #addScoreEntry(ScoreEntry)
      */
     private void loadScoreEntries() {
-        // TODO: Resources#loadScoreEntries()
+    	try {
+			BufferedReader br = new BufferedReader(new FileReader(new File("highscores.txt")));
+			String line;
+			while((line = br.readLine()) != null) {
+				addScoreEntry(ScoreEntry.read(line));
+			} 
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
     }
 
     /**
@@ -166,9 +178,7 @@ public class Resources {
             if(scoreEntry.compareTo(scoreEntries.get(i)) < 0) {
                 break;
             }
-        }
-
-        scoreEntries.add(i + 1, scoreEntry);
+        } scoreEntries.add(i + 1, scoreEntry);
     }
 
     public List<ScoreEntry> getScoreEntries() {
