@@ -42,7 +42,7 @@ public class GameMap {
         this.scale = scale;
     }
     
-    public GameMap getMap() {
+    public static GameMap getMap() {
     	return gameMap;
     }
 

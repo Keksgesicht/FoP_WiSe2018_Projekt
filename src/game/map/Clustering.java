@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import game.Game;
+import game.map.GameMap;
 
 /**
  * Diese Klasse teilt Burgen in Königreiche auf
@@ -36,7 +36,7 @@ public class Clustering {
      * Siehe auch {@link Kingdom#getType()}
      */
     public List<Kingdom> getPointsClusters() {
-    	GameMap map = Game.createGameInst().getMap();
+    	GameMap map = GameMap.getMap();
     	int width = map.getWidth();
     	int height = map.getHeight();
     	ArrayList<Kingdom> allKingdoms = new ArrayList<Kingdom>();
@@ -68,6 +68,7 @@ public class Clustering {
 	    		}
 	    		allKingdoms.get(closestKingdom).addCastle(allCastles.get(c));
 	    	}
+	    	
 	    	prevCenter = newCenter;
 	    	newCenter.clear();
 	    	for(Kingdom kido : allKingdoms) {
