@@ -2,6 +2,8 @@ package game.map;
 
 import game.Player;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +12,8 @@ import java.util.List;
  *
  */
 public class Kingdom {
-
+	
+	private Point center;
     private List<Castle> castles;
     private int type;
 
@@ -19,8 +22,22 @@ public class Kingdom {
      * @param type der Typ des Königreichs (im Bereich 0-5)
      */
     public Kingdom(int type) {
+    	this.center = new Point();
         this.castles = new LinkedList<>();
         this.type = type;
+    }
+    
+    /**
+     * Legt die Koordinaten des Zentrums des Köngreichs fest
+     * @param x Breitenkoordinate
+     * @param y Höhenkoordinate
+     */
+    public void setCenter(int x, int y) {
+    	this.center.setLocation(x, y);;
+    }
+    
+    public Point getCenter() {
+    	return this.center;
     }
 
     /**
@@ -46,7 +63,14 @@ public class Kingdom {
     public void removeCastle(Castle castle) {
         this.castles.remove(castle);
     }
-
+    
+    /**
+     * Entfernt all Burgen aus dem Königreich
+     */
+    public void deleteCastles() {
+    	this.castles = new LinkedList<>();
+    }
+    
     /**
      * Gibt den Spieler zurück, der alle Burgen in dem Köngreich besitzt.
      * Sollte es keinen Spieler geben, der alle Burgen besitzt, wird null zurückgegeben.
