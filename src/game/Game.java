@@ -23,6 +23,7 @@ public class Game {
     private Player currentPlayer;
     private GameInterface gameInterface;
     private AttackThread attackThread;
+    private static Game singleton;
 
     public Game() {
         this.isOver = false;
@@ -30,6 +31,12 @@ public class Game {
         this.mapSize = MapSize.MEDIUM;
         this.players = new LinkedList<>();
     }
+    
+    public static Game createGameInst() {
+		if (singleton == null)
+			singleton = new Game();
+		return singleton;
+	}
 
     public void addPlayer(Player p) {
         if(players.contains(p))

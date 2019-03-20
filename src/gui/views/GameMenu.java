@@ -179,7 +179,7 @@ public class GameMenu extends View {
                 }
 
                 // Create Players
-                Game game = new Game();
+                Game game = Game.createGameInst();
                 for (int i = 0; i < playerCount; i++) {
                     String name = ((JTextField) playerConfig[i][2]).getText().replaceAll(";", "").trim();
                     if (name.isEmpty()) {
