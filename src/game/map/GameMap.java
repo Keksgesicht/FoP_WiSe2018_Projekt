@@ -1,6 +1,7 @@
 package game.map;
 
 import base.*;
+import game.Game;
 import game.GameConstants;
 import gui.Resources;
 
@@ -21,6 +22,7 @@ public class GameMap {
     private BufferedImage backgroundImage;
     private Graph<Castle> castleGraph;
     private List<Kingdom> kingdoms;
+    private static GameMap gameMap;
 
     // Map Generation
     private double[][] noiseValues;
@@ -38,6 +40,10 @@ public class GameMap {
         this.width = width;
         this.height = height;
         this.scale = scale;
+    }
+    
+    public GameMap getMap() {
+    	return gameMap;
     }
 
     /**
@@ -209,8 +215,7 @@ public class GameMap {
 
         if (scale <= 0 || castleCount <= 0)
             throw new IllegalArgumentException();
-
-        GameMap gameMap;
+        
         do {
         	System.out.println(String.format("Generating new map, castles=%d, width=%d, height=%d, kingdoms=%d", castleCount, width, height, kingdomCount));
         	gameMap = new GameMap(width, height, scale);
