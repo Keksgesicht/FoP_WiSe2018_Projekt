@@ -60,22 +60,15 @@ public abstract class GraphAlgorithm<T> {
     private AlgorithmNode<T> getSmallestNode() {
     	//3.1.3 1/3
     	
-    	//make new iterator
-    	Iterator<Node<T>> iter = availableNodes.iterator();
-    	//initialize smallest with fallback return value
-    	AlgorithmNode<T> smallest = null;
-    	//as long as not iterated through all elems
-    	while(iter.hasNext()) {
-    		//set current elem to check
-    		AlgorithmNode<T> current = algorithmNodes.get(iter.next());
-    		//if the elem is not negative and current is smaller then every before
-    		if (current.value >= 0 && (smallest == null || current.value < smallest.value))
-    			//then set new smallest
-    			smallest = current;
+    	Iterator<Node<T>> iter = availableNodes.iterator();										//make new iterator
+    	AlgorithmNode<T> smallest = null;														//initialize smallest with fallback return value
+    	while(iter.hasNext()) {																	//as long as not iterated through all elems
+    		AlgorithmNode<T> current = algorithmNodes.get(iter.next());							//set current elem to check
+    		if (current.value >= 0 && (smallest == null || current.value < smallest.value))		//if the elem is not negative and current is smaller then every before
+    			smallest = current;																//then set new smallest
     	}
-    	//return the smallest elem
-    	if(smallest != null) availableNodes.remove(smallest.node); 
-        return smallest;
+    	if(smallest != null) availableNodes.remove(smallest.node);
+        return smallest;																		//return the smallest elem
     }
 
     /**
@@ -96,36 +89,24 @@ public abstract class GraphAlgorithm<T> {
     public void run() {
     	//3.1.3 2/3
     	
-    	//initialize first smallest elem
-    	AlgorithmNode<T> v = getSmallestNode();
-    	//as long as there are more elems to handle
-    	while (v != null) {
-    		//make list of all edges
-	    	List<Edge<T>> list = graph.getEdges(v.node);
-	    	//make iterator for those edges
-	    	Iterator<Edge<T>> iter = list.iterator();
-	    	//iterate through edges
-	    	while (iter.hasNext()) {
-	    		//save edge
-	    		Edge<T> e = iter.next(); 
-	    		//check edge whether it's passable
-	    		if (isPassable(e)) {
-	    			//calc as task stated
-	    			double a = v.value + getValue(e);
-	    			//set n as stated
-	    			AlgorithmNode<T> n = algorithmNodes.get(e.getOtherNode(v.node));
-	    			//n's value to compare to
-	    			double cmp = n.value;
-	    			//compare to n's value
-	    			if (cmp == -1 || a < cmp) {
-	    				//set both values as stated by the task
-	    				n.value = a;
+    	
+    	AlgorithmNode<T> v = getSmallestNode();											//initialize first smallest elem
+    	while (v != null) {																//as long as there are more elems to handle
+	    	List<Edge<T>> list = graph.getEdges(v.node);								//make list of all edges
+	    	Iterator<Edge<T>> iter = list.iterator();									//make iterator for those edges
+	    	while (iter.hasNext()) {													//iterate through edges
+	    		Edge<T> e = iter.next(); 												//save edge
+	    		if (isPassable(e)) {													//check edge whether it's passable
+	    			double a = v.value + getValue(e);									//calc as task stated
+	    			AlgorithmNode<T> n = algorithmNodes.get(e.getOtherNode(v.node));	//set n as stated
+	    			double cmp = n.value;												//n's value to compare to
+	    			if (cmp == -1 || a < cmp) {											//compare to n's value
+	    				n.value = a;													//set both values as stated by the task
 	    				n.previous = v;
 	    			}
 	    		}
 	    	}
-	    	//set new elem to work with
-	    	v = getSmallestNode();
+	    	v = getSmallestNode();														//set new elem to work with
     	}
     }
 
@@ -139,32 +120,21 @@ public abstract class GraphAlgorithm<T> {
     public List<Edge<T>> getPath(Node<T> destination) {
     	//3.1.3 3/3
     	
-    	//initialize return list
-    	List<Edge<T>> path = new ArrayList<Edge<T>>();
-    	//set iterator
-    	Node<T> current = destination;
-    	//set iterator as other struct
-    	AlgorithmNode<T> currentAlgo = algorithmNodes.get(current);
-    	//set iterators previous
-    	AlgorithmNode<T> previousAlgo = currentAlgo.previous;
-    	//set iterators previous as other struct
-    	Node<T> previous = previousAlgo.node;
-    	//iterate through previous elems
-    	while (previous != destination) {
-    		//make edge between current and prev
-    		Edge<T> e = graph.getEdge(current, previous);
-    		//add path to return list
-    		path.add(e);
-    		//set iterator and other new
-    		current = previous;
+    	List<Edge<T>> path = new ArrayList<Edge<T>>();					//initialize return list
+    	Node<T> current = destination;									//set iterator
+    	AlgorithmNode<T> currentAlgo = algorithmNodes.get(current);		//set iterator as other struct
+    	AlgorithmNode<T> previousAlgo = currentAlgo.previous;			//set iterators previous
+    	Node<T> previous = previousAlgo.node;							//set iterators previous as other struct
+    	while (previous != destination) {								//iterate through previous elems
+    		Edge<T> e = graph.getEdge(current, previous);				//make edge between current and prev
+    		path.add(e);												//add path to return list
+    		current = previous;											//set iterator and other new
         	currentAlgo = algorithmNodes.get(current);
         	previousAlgo = currentAlgo.previous;
         	previous = previousAlgo.node;
     	}
-    	//reverse list as stated by task
-    	Collections.reverse(path);
-    	//return list
-        return path;
+    	Collections.reverse(path);										//reverse list as stated by task
+        return path;													//return list
     }
 
     /**
