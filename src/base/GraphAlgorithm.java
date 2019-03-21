@@ -117,12 +117,14 @@ public abstract class GraphAlgorithm<T> {
     	Node<T> current = destination;									//set iterator
     	AlgorithmNode<T> currentAlgo = algorithmNodes.get(current);		//set iterator as other struct
     	AlgorithmNode<T> previousAlgo = currentAlgo.previous;			//set iterators previous
+    	if (currentAlgo.previous == null) return null;
     	Node<T> previous = previousAlgo.node;							//set iterators previous as other struct
-    	while (previous != destination) {								//iterate through previous elems
+    	while (true) {								//iterate through previous elems
     		Edge<T> e = graph.getEdge(current, previous);				//make edge between current and prev
     		path.add(e);												//add path to return list
     		current = previous;											//set iterator and other new
         	currentAlgo = algorithmNodes.get(current);
+        	if (currentAlgo.previous == null) break;
         	previousAlgo = currentAlgo.previous;
         	previous = previousAlgo.node;
     	}
