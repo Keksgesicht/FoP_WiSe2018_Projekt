@@ -74,7 +74,7 @@ public abstract class GraphAlgorithm<T> {
     			smallest = current;
     	}
     	//return the smallest elem
-    	if(smallest != null) availableNodes.remove(smallest.node);
+    	if(smallest != null) availableNodes.remove(smallest.node); 
         return smallest;
     }
 
