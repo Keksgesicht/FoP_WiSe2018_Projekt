@@ -52,21 +52,21 @@ public class Clustering {
     	ArrayList<Point> newCenterList = new ArrayList<Point>();
     	
     	while(!prevCenterList.equals(newCenterList)) {
-	    	for(int kidoIndex = 0; kidoIndex < allKingdoms.size(); kidoIndex++) {
-	    		if(!allKingdoms.get(kidoIndex).getCastles().isEmpty())
-	    			allKingdoms.get(kidoIndex).deleteCastles();
+	    	for(Kingdom kido : allKingdoms) {
+	    		if(!kido.getCastles().isEmpty())
+	    			kido.deleteCastles();
 	    	}
 	    	
-	    	for(int c = 0; c < allCastles.size(); c++) {
+	    	for(Castle c : allCastles) {
 	    		double smallestDist = width * height;
-	    		int closestKingdom = 0;
-	    		for(int kidoIndex = 0; kidoIndex < allKingdoms.size(); kidoIndex++) {
-	    			if(smallestDist > allCastles.get(c).distance(allKingdoms.get(kidoIndex).getCenter())) {
-	    				closestKingdom = kidoIndex;
-	    				smallestDist = allCastles.get(c).distance(allKingdoms.get(kidoIndex).getCenter());
-	    			}
-	    		}
-	    		allKingdoms.get(closestKingdom).addCastle(allCastles.get(c));
+	    		Kingdom closestKingdom = null;
+	    		for(Kingdom kido : allKingdoms) {
+	    			if(c.distance(kido.getCenter()) < smallestDist) {
+	    				closestKingdom = kido;
+	    				smallestDist = c.distance(kido.getCenter());
+	    			} 
+	    		} closestKingdom.addCastle(c);
+	    		c.setKingdom(closestKingdom); // <-- Problem gelöst
 	    	}
 	    	
 	    	prevCenterList.clear();
@@ -77,23 +77,21 @@ public class Clustering {
 	    		int avgX = 0;
 	    		int avgY = 0;
 	    		
-	    		if(!prevCenterList.isEmpty()) {
+	    		// Wozu war das??
+	    		/*if(!prevCenterList.isEmpty()) { 
 		    		avgX = prevCenterList.get(kido.getType()).x;
 		    		avgY = prevCenterList.get(kido.getType()).y;
-	    		}
+	    		}*/
 	    		for(Castle burg : kido.getCastles()) {
 	    			avgX += burg.getLocationOnMap().x;
 	    			avgY += burg.getLocationOnMap().y;
 	    		}
 	    		avgX = avgX / kido.getCastles().size();
 	    		avgY = avgY / kido.getCastles().size();
-	    		//System.out.println("1st: Type:"+kido.getType()+ " prev: " + prevCenterList + " new: "+newCenterList);
-	    		kido.setCenter(avgX, avgY); // Hier liegt das Problem, aber ich weiß nicht warum
-	    		//System.out.println("Mid: Type:"+kido.getType()+ " prev: " + prevCenterList + " new: "+newCenterList);
+	    		
+	    		kido.setCenter(avgX, avgY); // Hier lag das Problem nicht, aber ich weiß warum
 	    		newCenterList.add(kido.getCenter());
-	    		//System.out.println("end: Type:"+kido.getType()+ " prev: " + prevCenterList + " new: "+newCenterList);
 	    	}
-	    	//System.out.println("Ende eines Durchlaufs");
     	}
     	
         return allKingdoms;
