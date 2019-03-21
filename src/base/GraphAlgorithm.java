@@ -58,8 +58,6 @@ public abstract class GraphAlgorithm<T> {
      * @return Der nächste abzuarbeitende Knoten oder null
      */
     private AlgorithmNode<T> getSmallestNode() {
-    	//3.1.3 1/3
-    	
     	Iterator<Node<T>> iter = availableNodes.iterator();										//make new iterator
     	AlgorithmNode<T> smallest = null;														//initialize smallest with fallback return value
     	while(iter.hasNext()) {																	//as long as not iterated through all elems
@@ -87,9 +85,6 @@ public abstract class GraphAlgorithm<T> {
      * @see Edge#getOtherNode(Node)
      */
     public void run() {
-    	//3.1.3 2/3
-    	
-    	
     	AlgorithmNode<T> v = getSmallestNode();											//initialize first smallest elem
     	while (v != null) {																//as long as there are more elems to handle
 	    	List<Edge<T>> list = graph.getEdges(v.node);								//make list of all edges
@@ -118,8 +113,6 @@ public abstract class GraphAlgorithm<T> {
      * @return eine Liste von Kanten oder null
      */
     public List<Edge<T>> getPath(Node<T> destination) {
-    	//3.1.3 3/3
-    	
     	List<Edge<T>> path = new ArrayList<Edge<T>>();					//initialize return list
     	Node<T> current = destination;									//set iterator
     	AlgorithmNode<T> currentAlgo = algorithmNodes.get(current);		//set iterator as other struct

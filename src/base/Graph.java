@@ -95,6 +95,19 @@ public class Graph<T> {
         			.filter(e -> e.getNodeA().equals(node) || e.getNodeB().equals(node))
         			.collect(Collectors.toList());
     }
+    
+    /**
+     * @param node der Knoten dessen Nachbarn man kennenlernen möchte
+     * @return alle Nachbar-Knoten auf Grund ihrer gemeinsamen Kanten
+     */
+    public List<Node<T>> getNodes(Node<T> node) {
+    	List<Edge<T>> edges = getEdges(node);
+    	Stream<Node<T>> a = edges.stream().map(e -> e.getNodeA());
+    	Stream<Node<T>> b = edges.stream().map(e -> e.getNodeB());
+    	return Stream.concat(a, b)
+    				 .filter(n -> n != node)
+    				 .collect(Collectors.toList());
+    }
 
     /**
      * Diese Methode sucht eine Kante zwischen beiden angegebenen Knoten und gibt diese zurück
@@ -109,15 +122,6 @@ public class Graph<T> {
     		if(e.getNodeA().equals(nodeB) && e.getNodeB().equals(nodeA)) return e;
     	} return null;
     }
-    
-    public List<Node<T>> getNodes(Node<T> node) {
-    	List<Edge<T>> edges = getEdges(node);
-    	Stream<Node<T>> a = edges.stream().map(e -> e.getNodeA());
-    	Stream<Node<T>> b = edges.stream().map(e -> e.getNodeB());
-    	return Stream.concat(a, b)
-    				 .filter(n -> n != node)
-    				 .collect(Collectors.toList());
-    }
 
     /**
      * Gibt den ersten Knoten mit dem angegebenen Wert zurück oder null, falls dieser nicht gefunden wurde
@@ -126,7 +130,7 @@ public class Graph<T> {
      */
     public Node<T> getNode(T value) {
     	return nodes.stream()
-    				.filter(v -> v.equals(value))
+    				.filter(v -> v.getValue().equals(value))
     				.findFirst()
     				.orElse(null);
     }
@@ -139,6 +143,11 @@ public class Graph<T> {
     	return oneNodeConnected(nodes.get(0), new ArrayList<Node<T>>());
     }
     
+    /**
+     * @param startNode der Knoten mit dem die Erreichbarkeit getestet wird
+     * @param connectedNodes Liste an Knoten über die bereits erreichbar waren
+     * @return true, wenn alle Knoten von diesem Knoten erreichbar sind
+     */
     private boolean oneNodeConnected(Node<T> startNode, List<Node<T>> connectedNodes) {
     	connectedNodes.add(startNode);
     	for(Node<T> n : getNodes(startNode)) {
