@@ -40,23 +40,22 @@ public class Clustering {
     	int width = map.getWidth();
     	int height = map.getHeight();
     	ArrayList<Kingdom> allKingdoms = new ArrayList<Kingdom>();
-    	
+    	// Schritt 1
     	for(int i = 0; i < kingdomCount; i++) {
     		Kingdom kingdom = new Kingdom(i);
-    		kingdom.setCenter((int) Math.round(Math.random() * width), (int) Math.round(Math.random() * height));
+    		kingdom.setCenter(random.nextInt(width), random.nextInt(height));
     		allKingdoms.add(kingdom);
     	}
-    	
     	ArrayList<Point> prevCenterList = new ArrayList<Point>();
     	prevCenterList.add(new Point());
     	ArrayList<Point> newCenterList = new ArrayList<Point>();
-    	
+    	// Schritt 4
     	while(!prevCenterList.equals(newCenterList)) {
 	    	for(Kingdom kido : allKingdoms) {
 	    		if(!kido.getCastles().isEmpty())
 	    			kido.deleteCastles();
 	    	}
-	    	
+	    	// Schritt 2
 	    	for(Castle c : allCastles) {
 	    		double smallestDist = width * height;
 	    		Kingdom closestKingdom = null;
@@ -65,23 +64,16 @@ public class Clustering {
 	    				closestKingdom = kido;
 	    				smallestDist = c.distance(kido.getCenter());
 	    			} 
-	    		} closestKingdom.addCastle(c);
-	    		c.setKingdom(closestKingdom); // <-- Problem gelöst
+	    		} c.setKingdom(closestKingdom);
 	    	}
-	    	
 	    	prevCenterList.clear();
 	    	prevCenterList.addAll(newCenterList);
 	    	newCenterList.clear();
-	    	
+	    	// Schritt 3
 	    	for(Kingdom kido : allKingdoms) {
 	    		int avgX = 0;
 	    		int avgY = 0;
 	    		
-	    		// Wozu war das??
-	    		/*if(!prevCenterList.isEmpty()) { 
-		    		avgX = prevCenterList.get(kido.getType()).x;
-		    		avgY = prevCenterList.get(kido.getType()).y;
-	    		}*/
 	    		for(Castle burg : kido.getCastles()) {
 	    			avgX += burg.getLocationOnMap().x;
 	    			avgY += burg.getLocationOnMap().y;
@@ -89,11 +81,9 @@ public class Clustering {
 	    		avgX = avgX / kido.getCastles().size();
 	    		avgY = avgY / kido.getCastles().size();
 	    		
-	    		kido.setCenter(avgX, avgY); // Hier lag das Problem nicht, aber ich weiß warum
+	    		kido.setCenter(avgX, avgY);
 	    		newCenterList.add(kido.getCenter());
 	    	}
-    	}
-    	
-        return allKingdoms;
+    	} return allKingdoms;
     }
 }

@@ -145,6 +145,6 @@ public class Graph<T> {
     		if(connectedNodes.contains(n))
     			continue;
     		oneNodeConnected(n, connectedNodes);
-    	} return connectedNodes.size() == nodes.size();
+    	} return connectedNodes.containsAll(nodes);
     }
 }
