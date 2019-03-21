@@ -80,9 +80,9 @@ public class Clustering {
 	    		}
 	    		avgX = avgX / kido.getCastles().size();
 	    		avgY = avgY / kido.getCastles().size();
-	    		
+
 	    		kido.setCenter(avgX, avgY);
-	    		newCenterList.add(kido.getCenter());
+	    		newCenterList.add(new Point(avgX,avgY));
 	    	}
     	} return allKingdoms;
     }
