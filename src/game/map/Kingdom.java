@@ -33,7 +33,7 @@ public class Kingdom {
      * @param y Höhenkoordinate
      */
     public void setCenter(int x, int y) {
-    	this.center.setLocation(x, y);;
+    	this.center.move(x, y);;
     }
     
     public Point getCenter() {

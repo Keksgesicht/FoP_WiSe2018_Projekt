@@ -47,11 +47,11 @@ public class Clustering {
     		allKingdoms.add(kingdom);
     	}
     	
-    	ArrayList<Point> prevCenter = new ArrayList<Point>();
-    	prevCenter.add(new Point());
-    	ArrayList<Point> newCenter = new ArrayList<Point>();
+    	ArrayList<Point> prevCenterList = new ArrayList<Point>();
+    	prevCenterList.add(new Point());
+    	ArrayList<Point> newCenterList = new ArrayList<Point>();
     	
-    	while(!prevCenter.equals(newCenter)) {
+    	while(!prevCenterList.equals(newCenterList)) {
 	    	for(int kidoIndex = 0; kidoIndex < allKingdoms.size(); kidoIndex++) {
 	    		if(!allKingdoms.get(kidoIndex).getCastles().isEmpty())
 	    			allKingdoms.get(kidoIndex).deleteCastles();
@@ -69,20 +69,31 @@ public class Clustering {
 	    		allKingdoms.get(closestKingdom).addCastle(allCastles.get(c));
 	    	}
 	    	
-	    	prevCenter = newCenter;
-	    	newCenter.clear();
+	    	prevCenterList.clear();
+	    	prevCenterList.addAll(newCenterList);
+	    	newCenterList.clear();
+	    	
 	    	for(Kingdom kido : allKingdoms) {
 	    		int avgX = 0;
 	    		int avgY = 0;
+	    		
+	    		if(!prevCenterList.isEmpty()) {
+		    		avgX = prevCenterList.get(kido.getType()).x;
+		    		avgY = prevCenterList.get(kido.getType()).y;
+	    		}
 	    		for(Castle burg : kido.getCastles()) {
 	    			avgX += burg.getLocationOnMap().x;
 	    			avgY += burg.getLocationOnMap().y;
 	    		}
 	    		avgX = avgX / kido.getCastles().size();
 	    		avgY = avgY / kido.getCastles().size();
-	    		kido.setCenter(avgX, avgY);
-	    		newCenter.add(kido.getCenter());
+	    		//System.out.println("1st: Type:"+kido.getType()+ " prev: " + prevCenterList + " new: "+newCenterList);
+	    		kido.setCenter(avgX, avgY); // Hier liegt das Problem, aber ich weiß nicht warum
+	    		//System.out.println("Mid: Type:"+kido.getType()+ " prev: " + prevCenterList + " new: "+newCenterList);
+	    		newCenterList.add(kido.getCenter());
+	    		//System.out.println("end: Type:"+kido.getType()+ " prev: " + prevCenterList + " new: "+newCenterList);
 	    	}
+	    	//System.out.println("Ende eines Durchlaufs");
     	}
     	
         return allKingdoms;
