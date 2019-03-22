@@ -23,7 +23,6 @@ public class Game {
     private Player currentPlayer;
     private GameInterface gameInterface;
     private AttackThread attackThread;
-    private static Game singletonGame;
 
     public Game() {
         this.isOver = false;
@@ -31,12 +30,6 @@ public class Game {
         this.mapSize = MapSize.MEDIUM;
         this.players = new LinkedList<>();
     }
-    
-    public static Game createGameInst() { 	// inspiriert durch H11.Manager
-		if (singletonGame == null)
-			singletonGame = new Game();
-		return singletonGame;				// nach dem Pattern benannt :D
-	}
 
     public void addPlayer(Player p) {
         if(players.contains(p))

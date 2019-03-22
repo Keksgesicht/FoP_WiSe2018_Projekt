@@ -9,9 +9,6 @@ import gui.components.NumberChooser;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.font.TextAttribute;
 import java.util.*;
 
 import javax.swing.*;
@@ -179,7 +176,7 @@ public class GameMenu extends View {
                 }
 
                 // Create Players
-                Game game = Game.createGameInst();
+                Game game = new Game();
                 for (int i = 0; i < playerCount; i++) {
                     String name = ((JTextField) playerConfig[i][2]).getText().replaceAll(";", "").trim();
                     if (name.isEmpty()) {
