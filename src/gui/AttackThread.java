@@ -45,10 +45,10 @@ public class AttackThread extends Thread {
 
             while(attackerCastle.getTroopCount() > attackUntil) {
 
-                // Attacker dices: at maximum 3 and not more than actual troop count
-                int attackerCount =  Math.min(troopAttackCount, Math.min(attackerCastle.getTroopCount() - 1, 3));
+            	// Attacker dices: at maximum 3 and not more than actual troop count
+                int attackerCount =  Math.min(attackerCastle.getTroopCount() - attackUntil, 3);
                 int attackerDice[] = game.roll(attacker, attackerCount, fastForward);
-                troopAttackCount--;  	// damit, wenn mit weniger als allen möglichen Truppen einer Burg angegriffen wird, nicht mehr Truppen aus der Burg nachrücken 
+
                 sleep(1500);
 
                 // Defender dices: at maximum 2
@@ -60,7 +60,6 @@ public class AttackThread extends Thread {
                     winner = attacker;
                     break;
                 }
-
                 sleep(1500);
             }
         } catch(InterruptedException ex) {
