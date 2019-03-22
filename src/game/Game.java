@@ -106,7 +106,7 @@ public class Game {
         if(attackThread != null)
             return attackThread;
 
-        if(source.getOwner() == target.getOwner() || troopCount < 1)
+        if(source.getOwner() == target.getOwner() || troopCount < 1 || source.getTroopCount() <= troopCount)
             return null;
 
         attackThread = new AttackThread(this, source, target, troopCount);

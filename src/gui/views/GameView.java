@@ -2,7 +2,7 @@ package gui.views;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
@@ -288,13 +288,13 @@ public class GameView extends View implements GameInterface {
     public int[] onRoll(Player player, int dices, boolean fastForward) {
         try {
             int[] roll = this.dices.generateRandom(dices, !fastForward);
+            Arrays.sort(roll);
             StringBuilder rolls = new StringBuilder();
             rolls.append("%PLAYER% würfelt: ");
-            for(int i = 0; i < roll.length; i++) {
-                rolls.append(i == 0 ? " " : ", ");
-                rolls.append(roll[i]);
+            for(int i = 1; i <= roll.length; i++) {
+                rolls.append(i == 1 ? " " : ", ");
+                rolls.append(roll[roll.length - i]);
             }
-
             logLine(rolls.toString(), player);
             return roll;
         } catch(InterruptedException ex) {

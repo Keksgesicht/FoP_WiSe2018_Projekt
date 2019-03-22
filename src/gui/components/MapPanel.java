@@ -215,7 +215,7 @@ public class MapPanel extends JScrollPane {
                             gameView.updateStats();
                         }
                     } else if(currentAction == Action.ATTACKING && pathFinding.getPath(nextCastle) != null && nextCastle.getOwner() != selectedCastle.getOwner()) {
-                        NumberDialog nd = new NumberDialog("Mit wie vielen Truppen möchtest du angreifen?", 1, selectedCastle.getTroopCount(), selectedCastle.getTroopCount()  - 1);
+                        NumberDialog nd = new NumberDialog("Mit wie vielen Truppen möchtest du angreifen?", 1, selectedCastle.getTroopCount() - 1, selectedCastle.getTroopCount()  - 1);
                         if(nd.showDialog(MapPanel.this)) {
                             game.startAttack(selectedCastle, nextCastle, nd.getValue());
                             currentAction = Action.NONE;

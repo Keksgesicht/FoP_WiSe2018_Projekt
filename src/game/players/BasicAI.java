@@ -84,7 +84,7 @@ public class BasicAI extends AI {
                     for (Edge<Castle> edge : graph.getEdges(node)) {
                         Castle otherCastle = edge.getOtherNode(node).getValue();
                         if (otherCastle.getOwner() != this && castle.getTroopCount() >= otherCastle.getTroopCount()) {
-                            AttackThread attackThread = game.startAttack(castle, otherCastle, castle.getTroopCount());
+                            AttackThread attackThread = game.startAttack(castle, otherCastle, castle.getTroopCount() - 1);
                             if(fastForward)
                                 attackThread.fastForward();
 
