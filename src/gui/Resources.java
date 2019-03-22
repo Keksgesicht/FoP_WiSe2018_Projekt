@@ -127,6 +127,7 @@ public class Resources {
     }
 
     /**
+     * @author Jan Braun
      * Diese Methode speichert alle Objekte des Typs {@link ScoreEntry} in der Textdatei "highscores.txt"
      * Jede Zeile stellt dabei einen ScoreEntry dar. Sollten Probleme auftreten, muss eine {@link IOException} geworfen werden.
      * Die Einträge sind in der Liste {@link #scoreEntries} zu finden.
@@ -141,6 +142,7 @@ public class Resources {
     }
 
     /**
+     * @author Jan Braun
      * Lädt den Highscore-Table aus der Datei "highscores.txt".
      * Dabei wird die Liste {@link #scoreEntries} neu erzeugt und befüllt.
      * Beachte dabei, dass die Liste nach dem Einlen absteigend nach den Punktzahlen sortiert sein muss.

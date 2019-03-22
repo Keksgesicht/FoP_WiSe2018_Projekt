@@ -10,6 +10,10 @@ import org.junit.jupiter.api.Test;
 import base.Graph;
 import base.Node;
 
+/**
+ * @author Jan Braun
+ * tests whether the base.Graph#allNodesConnected() method is working
+ */
 public class GraphConnectionTest {
 	
 	Graph<String> testGraph;
