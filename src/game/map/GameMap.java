@@ -154,7 +154,6 @@ public class GameMap {
     }
 
     /**
-     * @author Jan Braun
      * Hier werden die Kanten erzeugt.
      * jede Burg wird mit bis zu 4 anderen in nächster Nähe verbunden
      * Schönheit liegt im Auge des Betrachters

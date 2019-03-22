@@ -13,7 +13,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Diese Klasse verwaltet die Resourcen des Spiels, darunter beispielsweise Bilder, Icons und Schriftarten.
@@ -32,7 +31,6 @@ public class Resources {
     private Font celticFont;
 
     private List<ScoreEntry> scoreEntries;
-
     private boolean resourcesLoaded;
 
     /**
@@ -51,9 +49,7 @@ public class Resources {
         if(instance == null) {
             instance = new Resources();
             instance.load();
-        }
-
-        return instance;
+        } return instance;
     }
 
     /**
@@ -107,7 +103,6 @@ public class Resources {
 
             // Load score entries
             loadScoreEntries();
-
             resourcesLoaded = true;
             return true;
         } catch(Exception ex) {
@@ -132,7 +127,6 @@ public class Resources {
     }
 
     /**
-     * @author Jan Braun
      * Diese Methode speichert alle Objekte des Typs {@link ScoreEntry} in der Textdatei "highscores.txt"
      * Jede Zeile stellt dabei einen ScoreEntry dar. Sollten Probleme auftreten, muss eine {@link IOException} geworfen werden.
      * Die Einträge sind in der Liste {@link #scoreEntries} zu finden.
@@ -143,11 +137,10 @@ public class Resources {
     	PrintWriter pw = new PrintWriter("highscores.txt");
     	for(ScoreEntry se : scoreEntries) {
     		se.write(pw);
-    	}
+    	} pw.close();
     }
 
     /**
-     * @author Jan Braun
      * Lädt den Highscore-Table aus der Datei "highscores.txt".
      * Dabei wird die Liste {@link #scoreEntries} neu erzeugt und befüllt.
      * Beachte dabei, dass die Liste nach dem Einlen absteigend nach den Punktzahlen sortiert sein muss.
@@ -216,13 +209,10 @@ public class Resources {
                 gr.drawImage(diceImage, 0, 0, diceSize, diceSize, diceSize * y, diceSize * x, diceSize * y + diceSize, diceSize * x + diceSize, null);
                 gr.dispose();
             }
-        }
-
-        return dices;
+        } return dices;
     }
 
     private List<String> loadRegionNames() throws IOException {
-
         List<String> regionNames = new LinkedList<>();
         InputStream is = Resources.class.getClassLoader().getResourceAsStream("castles.txt");
         InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
@@ -253,9 +243,7 @@ public class Resources {
                     newImage.setRGB(x, y, color.getRGB());
                 }
             }
-        }
-
-        return newImage;
+        } return newImage;
     }
 
     public BufferedImage getCastle(Color color, int index) {
