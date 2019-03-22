@@ -91,7 +91,7 @@ public abstract class GraphAlgorithm<T> {
 	    	Iterator<Edge<T>> iter = list.iterator();									//make iterator for those edges
 	    	while (iter.hasNext()) {													//iterate through edges
 	    		Edge<T> e = iter.next(); 												//save edge
-	    		if (isPassable(e)) {													//check edge whether it's passable
+	    		if (isPassable(e) && isPassable(v.node)) {								//check edge whether it's passable
 	    			double a = v.value + getValue(e);									//calc as task stated
 	    			AlgorithmNode<T> n = algorithmNodes.get(e.getOtherNode(v.node));	//set n as stated
 	    			double cmp = n.value;												//n's value to compare to
