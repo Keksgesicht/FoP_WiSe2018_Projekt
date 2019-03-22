@@ -72,6 +72,7 @@ public class Graph<T> {
     }
 
     /**
+     * @author Jan Braun
      * Diese Methode gibt alle Werte der Knoten in einer Liste mittels Streams zurück.
      * @see java.util.stream.Stream#map(Function)
      * @see java.util.stream.Stream#collect(Collector)
@@ -84,6 +85,7 @@ public class Graph<T> {
     }
 
     /**
+     * @author Jan Braun
      * Diese Methode gibt alle Kanten eines Knotens als Liste mittels Streams zurück.
      * @param node Der Knoten für die dazugehörigen Kanten
      * @see java.util.stream.Stream#filter(Predicate)
@@ -97,6 +99,7 @@ public class Graph<T> {
     }
     
     /**
+     * @author Jan Braun
      * @param node der Knoten dessen Nachbarn man kennenlernen möchte
      * @return alle Nachbar-Knoten auf Grund ihrer gemeinsamen Kanten
      */
@@ -124,6 +127,7 @@ public class Graph<T> {
     }
 
     /**
+     * @author Jan Braun
      * Gibt den ersten Knoten mit dem angegebenen Wert zurück oder null, falls dieser nicht gefunden wurde
      * @param value Der zu suchende Wert
      * @return Ein Knoten mit dem angegebenen Wert oder null
@@ -136,6 +140,7 @@ public class Graph<T> {
     }
     
     /**
+     * @author Jan Braun
      * Überprüft, ob alle Knoten in dem Graphen erreichbar sind.
      * @return true, wenn alle Knoten erreichbar sind
      */
@@ -144,6 +149,7 @@ public class Graph<T> {
     }
     
     /**
+     * @author Jan Braun
      * @param startNode der Knoten mit dem die Erreichbarkeit getestet wird
      * @param connectedNodes Liste an Knoten über die bereits erreichbar waren
      * @return true, wenn alle Knoten von diesem Knoten erreichbar sind

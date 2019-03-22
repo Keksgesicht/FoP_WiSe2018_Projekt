@@ -46,6 +46,7 @@ public class ScoreEntry implements Comparable<ScoreEntry> {
     }
 
     /**
+     * @author Jan Braun
      * Schreibt den Eintrag als neue Zeile mit dem gegebenen {@link PrintWriter}
      * Der Eintrag sollte im richtigen Format gespeichert werden.
      * @see #read(String)
@@ -60,6 +61,7 @@ public class ScoreEntry implements Comparable<ScoreEntry> {
     }
 
     /**
+     * @author Jan Braun
      * List eine gegebene Zeile ein und wandelt dies in ein ScoreEntry-Objekt um.
      * Ist das Format der Zeile ungültig oder enthält es ungültige Daten, wird null zurückgegeben.
      * Eine gültige Zeile enthält in der Reihenfolge durch Semikolon getrennt:

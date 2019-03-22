@@ -516,6 +516,7 @@ public class MapPanel extends JScrollPane {
     }
 
     public void clearSelection() {
+    	currentAction = Action.NONE; // next round during a failed attack now possible without a NullPointerException
         this.selectedCastle = null;
         repaint();
     }
