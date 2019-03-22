@@ -3,20 +3,32 @@ package dice3d.models;
 import java.awt.Graphics2D;
 
 import dice3d.main.World;
+import dice3d.math.Vector;
 
 public class Edge {
 
 	private Vertex a;
 	private Vertex b;
-
+	private double designatedLength;
 
 	public Edge(Vertex a, Vertex b) {
 		this.a = a;
 		this.b = b;
+		Vector length = new Vector(a.position);
+		length.sub(b.position);
+		designatedLength = length.getSize();
 	}
 
-	public void update() {
-	
+	public void update(World w) {
+		Vector vTmp = new Vector();
+		vTmp.set(b.position);
+		vTmp.sub(a.position);
+		double currentSize = vTmp.getSize();
+		double dif = (currentSize - designatedLength) * 0.5;
+		vTmp.normalize();
+		vTmp.scale(dif);
+		a.position.add(vTmp);
+		b.position.sub(vTmp);
 	}
 
 	public void draw(Graphics2D g) {

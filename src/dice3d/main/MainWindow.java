@@ -11,6 +11,7 @@ import dice3d.models.cuboids.Cuboid;
 import dice3d.models.cuboids.Dice;
 
 
+@SuppressWarnings("serial")
 public class MainWindow extends JPanel {
 	World w = new World();
 

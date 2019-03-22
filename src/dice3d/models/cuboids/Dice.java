@@ -8,7 +8,7 @@ import dice3d.models.Vertex;
 
 public class Dice extends Cube {
 
-
+	private int NumberRolled = 1;
 	private Vertex[][] face = new Vertex[6][4];
 
 
@@ -59,8 +59,15 @@ public class Dice extends Cube {
 		// }
 	}
 
+	public void reset() {
+		for (Vertex v : vertices) {
+			v.reset();
+		}
+		NumberRolled++;
+	}
+	
 	public int getNumberRolled() {
-		return 1;
+		return NumberRolled;
 	}
 
 	private void drawDice(Graphics2D g) {

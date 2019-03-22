@@ -58,6 +58,20 @@ public class Vector {
     public double getSize() {
         return Math.sqrt(x * x + y * y + z * z);
     }
+    
+    public void crossmult(Vector v) {
+    	double xTemp = x;
+    	double yTemp = y;
+    	double zTemp = z;
+    	x = yTemp * v.z - zTemp * v.y;
+    	y = zTemp * v.x - xTemp * v.z;
+    	z = xTemp * v.y - yTemp * v.x;
+    }
+    
+    public double dotmult(Vector v) {
+    	double result = x * v.x + y * v.y + z * v.z;
+    	return result;
+    }
 
     public void normalize() {
         scale(1 / getSize());

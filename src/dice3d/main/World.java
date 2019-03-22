@@ -4,17 +4,22 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import dice3d.math.Vector;
 import dice3d.models.cuboids.Cuboid;
 import dice3d.models.cuboids.Dice;
 
 public class World {
 
 	public static final double projectionDistance = 1000;
+	public Vector gravity;
 
 	public ArrayList<Cuboid> cuboids;
 	public Cuboid floor;
 
 	public World() {
+		World w = this;
+		gravity = new Vector(0, 1, 0);
+		
 		cuboids = new ArrayList<Cuboid>();
 		
 		floor =  new Cuboid(10, 400, 600, 700, 1000, 10);
@@ -33,7 +38,10 @@ public class World {
 					if(c == floor) {
 						continue;
 					}
-					c.update();
+					if (!c.collided) c.update(w);
+					for(Cuboid c2 : cuboids) {
+						if(c != c2)	c.updateCollision(c2);
+					}
 				}
 			}
 		}, delayInMS, intervalInMS);
