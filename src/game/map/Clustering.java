@@ -31,6 +31,7 @@ public class Clustering {
     }
 
     /**
+     * @author Christoph Berst
      * Gibt eine Liste von Königreichen zurück.
      * Jedes Königreich sollte dabei einen Index im Bereich 0-5 bekommen, damit die Burg richtig angezeigt werden kann.
      * Siehe auch {@link Kingdom#getType()}
@@ -40,50 +41,60 @@ public class Clustering {
     	int width = map.getWidth();
     	int height = map.getHeight();
     	ArrayList<Kingdom> allKingdoms = new ArrayList<Kingdom>();
-    	// Schritt 1
-    	for(int i = 0; i < kingdomCount; i++) {
-    		Kingdom kingdom = new Kingdom(i);
-    		kingdom.setCenter(random.nextInt(width), random.nextInt(height));
-    		allKingdoms.add(kingdom);
-    	}
-    	ArrayList<Point> prevCenterList = new ArrayList<Point>();
-    	prevCenterList.add(new Point());
-    	ArrayList<Point> newCenterList = new ArrayList<Point>();
-    	// Schritt 4
-    	while(!prevCenterList.equals(newCenterList)) {
-	    	for(Kingdom kido : allKingdoms) {
-	    		if(!kido.getCastles().isEmpty())
-	    			kido.deleteCastles();
+    	boolean noEmptyKingdoms = true;
+    	do {
+	    	allKingdoms = new ArrayList<Kingdom>();
+	    	noEmptyKingdoms = true;
+	    	// Schritt 1
+	    	for(int i = 0; i < kingdomCount; i++) {
+	    		Kingdom kingdom = new Kingdom(i);
+	    		kingdom.setCenter(random.nextInt(width), random.nextInt(height));
+	    		allKingdoms.add(kingdom);
 	    	}
-	    	// Schritt 2
-	    	for(Castle c : allCastles) {
-	    		double smallestDist = width * height;
-	    		Kingdom closestKingdom = null;
-	    		for(Kingdom kido : allKingdoms) {
-	    			if(c.distance(kido.getCenter()) < smallestDist) {
-	    				closestKingdom = kido;
-	    				smallestDist = c.distance(kido.getCenter());
-	    			} 
-	    		} c.setKingdom(closestKingdom);
+	    	ArrayList<Point> prevCenterList = new ArrayList<Point>();
+	    	prevCenterList.add(new Point());
+	    	ArrayList<Point> newCenterList = new ArrayList<Point>();
+	    	// Schritt 4
+	    	while(!prevCenterList.equals(newCenterList)) {
+		    	for(Kingdom kido : allKingdoms) {
+		    		if(!kido.getCastles().isEmpty())
+		    			kido.deleteCastles();
+		    	}
+		    	// Schritt 2
+		    	for(Castle c : allCastles) {
+		    		double smallestDist = width * height;
+		    		Kingdom closestKingdom = null;
+		    		for(Kingdom kido : allKingdoms) {
+		    			if(c.distance(kido.getCenter()) < smallestDist) {
+		    				closestKingdom = kido;
+		    				smallestDist = c.distance(kido.getCenter());
+		    			} 
+		    		} c.setKingdom(closestKingdom);
+		    	}
+		    	prevCenterList.clear();
+		    	prevCenterList.addAll(newCenterList);
+		    	newCenterList.clear();
+		    	// Schritt 3
+		    	for(Kingdom kido : allKingdoms) {
+		    		int avgX = 0;
+		    		int avgY = 0;
+		    		
+		    		for(Castle burg : kido.getCastles()) {
+		    			avgX += burg.getLocationOnMap().x;
+		    			avgY += burg.getLocationOnMap().y;
+		    		}
+		    		if(kido.getCastles().size() < 1) {  	//Um Kingdoms mit 0 Burgen zu verhindern
+		    			noEmptyKingdoms = false;
+		    		}
+		    		else {
+		    			avgX = avgX / kido.getCastles().size();
+		    			avgY = avgY / kido.getCastles().size();
+		    		}
+		    		kido.setCenter(avgX, avgY);
+		    		newCenterList.add(new Point(avgX,avgY));
+		    	}
 	    	}
-	    	prevCenterList.clear();
-	    	prevCenterList.addAll(newCenterList);
-	    	newCenterList.clear();
-	    	// Schritt 3
-	    	for(Kingdom kido : allKingdoms) {
-	    		int avgX = 0;
-	    		int avgY = 0;
-	    		
-	    		for(Castle burg : kido.getCastles()) {
-	    			avgX += burg.getLocationOnMap().x;
-	    			avgY += burg.getLocationOnMap().y;
-	    		}
-	    		avgX = avgX / kido.getCastles().size();
-	    		avgY = avgY / kido.getCastles().size();
-
-	    		kido.setCenter(avgX, avgY);
-	    		newCenterList.add(new Point(avgX,avgY));
-	    	}
-    	} return allKingdoms;
+    	} while(!noEmptyKingdoms);
+    	return allKingdoms;
     }
 }
