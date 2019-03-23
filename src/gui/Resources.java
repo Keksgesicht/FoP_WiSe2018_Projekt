@@ -153,11 +153,10 @@ public class Resources {
      */
     private void loadScoreEntries() {
     	try {
-			BufferedReader br = new BufferedReader(new FileReader(new File("highscores.txt")));
+			BufferedReader br = new BufferedReader(new FileReader("highscores.txt"));
 			String line;
-			while((line = br.readLine()) != null) {
+			while((line = br.readLine()) != null)
 				addScoreEntry(ScoreEntry.read(line));
-			} 
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
@@ -172,9 +171,8 @@ public class Resources {
     public void addScoreEntry(ScoreEntry scoreEntry) {
         int i = scoreEntries.size() - 1;
         for(; i >= 0; i--) {
-            if(scoreEntry.compareTo(scoreEntries.get(i)) < 0) {
+            if(scoreEntry.compareTo(scoreEntries.get(i)) < 0)
                 break;
-            }
         } scoreEntries.add(i + 1, scoreEntry);
     }
 

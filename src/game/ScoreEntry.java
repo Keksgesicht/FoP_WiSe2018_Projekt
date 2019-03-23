@@ -54,10 +54,10 @@ public class ScoreEntry implements Comparable<ScoreEntry> {
      * @param printWriter der PrintWriter, mit dem der Eintrag geschrieben wird
      */
     public void write(PrintWriter printWriter) {
-    	printWriter.println(this.name + ";" 
-    					  + this.date.getTime() + ";"
-    					  + this.score + ";" 
-    					  + this.gameType);
+    	printWriter.println(name + ";" 
+    					  + date.getTime() + ";"
+    					  + score + ";" 
+    					  + gameType);
     }
 
     /**
@@ -77,23 +77,36 @@ public class ScoreEntry implements Comparable<ScoreEntry> {
      * @return Ein ScoreEntry-Objekt oder null
      */
     public static ScoreEntry read(String line) {
+    	// 4 durch Semikolons abgetrennte Bereiche
     	String[] attr = line.split(";");
-    	if(attr.length != 4) 									// 4 durch Semikolons abgetrennte Bereiche
+    	if(attr.length != 4)
     		return null;
-    	if(!attr[0].matches("\\w([\\w\\s]*\\w)?")) 				// Der Name
+    	
+    	// Der Name
+    	if(!attr[0].matches("\\w([\\w\\s]*\\w)?"))
     		return null;
+    	
+    	// check Unix timestamp
     	Date date;
     	try {
-    		date = new Date(Long.parseUnsignedLong(attr[1]));	// check Unix timestamp
+    		date = new Date(Long.parseUnsignedLong(attr[1]));
     	} catch(NumberFormatException e) {
     		return null;
-    	} int score; 
+    	}
+    	
+    	// check score	
+    	int score; 
     	try {
-    		score = Integer.parseUnsignedInt(attr[2]);			// check score	
+    		score = Integer.parseUnsignedInt(attr[2]);
     	} catch(NumberFormatException e) {
     		return null;
-    	} if(!attr[3].matches("\\p{Alpha}+"))					// check Spieltyp
+    	}
+    	
+    	// check Spieltyp
+    	if(!attr[3].matches("\\p{Alpha}+"))
     		return null;
+    	
+    	// valid String
     	return new ScoreEntry(attr[0], score, date, attr[3]);
     }
 

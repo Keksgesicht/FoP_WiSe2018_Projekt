@@ -155,22 +155,23 @@ public class GameMap {
 
     /**
      * @author Jan Braun
-     * Hier werden die Kanten erzeugt.
-     * jede Burg wird mit bis zu 4 anderen in nächster Nähe verbunden
-     * Schönheit liegt im Auge des Betrachters
+     * Hier werden die Kanten zwischen den Burgen erzeugt.
+     * Jede Burg wird mit bis zu 4 anderen in nächster Nähe verbunden.
+     * Schönheit liegt im Auge des Betrachters (in Ausnahmefällen kommt es zu Schönheitsfehlern)
      */
     private void generateEdges() {
     	List<Node<Castle>> castleNodes = castleGraph.getNodes();
     	for(Node<Castle> currentCastleNode : castleNodes) {
 			Castle currentCastle = currentCastleNode.getValue();
-    		List<Node<Castle>> distSortedCastles = castleNodes.stream() // sort all other castles by distance to current castle
-    														  .filter(x -> x != currentCastleNode)
-    														  .sorted((l,r) -> ((Double) l.getValue().distance(currentCastle)).compareTo((Double) r.getValue().distance(currentCastle)))
-    														  .collect(Collectors.toList());
+    		List<Node<Castle>> distanceSortedCastles = castleNodes.stream() // sort all other castles by distance to current castle
+    														  	   .filter(x -> x != currentCastleNode)
+    														  	   .sorted((nc1,nc2) -> ((Double) nc1.getValue().distance(currentCastle))
+    														  			   	  .compareTo((Double) nc2.getValue().distance(currentCastle)))
+    														  	   .collect(Collectors.toList());
     		
     		int n = (int) (2 + Math.round(Math.random() * 1.3 - 0.42));
-    		n = (n - castleGraph.getEdges(currentCastleNode).size());
-    		for(Node<Castle> possibleNeighboreNode : distSortedCastles) {
+    		n = (n - castleGraph.getEdges(currentCastleNode).size()); // Falls die Burg schon Nachbarn hat, muss nur ergänzt werden
+    		for(Node<Castle> possibleNeighboreNode : distanceSortedCastles) {
     			if(n<=0) break;
     			if(castleGraph.getEdge(possibleNeighboreNode, currentCastleNode) != null) // Knoten werden nicht doppelt verbunden
     				continue;

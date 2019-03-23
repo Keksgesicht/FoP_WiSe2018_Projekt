@@ -22,6 +22,7 @@ public class GraphConnectionTest {
 	@BeforeEach
 	void initTests() {
 		testGraph = new Graph<String>();
+		
 		nodeArray.add(testGraph.addNode("123456789"));
 		nodeArray.add(testGraph.addNode("qwertz"));
 		nodeArray.add(testGraph.addNode("flort"));

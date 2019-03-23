@@ -94,7 +94,7 @@ public class Graph<T> {
      */
     public List<Edge<T>> getEdges(Node<T> node) {
         return edges.stream()
-        			.filter(e -> e.getNodeA().equals(node) || e.getNodeB().equals(node))
+        			.filter(e -> e.contains(node))
         			.collect(Collectors.toList());
     }
     
@@ -104,12 +104,9 @@ public class Graph<T> {
      * @return alle Nachbar-Knoten auf Grund ihrer gemeinsamen Kanten
      */
     public List<Node<T>> getNodes(Node<T> node) {
-    	List<Edge<T>> edges = getEdges(node);
-    	Stream<Node<T>> a = edges.stream().map(e -> e.getNodeA());
-    	Stream<Node<T>> b = edges.stream().map(e -> e.getNodeB());
-    	return Stream.concat(a, b)
-    				 .filter(n -> n != node)
-    				 .collect(Collectors.toList());
+    	return getEdges(node).stream()
+    						 .map(e -> e.getOtherNode(node))
+    						 .collect(Collectors.toList());    				 
     }
 
     /**
