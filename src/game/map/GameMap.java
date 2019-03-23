@@ -1,7 +1,6 @@
 package game.map;
 
 import base.*;
-import game.Game;
 import game.GameConstants;
 import gui.Resources;
 

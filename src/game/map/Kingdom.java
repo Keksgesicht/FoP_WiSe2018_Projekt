@@ -2,7 +2,6 @@ package game.map;
 
 import game.Player;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;

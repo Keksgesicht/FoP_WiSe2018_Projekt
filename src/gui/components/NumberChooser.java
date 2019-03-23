@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class NumberChooser extends JComponent implements MouseListener {
 
     private int min, max, value;

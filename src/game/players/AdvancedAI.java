@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import base.Edge;
@@ -149,7 +148,7 @@ public class AdvancedAI extends AI {
 	/**
 	 * 
 	 * @param list Liste der Edges die eine Burg hat
-	 * @return counter Anzahl der Verbindungen die eine Burg zu einer anderen Burg hat,die zu einem andren Kingdom gehört
+	 * @return counter Anzahl der Verbindungen die eine Burg zu einer anderen Burg hat,die zu einem andren Kingdom gehï¿½rt
 	 */
 	private int getEdgeCounter(List<Edge<Castle>> list) {
 		
@@ -190,8 +189,8 @@ public class AdvancedAI extends AI {
 	/**
 	 * In der ersten Runde, sprich Auswahl der Burgen, wird eine Liste erstellt die bestimmte Burgen priorisiert
 	 * und absteigend in einer neuen Liste sotiert und ausgibt 
-	 * @param c Die Liste der Burgen die noch auswählbar sind
-	 * @return List<Castle> Eine Liste aus Burgen die nach priotität sotiert wird
+	 * @param c Die Liste der Burgen die noch auswï¿½hlbar sind
+	 * @return List<Castle> Eine Liste aus Burgen die nach priotitï¿½t sotiert wird
 	 */
 	
 	private List<Castle> verteilenListe(List<Castle> c,Game game) {
@@ -218,9 +217,9 @@ public class AdvancedAI extends AI {
 		    	}
 		     }
 		     
-			  if (!b) { // Wurden schon Burgen von anderen ausgewählt ? Nein 
+			  if (!b) { // Wurden schon Burgen von anderen ausgewï¿½hlt ? Nein 
 				
-			  if (this.getCastles(game).size() == 0) { // Hat man schon selbst Burgen ausgewählt ? Nein
+			  if (this.getCastles(game).size() == 0) { // Hat man schon selbst Burgen ausgewï¿½hlt ? Nein
 				  
 			   for(Castle r : c) {
 				
@@ -246,7 +245,7 @@ public class AdvancedAI extends AI {
 			 
 			   return prio;
 			   
-			   } else { // Hat man schon selbst Burgen ausgewählt ? Ja  
+			   } else { // Hat man schon selbst Burgen ausgewï¿½hlt ? Ja  
 				  
 				  for (Castle e : this.getCastles(game)) {
 						
@@ -333,9 +332,9 @@ public class AdvancedAI extends AI {
 			  }
 			//--------------------------------------------------------------------------------------//  
 			  
-			} else {  // Wurden schon Burgen von anderen ausgewählt ? Ja
+			} else {  // Wurden schon Burgen von anderen ausgewï¿½hlt ? Ja
 			  
-			  if (this.getCastles(game).size() == 0) {  // Hat man schon selbst Burgen ausgewählt ? Nein
+			  if (this.getCastles(game).size() == 0) {  // Hat man schon selbst Burgen ausgewï¿½hlt ? Nein
 				   
 				   for (Castle e : c) {
 						
@@ -415,7 +414,7 @@ public class AdvancedAI extends AI {
 				
 				return prio;
 			//------------------------------------------------------------------//	
-			} else { // Hat man schon selbst Burgen ausgewählt ? Ja
+			} else { // Hat man schon selbst Burgen ausgewï¿½hlt ? Ja
 				
 				for (Castle e : this.getCastles(game)) {
 					
@@ -467,7 +466,7 @@ public class AdvancedAI extends AI {
 					}
 				}
 				
-			    if (b1) { // Burgen aus seinem eigenen Königreichg sind übrig 
+			    if (b1) { // Burgen aus seinem eigenen Kï¿½nigreichg sind ï¿½brig 
 			    List<Castle> priotemp = new ArrayList<>(); 
 			    
 				for(Castle c2 : c) {
@@ -506,7 +505,7 @@ public class AdvancedAI extends AI {
 				
 				return priotemp;
 				
-			} else {    // Burgen aus seinem eigenen Königreichg sind nicht mehr übrig 
+			} else {    // Burgen aus seinem eigenen Kï¿½nigreichg sind nicht mehr ï¿½brig 
 				
                     for (Castle e : c) {
 					
@@ -580,6 +579,7 @@ public class AdvancedAI extends AI {
 	}
 	
 	
+	@SuppressWarnings("unused")
 	protected void actions(Game game) throws InterruptedException {
      //----------------------------------------------------------------------------------------------// Burgen verteilen
 		if(game.getRound() == 1) {
@@ -611,7 +611,7 @@ public class AdvancedAI extends AI {
                 }
             }
             while(this.getRemainingTroops() > 0) {
-            	//--------------------------------------// castleNearEnemy in verschiedene Prioritätslisten aufteilen
+            	//--------------------------------------// castleNearEnemy in verschiedene Prioritï¿½tslisten aufteilen
             	
             	   //-----------------------------------//Prioliste 1: mostTroops
             	   HashMap<Castle,Integer> mostTroops = getCastlesWithMostTroops(castleNearEnemy);

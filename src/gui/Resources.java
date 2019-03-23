@@ -153,6 +153,7 @@ public class Resources {
      */
     private void loadScoreEntries() {
     	try {
+			@SuppressWarnings("resource")
 			BufferedReader br = new BufferedReader(new FileReader("highscores.txt"));
 			String line;
 			while((line = br.readLine()) != null)

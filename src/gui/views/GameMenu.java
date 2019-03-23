@@ -13,6 +13,7 @@ import java.util.*;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class GameMenu extends View {
 
     private JLabel lblTitle;
@@ -22,8 +23,10 @@ public class GameMenu extends View {
     private JTextArea lblGoalDescription;
 
     private NumberChooser playerCount;
-    private JComboBox mapSize;
-    private JComboBox goal;
+    @SuppressWarnings("rawtypes")
+	private JComboBox mapSize;
+    @SuppressWarnings("rawtypes")
+	private JComboBox goal;
     private JComponent[][] playerConfig;
     private JButton btnStart, btnBack;
 
@@ -144,7 +147,8 @@ public class GameMenu extends View {
         getWindow().setMinimumSize(new Dimension(750, 450));
     }
 
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public void actionPerformed(ActionEvent actionEvent) {
         if(actionEvent.getSource() == btnBack)
             getWindow().setView(new StartScreen(getWindow()));

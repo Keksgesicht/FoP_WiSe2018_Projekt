@@ -11,6 +11,7 @@ import java.awt.event.*;
  *
  * @author Roman Hergenreder
  */
+@SuppressWarnings("serial")
 public class GameWindow extends JFrame {
 
     private View activeView;

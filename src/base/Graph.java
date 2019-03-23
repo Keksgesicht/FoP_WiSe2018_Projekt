@@ -7,7 +7,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Diese Klasse representiert einen generischen Graphen mit einer Liste aus Knoten und Kanten.

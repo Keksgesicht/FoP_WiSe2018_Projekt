@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+@SuppressWarnings("serial")
 public class ColorChooserButton extends JButton {
 
     private Color current;

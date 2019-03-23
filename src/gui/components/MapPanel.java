@@ -21,6 +21,7 @@ import gui.Resources;
 import gui.View;
 import gui.views.GameView;
 
+@SuppressWarnings("serial")
 public class MapPanel extends JScrollPane {
 
     public enum Action {

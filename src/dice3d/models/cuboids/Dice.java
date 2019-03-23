@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import dice3d.main.World;
 import dice3d.models.Vertex;
 
+@SuppressWarnings("unused")
 public class Dice extends Cube {
 
 	private int NumberRolled = 1;
@@ -29,15 +30,14 @@ public class Dice extends Cube {
 	public Dice(double x, double y, double z, int size) {
 		super(x,y,z, size);
 		
-	    try {
-			imgs[0] = ImageIO.read(new File("C:\\Users\\julian\\git\\FoP_Projektgruppe_065\\src\\0.jpg"));
-			imgs[1] = ImageIO.read(new File("C:\\Users\\julian\\git\\FoP_Projektgruppe_065\\src\\1.jpg"));
-			imgs[2] = ImageIO.read(new File("C:\\Users\\julian\\git\\FoP_Projektgruppe_065\\src\\2.jpg"));
-			imgs[3] = ImageIO.read(new File("C:\\Users\\julian\\git\\FoP_Projektgruppe_065\\src\\3.jpg"));
-			imgs[4] = ImageIO.read(new File("C:\\Users\\julian\\git\\FoP_Projektgruppe_065\\src\\4.jpg"));
-			imgs[5] = ImageIO.read(new File("C:\\Users\\julian\\git\\FoP_Projektgruppe_065\\src\\5.jpg"));
-		} catch (IOException e) {}
-
+		/*
+		 * try { imgs[0] = ImageIO.read(new File("res/dice1.jpg")); imgs[1] =
+		 * ImageIO.read(new File("res/dice2.jpg")); imgs[2] = ImageIO.read(new
+		 * File("res/dice3.jpg")); imgs[3] = ImageIO.read(new File("res/dice4.jpg"));
+		 * imgs[4] = ImageIO.read(new File("res/dice5.jpg")); imgs[5] = ImageIO.read(new
+		 * File("res/dice6.jpg")); } catch (IOException e) {}
+		 */
+		
 		//1
 		face[0][0] = vertices.get(0); // a 
 		face[0][1] = vertices.get(1); // b
@@ -136,8 +136,8 @@ public class Dice extends Cube {
 				    for (int i : polygon.ypoints) yList.add(i);
 				    yList.stream().sorted().collect(Collectors.toList());
 				    
-				    int xskew = (int) (v1x > v2x ? v2x : v1x);
-				    int yskew = (int) (v1y > v2y ? v2y : v1y);
+//				    int xskew = (int) (v1x > v2x ? v2x : v1x);
+//				    int yskew = (int) (v1y > v2y ? v2y : v1y);
 				    int xlen  = (int) (v1x < v2x ? v2x : v1x);
 				    int ylen  = (int) (v1y < v2y ? v2y : v1y);
 				    

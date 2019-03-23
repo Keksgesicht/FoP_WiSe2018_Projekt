@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 
+@SuppressWarnings("serial")
 public class StartScreen extends View {
 
     private JButton btnStart, btnStats, btnInfo, btnQuit;

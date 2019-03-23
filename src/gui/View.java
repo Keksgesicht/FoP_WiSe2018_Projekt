@@ -18,6 +18,7 @@ import java.util.Vector;
 /**
  * @author Roman Hergenreder
  */
+@SuppressWarnings("serial")
 public abstract class View extends Container implements ActionListener {
 
     private GameWindow gameWindow;
@@ -97,7 +98,8 @@ public abstract class View extends Container implements ActionListener {
     }
 
 
-    protected JComboBox createCombobox(Vector<String> values, int selectedIndex) {
+    @SuppressWarnings("rawtypes")
+	protected JComboBox createCombobox(Vector<String> values, int selectedIndex) {
         JComboBox<String> comboBox = new JComboBox<>(values);
         comboBox.setSelectedIndex(selectedIndex);
         comboBox.setSize(200, 25);

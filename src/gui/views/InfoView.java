@@ -9,6 +9,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class InfoView extends View {
 
     private static final String ABOUT_TEXT =

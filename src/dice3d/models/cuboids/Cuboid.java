@@ -107,7 +107,7 @@ public class Cuboid {
 		for (Vertex v : vertices) {
 			v.update(w);
 		}
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 6; i++) {
 			for (Edge e : edges) {
 				e.update(w);
 			}

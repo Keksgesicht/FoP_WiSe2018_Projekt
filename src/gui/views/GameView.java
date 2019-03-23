@@ -20,6 +20,7 @@ import gui.View;
 import gui.components.DicePanel;
 import gui.components.MapPanel;
 
+@SuppressWarnings("serial")
 public class GameView extends View implements GameInterface {
 
     private MapPanel map;

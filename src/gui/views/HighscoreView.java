@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 
+@SuppressWarnings("serial")
 public class HighscoreView extends View {
 
     private JButton btnBack;
