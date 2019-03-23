@@ -2,6 +2,19 @@ package dice3d.models.cuboids;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.imageio.ImageIO;
 
 import dice3d.main.World;
 import dice3d.models.Vertex;
@@ -10,10 +23,20 @@ public class Dice extends Cube {
 
 	private int NumberRolled = 1;
 	private Vertex[][] face = new Vertex[6][4];
+	BufferedImage imgs[] = new BufferedImage[6];
 
 
 	public Dice(double x, double y, double z, int size) {
 		super(x,y,z, size);
+		
+	    try {
+			imgs[0] = ImageIO.read(new File("C:\\Users\\julian\\git\\FoP_Projektgruppe_065\\src\\0.jpg"));
+			imgs[1] = ImageIO.read(new File("C:\\Users\\julian\\git\\FoP_Projektgruppe_065\\src\\1.jpg"));
+			imgs[2] = ImageIO.read(new File("C:\\Users\\julian\\git\\FoP_Projektgruppe_065\\src\\2.jpg"));
+			imgs[3] = ImageIO.read(new File("C:\\Users\\julian\\git\\FoP_Projektgruppe_065\\src\\3.jpg"));
+			imgs[4] = ImageIO.read(new File("C:\\Users\\julian\\git\\FoP_Projektgruppe_065\\src\\4.jpg"));
+			imgs[5] = ImageIO.read(new File("C:\\Users\\julian\\git\\FoP_Projektgruppe_065\\src\\5.jpg"));
+		} catch (IOException e) {}
 
 		//1
 		face[0][0] = vertices.get(0); // a 
@@ -96,27 +119,51 @@ public class Dice extends Cube {
 			double v2x = polygon.xpoints[2] - polygon.xpoints[1];
 			double v2y = polygon.ypoints[2] - polygon.ypoints[1];
 			double visible = v1x * v2y - v1y * v2x;
+			//if (true) {
 			if (visible < 0) {
 				g.setColor(Color.WHITE);
 				if(collided) {
 					g.setColor(Color.RED);
 				}
-				g.fill(polygon);
+				//g.fill(polygon);
 				g.setColor(Color.BLACK);
-				g.draw(polygon);
-
-				// draw number of each face (that is visible)
-				// calc center of each face/square
-				double xs = 0d;
-				double ys = 0d;
-
-				for (int i = 0; i < 4; i++) {
-					xs += polygon.xpoints[i];
-					ys += polygon.ypoints[i];
+				if (imgs[f] != null) {
+//				    g.setClip(polygon);
+				    List<Integer> xList = new ArrayList<Integer>();
+				    for (int i : polygon.xpoints) xList.add(i);
+				    xList.stream().sorted().collect(Collectors.toList());
+				    List<Integer> yList = new ArrayList<Integer>();
+				    for (int i : polygon.ypoints) yList.add(i);
+				    yList.stream().sorted().collect(Collectors.toList());
+				    
+				    int xskew = (int) (v1x > v2x ? v2x : v1x);
+				    int yskew = (int) (v1y > v2y ? v2y : v1y);
+				    int xlen  = (int) (v1x < v2x ? v2x : v1x);
+				    int ylen  = (int) (v1y < v2y ? v2y : v1y);
+				    
+				    AffineTransform tx = new AffineTransform();
+//				    tx.shear(xskew, yskew);
+				    AffineTransformOp op = new AffineTransformOp(tx,
+				            AffineTransformOp.TYPE_BILINEAR);
+				    BufferedImage imgToUse = op.filter(imgs[f], null);
+				    g.drawImage(imgToUse, xList.get(0), yList.get(0), Math.abs(xlen), Math.abs(ylen), null);
+//				    g.setClip(null);
+				    g.draw(polygon);
+				} else {
+					g.draw(polygon);
+					// draw number of each face (that is visible)
+					// calc center of each face/square
+					double xs = 0d;
+					double ys = 0d;
+	
+					for (int i = 0; i < 4; i++) {
+						xs += polygon.xpoints[i];
+						ys += polygon.ypoints[i];
+					}
+					xs = xs / 4;
+					ys = ys / 4;
+					g.drawString(f + 1 + "", (int) xs, (int) ys);
 				}
-				xs = xs / 4;
-				ys = ys / 4;
-				g.drawString(f + 1 + "", (int) xs, (int) ys);
 			}
 		}
 

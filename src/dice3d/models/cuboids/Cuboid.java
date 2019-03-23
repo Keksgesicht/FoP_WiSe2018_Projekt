@@ -185,39 +185,33 @@ public class Cuboid {
 		return true;
 	}
 	
-	private void Collision(Cuboid d) {
-		for (Vertex vert : d.vertices) {
-			Vector newA = new Vector();
-			newA.sub(vert.a);
-			newA.scale(d.weight);
-			if (newA.getSize() < .01) d.collided = true;
-			vert.a = newA;
-			vert.position = vert.positionOld;
-		}
-		for (Vertex vert : vertices) {
-			Vector newA = new Vector();
-			newA.sub(vert.a);
-			newA.scale(weight);
-			if (newA.getSize() < .01) collided = true;
-			vert.a = newA;
-			vert.position = vert.positionOld;
-		}
+	private void Collision(Cuboid d, Vertex vert) {
+		Vector newA = new Vector();
+		newA.sub(vert.a);
+		newA.scale(d.weight);
+//		if (newA.getSize() < .01) d.collided = true;
+//		vert.a = newA;
+		Vector vTemp = new Vector(vert.position);
+		vert.position = vert.positionOld;
+		vert.positionOld = vTemp;
+		vert.isPinned = true;
+		System.out.println("reverte!");
 	}
 	
 	public void updateCollision(Cuboid d) {
 		//vertex in other cuboid
 		for (Vertex vertex : d.vertices) {
-			if (isInside(vertex)) {
-				Collision(d);
-				return;
-		}}
+			if (isInside(vertex)) 
+				Collision(d, vertex);
+			else
+				vertex.isPinned = false;
+		}
 		for (Vertex vertex : vertices) {
-			if (d.isInside(vertex)) {
-				Collision(d);
-				return;
-		}}
+			if (d.isInside(vertex))
+				Collision(this, vertex);
+			else
+				vertex.isPinned = false;
+		}
 		//watch out, this may not be perfect, but hopefully good enough
 	}
-
-
 }

@@ -12,6 +12,8 @@ public class Vertex {
 	private Vector positionReset = new Vector();
 
 	public Vector a;
+	
+	public boolean isPinned = false;
 
 	public String id;
 
@@ -31,6 +33,8 @@ public class Vertex {
 	public void update(World w) {
         positionOld.set(position);
         position.add(a);
+        a.set(position);
+        a.sub(positionOld);
         a.add(w.gravity);
 	}
 
