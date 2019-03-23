@@ -13,8 +13,9 @@ public class Cuboid {
 	public ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 	public ArrayList<Edge> edges = new ArrayList<Edge>();
 
-	
 	public boolean collided = false;
+	
+	private double weight = .8;
 
 	public Cuboid(double x, double y, double z, int length, int width, int height) {
 		
@@ -106,28 +107,30 @@ public class Cuboid {
 		for (Vertex v : vertices) {
 			v.update(w);
 		}
-		for (Edge e : edges) {
-			e.update(w);
+		for (int i = 0; i < 3; i++) {
+			for (Edge e : edges) {
+				e.update(w);
+			}
 		}
+		for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(c2);
 	}
 
 	public void reset() {
 		for (Vertex v : vertices) {
 			v.reset();
 		}
+		collided = false;
 	}
 
 	public void draw(Graphics2D g) {
 		// draw all edges, even inner ones
 		g.setColor(Color.GREEN);
-		
 		if(collided) {
 			g.setColor(Color.RED);
 		}
 		 for(Edge e: edges) {
 			 e.draw(g);
 		 }
-		 
 		 g.setColor(Color.BLACK);
 		 for (Vertex point : vertices) {
 			 point.draw(g);
@@ -136,6 +139,12 @@ public class Cuboid {
 
 	public boolean notMoving() {
 		return collided;
+	}
+	
+	private boolean inBetween(double x, double b1, double b2) {
+		if (b1 < x && x < b2) return true;
+		if (b2 < x && x < b1) return true;
+		return false;
 	}
 	
 	public boolean isInside(Vertex vertex) {
@@ -155,47 +164,58 @@ public class Cuboid {
 				p5 = vert.position;
 				break;
 		}}
-		Vector u1 = new Vector(p1);
-		u1.sub(p4);
+		Vector u = new Vector(p1);
+		u.sub(p4);
 		Vector u2 = new Vector(p1);
 		u2.sub(p5);
-		Vector u = new Vector(u1);
 		u.crossmult(u2);
-		Vector v1 = new Vector(p1);
-		v1.sub(p2);
+		Vector v = new Vector(p1);
+		v.sub(p2);
 		Vector v2 = new Vector(p1);
 		v2.sub(p5);
-		Vector v = new Vector(v1);
 		v.crossmult(v2);
-		Vector w1 = new Vector(p1);
-		w1.sub(p2);
+		Vector w = new Vector(p1);
+		w.sub(p2);
 		Vector w2 = new Vector(p1);
 		w2.sub(p4);
-		Vector w = new Vector(w1);
 		w.crossmult(w2);
-		if (u.dotmult(vertex.position) <= u.dotmult(p1) || u.dotmult(vertex.position) >= u.dotmult(p2)) return false;
-		if (v.dotmult(vertex.position) <= v.dotmult(p1) || v.dotmult(vertex.position) >= v.dotmult(p4)) return false;
-		if (w.dotmult(vertex.position) <= w.dotmult(p1) || w.dotmult(vertex.position) >= w.dotmult(p5)) return false;
+		if ( !inBetween(u.dotmult(vertex.position), u.dotmult(p1), u.dotmult(p2))) return false;
+		if ( !inBetween(v.dotmult(vertex.position), v.dotmult(p1), v.dotmult(p4))) return false;
+		if ( !inBetween(w.dotmult(vertex.position), w.dotmult(p1), w.dotmult(p5))) return false;
 		return true;
 	}
 	
+	private void Collision(Cuboid d) {
+		for (Vertex vert : d.vertices) {
+			Vector newA = new Vector();
+			newA.sub(vert.a);
+			newA.scale(d.weight);
+			if (newA.getSize() < .01) d.collided = true;
+			vert.a = newA;
+			vert.position = vert.positionOld;
+		}
+		for (Vertex vert : vertices) {
+			Vector newA = new Vector();
+			newA.sub(vert.a);
+			newA.scale(weight);
+			if (newA.getSize() < .01) collided = true;
+			vert.a = newA;
+			vert.position = vert.positionOld;
+		}
+	}
+	
 	public void updateCollision(Cuboid d) {
-		//vertix in other cuboid
-		System.out.println("Checking with");
-		for (Vertex vertex : vertices) {
-			if (d.isInside(vertex)) {
-				collided = true;
-				d.collided = true;
-				return;
-		}}
+		//vertex in other cuboid
 		for (Vertex vertex : d.vertices) {
 			if (isInside(vertex)) {
-				collided = true;
-				d.collided = true;
+				Collision(d);
 				return;
 		}}
-		collided = false;
-		d.collided = false;
+		for (Vertex vertex : vertices) {
+			if (d.isInside(vertex)) {
+				Collision(d);
+				return;
+		}}
 		//watch out, this may not be perfect, but hopefully good enough
 	}
 

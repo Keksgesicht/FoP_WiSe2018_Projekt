@@ -18,30 +18,25 @@ public class World {
 
 	public World() {
 		World w = this;
-		gravity = new Vector(0, 1, 0);
+		gravity = new Vector(0, .09, 0);
 		
 		cuboids = new ArrayList<Cuboid>();
 		
-		floor =  new Cuboid(10, 400, 600, 700, 1000, 10);
+		floor =  new Cuboid(10, 400, 600, 700, 1000, 50);
 		cuboids.add(floor);
 
-		cuboids.add(new Dice(150, 100, 800, 80));
-		cuboids.add(new Dice(50, 120, 800, 80));
+		cuboids.add(new Dice(150, 210, 800, 80));
+		cuboids.add(new Dice(50, 210, 800, 80));
 
-		long delayInMS = 500; // start updating after 500ms
+		long delayInMS = 500;  // start updating after 500ms
 		long intervalInMS = 15; // update every 15ms
 
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				for(Cuboid c : cuboids) {
-					if(c == floor) {
-						continue;
-					}
-					if (!c.collided) c.update(w);
-					for(Cuboid c2 : cuboids) {
-						if(c != c2)	c.updateCollision(c2);
-					}
+				for ( Cuboid c : cuboids ) {
+					if  (  c == floor ) continue;
+					if  ( !c.collided ) c.update(w);
 				}
 			}
 		}, delayInMS, intervalInMS);

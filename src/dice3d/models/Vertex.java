@@ -8,10 +8,10 @@ import dice3d.math.Vector;
 public class Vertex {
 	
 	public Vector position = new Vector();
-	private Vector positionOld = new Vector();
+	public Vector positionOld = new Vector();
 	private Vector positionReset = new Vector();
 
-	private Vector a = new Vector();
+	public Vector a;
 
 	public String id;
 
@@ -19,18 +19,19 @@ public class Vertex {
 		position.set(x, y, z);
 		positionOld.set(position);
 		positionReset.set(position);
+		a = new Vector();
 	}
-	
 
 	public void reset() {
 		position.set(positionReset);
 		positionOld.set(positionReset);
+		a = new Vector();
 	}
 
 	public void update(World w) {
         positionOld.set(position);
-        
-        position.add(w.gravity);
+        position.add(a);
+        a.add(w.gravity);
 	}
 
 	public void draw(Graphics2D g) {
@@ -43,5 +44,4 @@ public class Vertex {
 			g.drawString(id, (int)px, (int)py);
 		}
 	}
-
 }

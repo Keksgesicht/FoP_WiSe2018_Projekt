@@ -15,35 +15,41 @@ public class Dice extends Cube {
 	public Dice(double x, double y, double z, int size) {
 		super(x,y,z, size);
 
+		//1
 		face[0][0] = vertices.get(0); // a 
 		face[0][1] = vertices.get(1); // b
 		face[0][2] = vertices.get(2); // c ...
 		face[0][3] = vertices.get(3);
 
+		//2
 		face[1][0] = vertices.get(1);
 		face[1][1] = vertices.get(5);
 		face[1][2] = vertices.get(6);
 		face[1][3] = vertices.get(2);
 
-		face[2][0] = vertices.get(5);
-		face[2][1] = vertices.get(4);
-		face[2][2] = vertices.get(7);
-		face[2][3] = vertices.get(6);
+		//6
+		face[5][0] = vertices.get(5);
+		face[5][1] = vertices.get(4);
+		face[5][2] = vertices.get(7);
+		face[5][3] = vertices.get(6);
 
-		face[3][0] = vertices.get(4);
-		face[3][1] = vertices.get(0);
-		face[3][2] = vertices.get(3);
-		face[3][3] = vertices.get(7);
-
-		face[4][0] = vertices.get(3);
-		face[4][1] = vertices.get(2);
-		face[4][2] = vertices.get(6);
+		//5
+		face[4][0] = vertices.get(4);
+		face[4][1] = vertices.get(0);
+		face[4][2] = vertices.get(3);
 		face[4][3] = vertices.get(7);
 
-		face[5][0] = vertices.get(1);
-		face[5][1] = vertices.get(0);
-		face[5][2] = vertices.get(4);
-		face[5][3] = vertices.get(5);
+		//4
+		face[3][0] = vertices.get(3);
+		face[3][1] = vertices.get(2);
+		face[3][2] = vertices.get(6);
+		face[3][3] = vertices.get(7);
+
+		//3
+		face[2][0] = vertices.get(1);
+		face[2][1] = vertices.get(0);
+		face[2][2] = vertices.get(4);
+		face[2][3] = vertices.get(5);
 	}
 
 
@@ -64,6 +70,7 @@ public class Dice extends Cube {
 			v.reset();
 		}
 		NumberRolled++;
+		collided = false;
 	}
 	
 	public int getNumberRolled() {

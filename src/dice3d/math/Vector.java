@@ -7,6 +7,9 @@ public class Vector {
     public double z;
 
     public Vector() {
+    	this.x = 0;
+    	this.y = 0;
+    	this.z = 0;
     }
 
     public Vector(double x, double y, double z) {
@@ -60,12 +63,12 @@ public class Vector {
     }
     
     public void crossmult(Vector v) {
-    	double xTemp = x;
-    	double yTemp = y;
-    	double zTemp = z;
-    	x = yTemp * v.z - zTemp * v.y;
-    	y = zTemp * v.x - xTemp * v.z;
-    	z = xTemp * v.y - yTemp * v.x;
+    	double xTemp = this.x;
+    	double yTemp = this.y;
+    	double zTemp = this.z;
+    	this.x = yTemp * v.z - zTemp * v.y;
+    	this.y = zTemp * v.x - xTemp * v.z;
+    	this.z = xTemp * v.y - yTemp * v.x;
     }
     
     public double dotmult(Vector v) {
@@ -79,7 +82,7 @@ public class Vector {
 
     @Override
     public String toString() {
-        return "[" + x + ", " + y + ", " + z + "]";
+        return "[" + ((double)Math.round(x * 100))/100 + ", " + ((double)Math.round(y * 100))/100 + ", " + ((double)Math.round(z * 100))/100 + "]";
     }
     
     public boolean equals(Vector v) {
