@@ -27,21 +27,8 @@ public class Edge {
 		double dif = (currentSize - designatedLength) * 0.5;
 		vTmp.normalize();
 		vTmp.scale(dif);
-		Vector vTmp2 = new Vector(vTmp);
-		vTmp2.scale(2);
-		if (!(a.isPinned ^ b.isPinned)) {
-			a.position.add(vTmp);
-			b.position.sub(vTmp);
-			return;
-		}
-		if (a.isPinned) {
-			b.positionOld.set(b.position);
-			b.position.sub(vTmp2);
-		}
-		if (b.isPinned) {
-			a.positionOld.set(a.position);
-			a.position.add(vTmp2);
-		}
+		a.position.add(vTmp);
+		b.position.sub(vTmp);
 	}
 
 	public void draw(Graphics2D g) {

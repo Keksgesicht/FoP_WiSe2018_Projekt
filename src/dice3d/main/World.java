@@ -25,11 +25,11 @@ public class World {
 		floor =  new Cuboid(10, 400, 600, 700, 1000, 50);
 		cuboids.add(floor);
 
-		cuboids.add(new Dice(150, 210, 800, 80));
-		cuboids.add(new Dice(50, 210, 800, 80));
+		cuboids.add(new Dice(150, 210, 800, 60));
+		cuboids.add(new Dice(50, 210, 800, 60));
 
 		long delayInMS = 500;  // start updating after 500ms
-		long intervalInMS = 150; // update every 15ms
+		long intervalInMS = 15; // update every 15ms
 
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override

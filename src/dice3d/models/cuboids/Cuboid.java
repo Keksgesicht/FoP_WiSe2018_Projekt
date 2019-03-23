@@ -15,7 +15,7 @@ public class Cuboid {
 
 	public boolean collided = false;
 	
-	private double weight = .8;
+	private double weight = 0.5;
 
 	public Cuboid(double x, double y, double z, int length, int width, int height) {
 		
@@ -107,12 +107,13 @@ public class Cuboid {
 		for (Vertex v : vertices) {
 			v.update(w);
 		}
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 5; i++) {
 			for (Edge e : edges) {
 				e.update(w);
 			}
+			for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(c2);
 		}
-		for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(c2);
+		
 	}
 
 	public void reset() {
@@ -185,32 +186,26 @@ public class Cuboid {
 		return true;
 	}
 	
-	private void Collision(Cuboid d, Vertex vert) {
-		Vector newA = new Vector();
-		newA.sub(vert.a);
-		newA.scale(d.weight);
-//		if (newA.getSize() < .01) d.collided = true;
-//		vert.a = newA;
+	private void Collision(Vertex vert) {
+		Vector newA = new Vector(vert.position);
+		newA.sub(vert.positionOld);
+		newA.scale(weight);
 		Vector vTemp = new Vector(vert.position);
 		vert.position = vert.positionOld;
 		vert.positionOld = vTemp;
-		vert.isPinned = true;
+		Vector newV = new Vector(vert.position);
+		newV.sub(vert.positionOld);
+		newV.scale(0.8);
+		// calc and set designated outgoing angle (position old)
+		vert.positionOld.sub(newV);
 		System.out.println("reverte!");
 	}
 	
 	public void updateCollision(Cuboid d) {
 		//vertex in other cuboid
-		for (Vertex vertex : d.vertices) {
-			if (isInside(vertex)) 
-				Collision(d, vertex);
-			else
-				vertex.isPinned = false;
-		}
 		for (Vertex vertex : vertices) {
 			if (d.isInside(vertex))
-				Collision(this, vertex);
-			else
-				vertex.isPinned = false;
+				Collision(vertex);
 		}
 		//watch out, this may not be perfect, but hopefully good enough
 	}

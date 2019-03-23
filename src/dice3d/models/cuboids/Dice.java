@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 
 import dice3d.main.World;
+import dice3d.math.Vector;
 import dice3d.models.Vertex;
 
 @SuppressWarnings("unused")
@@ -89,8 +90,10 @@ public class Dice extends Cube {
 	}
 
 	public void reset() {
+		Vector random = new Vector(Math.random()*2+.5, -Math.random() * 5+.5, Math.random() * 2+.5);
 		for (Vertex v : vertices) {
 			v.reset();
+			v.positionOld.sub(random);
 		}
 		NumberRolled++;
 		collided = false;
@@ -125,7 +128,7 @@ public class Dice extends Cube {
 				if(collided) {
 					g.setColor(Color.RED);
 				}
-				//g.fill(polygon);
+				g.fill(polygon);
 				g.setColor(Color.BLACK);
 				if (imgs[f] != null) {
 //				    g.setClip(polygon);

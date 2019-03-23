@@ -12,8 +12,6 @@ public class Vertex {
 	private Vector positionReset = new Vector();
 
 	public Vector a;
-	
-	public boolean isPinned = false;
 
 	public String id;
 
@@ -27,15 +25,14 @@ public class Vertex {
 	public void reset() {
 		position.set(positionReset);
 		positionOld.set(positionReset);
-		a = new Vector();
 	}
 
 	public void update(World w) {
-        positionOld.set(position);
-        position.add(a);
         a.set(position);
         a.sub(positionOld);
-        a.add(w.gravity);
+        positionOld.set(position);
+        position.add(a);
+        position.add(w.gravity);
 	}
 
 	public void draw(Graphics2D g) {
