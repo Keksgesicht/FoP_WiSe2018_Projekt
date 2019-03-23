@@ -33,7 +33,6 @@ public class Edge<T> {
      */
     public Node<T> getNodeA() {
         return nodeA;
-        
     }
 
     /**
