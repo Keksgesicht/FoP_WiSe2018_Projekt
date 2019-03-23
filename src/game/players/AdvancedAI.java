@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -26,17 +27,57 @@ public class AdvancedAI extends AI {
 	public AdvancedAI(String name, Color color) {
 		super(name, color);
 	}
- 
-	private Castle getCastleWithFewestTroops(List<Castle> castles) {
-        Castle fewestTroops = castles.get(0);
+	
+	private HashMap<Castle, Integer> getCastlesWithFewestTroops(List<Castle> castles) {
+		HashMap<Castle, Integer> fewestTroops1 = new HashMap<Castle,Integer>();
         for(Castle castle : castles) {
-            if(castle.getTroopCount() < fewestTroops.getTroopCount()) {
-                fewestTroops = castle;
-            }
+            fewestTroops1.put(castle, castle.getTroopCount());
         }
-
+        
+        HashMap<Castle, Integer> fewestTroops = fewestTroops1.entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,LinkedHashMap::new));  
+		   
         return fewestTroops;
     }
+	
+	private HashMap<Castle, Integer> getCastlesWithMostTroops(List<Castle> castles) {
+		HashMap<Castle, Integer> mostTroops = new HashMap<Castle,Integer>();
+		
+        mostTroops = getCastlesWithFewestTroops(castles).entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,LinkedHashMap::new));;
+                
+        return mostTroops;
+    }
+	
+	private HashMap<Castle, Integer> getKingdomeType(List<Castle> castles) {
+		HashMap<Castle,Integer> kingdomeType = new HashMap<Castle,Integer>();
+		for (Castle c : castles) {
+			kingdomeType.put(c, c.getKingdom().getType());
+		}
+		return kingdomeType;
+	}
+	
+	private HashMap<Player, Integer> getStrongPlayer(List<Castle> castleNearEnemy,Game game) {
+		HashMap<Player, Integer> strongPlayer = new HashMap<Player, Integer>();
+		for (Player p : game.getPlayers()) {
+			if (p != this) {
+				strongPlayer.put(p, p.getCastles(game).size());
+			}
+		}
+		
+		strongPlayer = strongPlayer.entrySet()
+		        .stream()
+		        .sorted(Map.Entry.comparingByValue())	
+		        .collect(
+		            Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2,
+		                LinkedHashMap::new));
+		
+		return strongPlayer;
+	}
 	
 	private List<Castle> priority(List<Castle> list) {
 		 int k0 = 0;
@@ -108,7 +149,7 @@ public class AdvancedAI extends AI {
 	/**
 	 * 
 	 * @param list Liste der Edges die eine Burg hat
-	 * @return counter Anzahl der Verbindungen die eine Burg zu einer anderen Burg hat,die zu einem andren Kingdom gehï¿½rt
+	 * @return counter Anzahl der Verbindungen die eine Burg zu einer anderen Burg hat,die zu einem andren Kingdom gehört
 	 */
 	private int getEdgeCounter(List<Edge<Castle>> list) {
 		
@@ -149,8 +190,8 @@ public class AdvancedAI extends AI {
 	/**
 	 * In der ersten Runde, sprich Auswahl der Burgen, wird eine Liste erstellt die bestimmte Burgen priorisiert
 	 * und absteigend in einer neuen Liste sotiert und ausgibt 
-	 * @param c Die Liste der Burgen die noch auswï¿½hlbar sind
-	 * @return List<Castle> Eine Liste aus Burgen die nach priotitï¿½t sotiert wird
+	 * @param c Die Liste der Burgen die noch auswählbar sind
+	 * @return List<Castle> Eine Liste aus Burgen die nach priotität sotiert wird
 	 */
 	
 	private List<Castle> verteilenListe(List<Castle> c,Game game) {
@@ -177,9 +218,9 @@ public class AdvancedAI extends AI {
 		    	}
 		     }
 		     
-			  if (!b) { // Wurden schon Burgen von anderen ausgewï¿½hlt ? Nein 
+			  if (!b) { // Wurden schon Burgen von anderen ausgewählt ? Nein 
 				
-			  if (this.getCastles(game).size() == 0) { // Hat man schon selbst Burgen ausgewï¿½hlt ? Nein
+			  if (this.getCastles(game).size() == 0) { // Hat man schon selbst Burgen ausgewählt ? Nein
 				  
 			   for(Castle r : c) {
 				
@@ -205,7 +246,7 @@ public class AdvancedAI extends AI {
 			 
 			   return prio;
 			   
-			   } else { // Hat man schon selbst Burgen ausgewï¿½hlt ? Ja  
+			   } else { // Hat man schon selbst Burgen ausgewählt ? Ja  
 				  
 				  for (Castle e : this.getCastles(game)) {
 						
@@ -292,9 +333,9 @@ public class AdvancedAI extends AI {
 			  }
 			//--------------------------------------------------------------------------------------//  
 			  
-			} else {  // Wurden schon Burgen von anderen ausgewï¿½hlt ? Ja
+			} else {  // Wurden schon Burgen von anderen ausgewählt ? Ja
 			  
-			  if (this.getCastles(game).size() == 0) {  // Hat man schon selbst Burgen ausgewï¿½hlt ? Nein
+			  if (this.getCastles(game).size() == 0) {  // Hat man schon selbst Burgen ausgewählt ? Nein
 				   
 				   for (Castle e : c) {
 						
@@ -374,7 +415,7 @@ public class AdvancedAI extends AI {
 				
 				return prio;
 			//------------------------------------------------------------------//	
-			} else { // Hat man schon selbst Burgen ausgewï¿½hlt ? Ja
+			} else { // Hat man schon selbst Burgen ausgewählt ? Ja
 				
 				for (Castle e : this.getCastles(game)) {
 					
@@ -426,7 +467,7 @@ public class AdvancedAI extends AI {
 					}
 				}
 				
-			    if (b1) { // Burgen aus seinem eigenen Kï¿½nigreichg sind ï¿½brig 
+			    if (b1) { // Burgen aus seinem eigenen Königreichg sind übrig 
 			    List<Castle> priotemp = new ArrayList<>(); 
 			    
 				for(Castle c2 : c) {
@@ -465,7 +506,7 @@ public class AdvancedAI extends AI {
 				
 				return priotemp;
 				
-			} else {    // Burgen aus seinem eigenen Kï¿½nigreichg sind nicht mehr ï¿½brig 
+			} else {    // Burgen aus seinem eigenen Königreichg sind nicht mehr übrig 
 				
                     for (Castle e : c) {
 					
@@ -553,7 +594,7 @@ public class AdvancedAI extends AI {
 	                game.chooseCastle(prioList.get(0), this);
 	                
 	           }
-	 //-----------------------------------------------------------------------------------------------//    
+	 //-----------------------------------------------------------------------------------------------// Verteilen
 		} else {
 			
 			// 1. Distribute remaining troops
@@ -569,24 +610,42 @@ public class AdvancedAI extends AI {
                     }
                 }
             }
-
             while(this.getRemainingTroops() > 0) {
-                Castle fewestTroops = getCastleWithFewestTroops(castleNearEnemy);
+            	//--------------------------------------// castleNearEnemy in verschiedene Prioritätslisten aufteilen
+            	
+            	   //-----------------------------------//Prioliste 1: mostTroops
+            	   HashMap<Castle,Integer> mostTroops = getCastlesWithMostTroops(castleNearEnemy);
+            	   
+            	   //-----------------------------------//Prioliste 2: fewestTroops
+            	   HashMap<Castle,Integer> fewestTroops = getCastlesWithFewestTroops(castleNearEnemy);
+            	   
+            	   
+            	   //-----------------------------------//Prioliste 3: kingdomeTypess
+            	   HashMap<Castle,Integer> sameKingdome = getKingdomeType(castleNearEnemy);
+            	   
+            	   //-----------------------------------//Prioliste 4: strongPlayer
+            	   HashMap<Player,Integer> strongPlayer = getStrongPlayer(castleNearEnemy,game); 
+            	   
+            	   //-----------------------------------//Priolist 5: strongPlayerKingdoms
+            	   
+            	   
+            	   //-----------------------------------//Priolist 6: ?
+            	   
+            	//--------------------------------------//Adding Troops
                 sleep(500);
-                game.addTroops(this, fewestTroops, 1);
+                game.addTroops(this, fewestTroops.keySet().stream().findFirst().get(), 1);
             }
-
+     //------------------------------------------------------------------------------------------------// Bewegen
             boolean attackWon;
-
             do {
                 // 2. Move troops from inside to border
                 for (Castle castle : this.getCastles(game)) {
                     if (!castleNearEnemy.contains(castle) && castle.getTroopCount() > 1) {
-                        Castle fewestTroops = getCastleWithFewestTroops(castleNearEnemy);
+                        Castle fewestTroops = getCastlesWithFewestTroops(castleNearEnemy).keySet().stream().findAny().get();
                         game.moveTroops(castle, fewestTroops, castle.getTroopCount() - 1);
                     }
                 }
-
+     //------------------------------------------------------------------------------------------------// Angreifen
                 // 3. attack!
                 attackWon = false;
                 for (Castle castle : castleNearEnemy) {
@@ -597,7 +656,7 @@ public class AdvancedAI extends AI {
                     for (Edge<Castle> edge : graph.getEdges(node)) {
                         Castle otherCastle = edge.getOtherNode(node).getValue();
                         if (otherCastle.getOwner() != this && castle.getTroopCount() >= otherCastle.getTroopCount()) {
-                            AttackThread attackThread = game.startAttack(castle, otherCastle, castle.getTroopCount() - 1);
+                            AttackThread attackThread = game.startAttack(castle, otherCastle, castle.getTroopCount());
                             if(fastForward)
                                 attackThread.fastForward();
 
