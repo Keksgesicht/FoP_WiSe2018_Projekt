@@ -25,6 +25,7 @@ public class World {
 		floor =  new Cuboid(10, 400, 600, 700, 1000, 50);
 		cuboids.add(floor);
 
+		cuboids.add(new Dice(250, 210, 800, 60));
 		cuboids.add(new Dice(150, 210, 800, 60));
 		cuboids.add(new Dice(50, 210, 800, 60));
 

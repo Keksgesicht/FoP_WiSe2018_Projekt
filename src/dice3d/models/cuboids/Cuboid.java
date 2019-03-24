@@ -196,18 +196,27 @@ public class Cuboid {
 		vert.position = vert.positionRealOld;
 		vert.positionOld = geometry.calcOutgoingVector(d, vert.positionRealOld, vTemp);
 		
-		Vector newV = new Vector(vert.positionOld);
-		newV.sub(vert.positionRealOld);
-		newV.scale(0.4);
-		// calc and set designated outgoing angle (position old)
-		vert.positionOld.sub(newV);
+//		Vector newV = new Vector(vert.positionOld);
+//		newV.sub(vert.positionRealOld);
+//		newV.scale(0.4);
+//		// calc and set designated outgoing angle (position old)
+//		vert.positionOld.sub(newV);
 	}
 	
 	public void updateCollision(Cuboid d) {
 		//vertex in other cuboid
 		for (Vertex vertex : vertices) {
-			if (d.isInside(vertex))
+			if (d.isInside(vertex)) {
 				Collision(vertex, d);
+
+				int slowCnt = 0;
+				for (Vertex vert : vertices) {
+					Vector forceVec = new Vector(vert.position);
+					forceVec.sub(vert.positionOld);
+					slowCnt += forceVec.getSize();
+				}
+				if (slowCnt < 0.5) collided = true;
+			}
 		}
 		//watch out, this may not be perfect, but hopefully good enough
 	}

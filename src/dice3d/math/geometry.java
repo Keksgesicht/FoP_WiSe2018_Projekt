@@ -29,7 +29,7 @@ public class geometry {
 				vInCpy.sub(vOutside);
 				dot.sub(vOutside);
 				dot.normalize();
-				dot.scale(vInCpy.getSize());
+				dot.scale(vInCpy.getSize() / 2);
 				vOutCpy.sub(dot);
 				return vOutCpy;
 			}
