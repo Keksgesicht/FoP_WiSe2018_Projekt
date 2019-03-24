@@ -109,6 +109,7 @@ public class Graph<T> {
     }
 
     /**
+     * @author Jan Braun
      * Diese Methode sucht eine Kante zwischen beiden angegebenen Knoten und gibt diese zurück
      * oder null, falls diese Kante nicht existiert
      * @param nodeA Der erste Knoten
@@ -116,10 +117,9 @@ public class Graph<T> {
      * @return Die Kante zwischen beiden Knoten oder null
      */
     public Edge<T> getEdge(Node<T> nodeA, Node<T> nodeB) {
-    	for(Edge<T> e : edges) {
-    		if(e.getNodeA().equals(nodeA) && e.getNodeB().equals(nodeB)) return e;
-    		if(e.getNodeA().equals(nodeB) && e.getNodeB().equals(nodeA)) return e;
-    	} return null;
+    	return edges.stream()
+    				.filter(e -> e.contains(nodeA) && e.getOtherNode(nodeA) == nodeB)
+    				.findFirst().orElse(null);
     }
 
     /**
@@ -130,9 +130,8 @@ public class Graph<T> {
      */
     public Node<T> getNode(T value) {
     	return nodes.stream()
-    				.filter(v -> v.getValue().equals(value))
-    				.findFirst()
-    				.orElse(null);
+    				.filter(n -> n.getValue().equals(value))
+    				.findFirst().orElse(null);
     }
     
     /**
