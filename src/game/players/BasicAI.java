@@ -12,6 +12,7 @@ import game.AI;
 import game.Game;
 import game.map.Castle;
 import gui.AttackThread;
+import gui.components.MapPanel;
 
 public class BasicAI extends AI {
 
@@ -69,7 +70,11 @@ public class BasicAI extends AI {
                 // 2. Move troops from inside to border
                 for (Castle castle : this.getCastles(game)) {
                     if (!castleNearEnemy.contains(castle) && castle.getTroopCount() > 1) {
-                        Castle fewestTroops = getCastleWithFewestTroops(castleNearEnemy);
+                    	Castle fewestTroops = null;
+                    	do {
+                    		castleNearEnemy.remove(fewestTroops);
+                    		fewestTroops = getCastleWithFewestTroops(castleNearEnemy);
+                    	} while(!game.isPath(castle, fewestTroops, MapPanel.Action.MOVING));
                         game.moveTroops(castle, fewestTroops, castle.getTroopCount() - 1);
                     }
                 }

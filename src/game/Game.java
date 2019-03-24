@@ -6,8 +6,10 @@ import game.map.Castle;
 import game.map.Kingdom;
 import game.map.GameMap;
 import game.map.MapSize;
+import game.map.PathFinding;
 import gui.AttackThread;
 import gui.Resources;
+import gui.components.MapPanel;
 
 public class Game {
 
@@ -156,6 +158,12 @@ public class Game {
     public void stopAttack() {
         this.attackThread = null;
         this.gameInterface.onAttackStopped();
+    }
+    
+    public boolean isPath(Castle start, Castle target, MapPanel.Action currentAction) {
+    	PathFinding pathFinding = new PathFinding(getMap().getGraph(), start, currentAction, currentPlayer);
+        pathFinding.run();
+        return pathFinding.getPath(target) != null;
     }
 
     public int[] roll(Player player, int dices, boolean fastForward) {
