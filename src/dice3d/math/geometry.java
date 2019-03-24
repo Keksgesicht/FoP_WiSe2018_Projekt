@@ -20,10 +20,10 @@ public class geometry {
 		planes.add(new plane(c.vertices.get(1).position, c.vertices.get(0).position, c.vertices.get(4).position));
 		line l = new line(vOutside, vInside);
 		for (plane p : planes) {
-			Vector intersection = l.intersects(p);
+			Vector intersection = l.intersects(p, false);
 			if (intersection != null) {
 				line dotLine = new line(vOutside, p.getNormalenvektor(), true);
-				Vector dot = dotLine.intersects(p);
+				Vector dot = dotLine.intersects(p, true);
 				intersection.sub(dot);
 				dot.sub(intersection);
 				vInCpy.sub(vOutside);

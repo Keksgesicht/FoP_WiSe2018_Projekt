@@ -13,8 +13,9 @@ public class plane {
 		Richtung1.sub(v1);
 		Richtung2.set(v3);
 		Richtung2.sub(v1);
-		Normalenvektor.set(v2);
-		Normalenvektor.crossmult(v3);
+		Normalenvektor.set(Richtung1);
+		Normalenvektor.crossmult(Richtung2);
+		Normalenvektor.normalize();
 	}
 
 	public Vector getStuetzVektor() {

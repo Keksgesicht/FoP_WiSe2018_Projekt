@@ -114,8 +114,7 @@ public class Cuboid {
 			}
 //			for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(c2);
 			updateCollision(w.floor);
-		}
-		
+		}	
 	}
 
 	public void reset() {
@@ -145,8 +144,8 @@ public class Cuboid {
 	}
 	
 	private boolean inBetween(double x, double b1, double b2) {
-		if (b1 < x && x < b2) return true;
-		if (b2 < x && x < b1) return true;
+		if (b1 <= x && x <= b2) return true;
+		if (b2 <= x && x <= b1) return true;
 		return false;
 	}
 	
@@ -189,9 +188,6 @@ public class Cuboid {
 	}
 	
 	private void Collision(Vertex vert, Cuboid d) {
-		Vector newA = new Vector(vert.position);
-		newA.sub(vert.positionOld);
-		newA.scale(weight);
 		Vector vTemp = new Vector(vert.positionReal);
 		vert.position = vert.positionRealOld;
 		vert.positionOld = geometry.calcOutgoingVector(d, vert.positionRealOld, vTemp);
@@ -210,13 +206,13 @@ public class Cuboid {
 				Collision(vertex, d);
 				
 				//bleib liegen
-				int slowCnt = 0;
-				for (Vertex vert : vertices) {
-					Vector forceVec = new Vector(vert.position);
-					forceVec.sub(vert.positionOld);
-					slowCnt += forceVec.getSize();
-				}
-				if (slowCnt < 0.5) collided = true;
+//				int slowCnt = 0;
+//				for (Vertex vert : vertices) {
+//					Vector forceVec = new Vector(vert.position);
+//					forceVec.sub(vert.positionOld);
+//					slowCnt += forceVec.getSize();
+//				}
+				//if (slowCnt < 0.1) collided = true;
 			}
 		}
 		//watch out, this may not be perfect, but hopefully good enough
