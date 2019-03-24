@@ -25,9 +25,9 @@ public class World {
 		floor =  new Cuboid(10, 400, 600, 700, 1000, 50);
 		cuboids.add(floor);
 
-		cuboids.add(new Dice(250, 210, 800, 60));
-		cuboids.add(new Dice(150, 210, 800, 60));
-		cuboids.add(new Dice(50, 210, 800, 60));
+		cuboids.add(new Dice(50, 310, 800, 60));
+//		cuboids.add(new Dice(150, 310, 800, 60));
+//		cuboids.add(new Dice(250, 310, 800, 60));
 
 		long delayInMS = 500;  // start updating after 500ms
 		long intervalInMS = 15; // update every 15ms
@@ -40,6 +40,8 @@ public class World {
 				for ( Cuboid c : cuboids ) {
 					if  (  c == floor ) continue;
 					if  ( !c.collided ) c.update(w);
+					MainWindow.out.write(" position=" + c.vertices.get(3).position.toString() + " velocity=" + c.vertices.get(3).a + " number_rolled=" + ((Dice)c).getNumberRolled() + "\n");
+					
 				}
 			}
 		}, delayInMS, intervalInMS);

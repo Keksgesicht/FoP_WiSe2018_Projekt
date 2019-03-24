@@ -1,6 +1,7 @@
 package dice3d.models.cuboids;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.util.ArrayList;
 
 import dice3d.main.World;
@@ -15,8 +16,6 @@ public class Cuboid {
 	public ArrayList<Edge> edges = new ArrayList<Edge>();
 
 	public boolean collided = false;
-	
-	private double weight = 0.5;
 
 	public Cuboid(double x, double y, double z, int length, int width, int height) {
 		
@@ -130,13 +129,30 @@ public class Cuboid {
 		if(collided) {
 			g.setColor(Color.RED);
 		}
-		 for(Edge e: edges) {
-			 e.draw(g);
-		 }
-		 g.setColor(Color.BLACK);
-		 for (Vertex point : vertices) {
-			 point.draw(g);
-		 }
+		for(Edge e: edges) {
+			e.draw(g);
+		}
+		g.setColor(Color.BLACK);
+		for (Vertex point : vertices) {
+			point.draw(g);
+		}
+		 
+		Polygon polygon = new Polygon();
+		double vx = World.projectionDistance * vertices.get(1).position.x / vertices.get(1).position.z;
+		double vy = World.projectionDistance * vertices.get(1).position.y / vertices.get(1).position.z;
+		polygon.addPoint((int) vx, (int) vy);
+		vx = World.projectionDistance * vertices.get(0).position.x / vertices.get(0).position.z;
+		vy = World.projectionDistance * vertices.get(0).position.y / vertices.get(0).position.z;
+		polygon.addPoint((int) vx, (int) vy);
+		vx = World.projectionDistance * vertices.get(4).position.x / vertices.get(4).position.z;
+		vy = World.projectionDistance * vertices.get(4).position.y / vertices.get(4).position.z;
+		polygon.addPoint((int) vx, (int) vy);
+		vx = World.projectionDistance * vertices.get(5).position.x / vertices.get(5).position.z;
+		vy = World.projectionDistance * vertices.get(5).position.y / vertices.get(5).position.z;
+		polygon.addPoint((int) vx, (int) vy);
+		g.setColor(Color.WHITE);
+		g.fill(polygon);
+		g.draw(polygon);
 	}
 
 	public boolean notMoving() {
@@ -190,13 +206,32 @@ public class Cuboid {
 	private void Collision(Vertex vert, Cuboid d) {
 		Vector vTemp = new Vector(vert.positionReal);
 		vert.position = vert.positionRealOld;
-		vert.positionOld = geometry.calcOutgoingVector(d, vert.positionRealOld, vTemp);
+		
+		//vert.positionOld = geometry.calcOutgoingVector(d, vert.position, vTemp);
+//		Vector aCpy = new Vector(vert.a);
+//		Vector vTmp = new Vector(vert.positionRealOld); 
+//		aCpy.scale(0.8);
+//		vTmp.sub(aCpy);
+//		
+//		vert.positionOld = new Vector(
+//			vTmp.x,
+//			vert.positionReal.y + 4,
+//			vTmp.z
+//		);
 		
 //		Vector newV = new Vector(vert.positionOld);
 //		newV.sub(vert.positionRealOld);
 //		newV.scale(0.4);
 //		// calc and set designated outgoing angle (position old)
 //		vert.positionOld.sub(newV);
+		
+        vert.a.set(vert.position);
+        vert.a.sub(vert.positionOld);
+        vert.a.scale(.5);
+        
+        vert.positionOld.y = vert.position.y + (int) (vert.a.y * 2.8);
+        vert.positionOld.x += (vert.position.x - vert.positionOld.x) * .5;
+        vert.positionOld.z += (vert.position.z - vert.positionOld.z) * .5;
 	}
 	
 	public void updateCollision(Cuboid d) {
@@ -206,12 +241,12 @@ public class Cuboid {
 				Collision(vertex, d);
 				
 				//bleib liegen
-//				int slowCnt = 0;
-//				for (Vertex vert : vertices) {
-//					Vector forceVec = new Vector(vert.position);
-//					forceVec.sub(vert.positionOld);
-//					slowCnt += forceVec.getSize();
-//				}
+				int slowCnt = 0;
+				for (Vertex vert : vertices) {
+					Vector forceVec = new Vector(vert.position);
+					forceVec.sub(vert.positionOld);
+					slowCnt += forceVec.getSize();
+				}
 				//if (slowCnt < 0.1) collided = true;
 			}
 		}

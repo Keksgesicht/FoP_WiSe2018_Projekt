@@ -29,6 +29,7 @@ public class Vertex {
 		positionReal.set(positionReset);
 		positionOld.set(positionReset);
 		positionRealOld.set(positionReset);
+		a = new Vector();
 	}
 
 	public void update(World w) {
