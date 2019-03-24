@@ -18,7 +18,7 @@ public class World {
 
 	public World() {
 		World w = this;
-		gravity = new Vector(0, .09, 0);
+		gravity = new Vector(0, .13, 0);
 		
 		cuboids = new ArrayList<Cuboid>();
 		
@@ -30,6 +30,8 @@ public class World {
 
 		long delayInMS = 500;  // start updating after 500ms
 		long intervalInMS = 15; // update every 15ms
+		
+		for(Cuboid c : cuboids) c.reset();
 
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override

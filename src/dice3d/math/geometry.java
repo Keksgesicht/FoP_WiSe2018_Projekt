@@ -9,7 +9,9 @@ public class geometry {
 	
 	public static Vector calcOutgoingVector(Cuboid c, Vector vOutside, Vector vInside) {
 		//get All faces
-		List<plane> planes = new ArrayList<plane>(); 
+		List<plane> planes = new ArrayList<plane>();
+		Vector vOutCpy = new Vector(vOutside);
+		Vector vInCpy  = new Vector(vInside);
 		planes.add(new plane(c.vertices.get(0).position, c.vertices.get(1).position, c.vertices.get(2).position));
 		planes.add(new plane(c.vertices.get(1).position, c.vertices.get(5).position, c.vertices.get(6).position));
 		planes.add(new plane(c.vertices.get(5).position, c.vertices.get(4).position, c.vertices.get(7).position));
@@ -24,11 +26,12 @@ public class geometry {
 				Vector dot = dotLine.intersects(p);
 				intersection.sub(dot);
 				dot.sub(intersection);
-				vInside.sub(vOutside);
+				vInCpy.sub(vOutside);
 				dot.sub(vOutside);
 				dot.normalize();
-				dot.scale(vInside.getSize());
-				return dot;
+				dot.scale(vInCpy.getSize());
+				vOutCpy.sub(dot);
+				return vOutCpy;
 			}
 		}
 		return vInside;

@@ -112,7 +112,8 @@ public class Cuboid {
 			for (Edge e : edges) {
 				e.update(w);
 			}
-			for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(c2);
+//			for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(c2);
+			updateCollision(w.floor);
 		}
 		
 	}
@@ -191,13 +192,13 @@ public class Cuboid {
 		Vector newA = new Vector(vert.position);
 		newA.sub(vert.positionOld);
 		newA.scale(weight);
-		Vector vTemp = new Vector(vert.position);
-		vert.position = vert.positionOld;
-		vert.positionOld = geometry.calcOutgoingVector(d, vert.position, vTemp);
+		Vector vTemp = new Vector(vert.positionReal);
+		vert.position = vert.positionRealOld;
+		vert.positionOld = geometry.calcOutgoingVector(d, vert.positionRealOld, vTemp);
 		
-		Vector newV = new Vector(vert.position);
-		newV.sub(vert.positionOld);
-		newV.scale(0.8);
+		Vector newV = new Vector(vert.positionOld);
+		newV.sub(vert.positionRealOld);
+		newV.scale(0.4);
 		// calc and set designated outgoing angle (position old)
 		vert.positionOld.sub(newV);
 	}
