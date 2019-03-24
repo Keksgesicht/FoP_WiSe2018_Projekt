@@ -1,0 +1,36 @@
+package dice3d.math;
+
+public class plane {
+	
+	private Vector stuetzvektor = new Vector(); 
+	private Vector Richtung1 = new Vector();
+	private Vector Richtung2 = new Vector();
+	private Vector Normalenvektor = new Vector();
+	
+	public plane(Vector v1, Vector v2, Vector v3) {		
+		stuetzvektor.set(v1);
+		Richtung1.set(v2);
+		Richtung1.sub(v1);
+		Richtung2.set(v3);
+		Richtung2.sub(v1);
+		Normalenvektor.set(v2);
+		Normalenvektor.crossmult(v3);
+	}
+
+	public Vector getStuetzVektor() {
+		return stuetzvektor;
+	}
+	
+	public Vector getRichtungsVektor1() {
+		return Richtung1;
+	}
+	
+	public Vector getRichtungsVektor2() {
+		return Richtung2;
+	}
+	
+	public Vector getNormalenvektor() {
+		return Normalenvektor;
+	}
+	
+}

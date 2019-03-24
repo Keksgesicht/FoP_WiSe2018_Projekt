@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import dice3d.main.World;
 import dice3d.math.Vector;
+import dice3d.math.geometry;
 import dice3d.models.Edge;
 import dice3d.models.Vertex;
 
@@ -186,26 +187,26 @@ public class Cuboid {
 		return true;
 	}
 	
-	private void Collision(Vertex vert) {
+	private void Collision(Vertex vert, Cuboid d) {
 		Vector newA = new Vector(vert.position);
 		newA.sub(vert.positionOld);
 		newA.scale(weight);
 		Vector vTemp = new Vector(vert.position);
 		vert.position = vert.positionOld;
-		vert.positionOld = vTemp;
+		vert.positionOld = geometry.calcOutgoingVector(d, vert.position, vTemp);
+		
 		Vector newV = new Vector(vert.position);
 		newV.sub(vert.positionOld);
 		newV.scale(0.8);
 		// calc and set designated outgoing angle (position old)
 		vert.positionOld.sub(newV);
-		System.out.println("reverte!");
 	}
 	
 	public void updateCollision(Cuboid d) {
 		//vertex in other cuboid
 		for (Vertex vertex : vertices) {
 			if (d.isInside(vertex))
-				Collision(vertex);
+				Collision(vertex, d);
 		}
 		//watch out, this may not be perfect, but hopefully good enough
 	}
