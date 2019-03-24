@@ -9,7 +9,7 @@ import game.map.MapSize;
 import game.map.PathFinding;
 import gui.AttackThread;
 import gui.Resources;
-import gui.components.MapPanel;
+import gui.components.MapPanel.Action;;
 
 public class Game {
 
@@ -160,7 +160,7 @@ public class Game {
         this.gameInterface.onAttackStopped();
     }
     
-    public boolean isPath(Castle start, Castle target, MapPanel.Action currentAction) {
+    public boolean isPath(Castle start, Castle target, Action currentAction) {
     	PathFinding pathFinding = new PathFinding(getMap().getGraph(), start, currentAction, currentPlayer);
         pathFinding.run();
         return pathFinding.getPath(target) != null;
