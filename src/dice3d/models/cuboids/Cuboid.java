@@ -208,7 +208,8 @@ public class Cuboid {
 		for (Vertex vertex : vertices) {
 			if (d.isInside(vertex)) {
 				Collision(vertex, d);
-
+				
+				//bleib liegen
 				int slowCnt = 0;
 				for (Vertex vert : vertices) {
 					Vector forceVec = new Vector(vert.position);
