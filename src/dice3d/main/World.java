@@ -15,8 +15,6 @@ public class World {
 
 	public ArrayList<Cuboid> cuboids;
 	public Cuboid floor;
-	
-	int val[] = new int[6];
 
 	public World() {
 		World w = this;
@@ -44,12 +42,8 @@ public class World {
 					if (  c == floor  ) continue;
 					if (!c.notMoving()) c.update(w);
 					else {
-						val[((Dice) c).getNumberRolled()-1]++;
-						c.reset();
-						System.out.println("1: " + val[0]+ " , 2: " + val[1]+ " , 3: " + val[2]+ " , 4: " + val[3]+ " , 5: " + val[4]+ " , 6: " + val[5]);
+						//c.reset();
 					}
-					MainWindow.out.write(" position=" + c.vertices.get(3).position.toString() + " velocity=" + c.vertices.get(3).a + " number_rolled=" + ((Dice)c).getNumberRolled() + "\n");
-					
 				}
 			}
 		}, delayInMS, intervalInMS);

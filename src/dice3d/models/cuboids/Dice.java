@@ -151,8 +151,8 @@ public class Dice extends Cube {
 		}
 	}
 
-	private void drawDice(Graphics2D g) {
-        for (int f = 0; f < 6; f++) {
+	public void drawShadow(Graphics2D g) {
+		 for (int f = 0; f < 6; f++) {
         	Polygon polygon = new Polygon();
             polygon.reset();
             for (int v = 0; v < 4; v++) {
@@ -164,6 +164,9 @@ public class Dice extends Cube {
             g.setColor(Color.DARK_GRAY);
             g.fill(polygon);
         }
+	}
+	
+	private void drawDice(Graphics2D g) {
 		for (int f = 0; f < 6; f++) {
 			Polygon polygon = new Polygon();
 			for (int v = 0; v < 4; v++) {

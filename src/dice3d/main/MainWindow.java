@@ -3,10 +3,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,7 +15,6 @@ import dice3d.models.cuboids.Dice;
 @SuppressWarnings("serial")
 public class MainWindow extends JPanel {
 	World w = new World();
-	static PrintWriter out;
 
 	public MainWindow() {
 		addKeyListener(new KeyHandler());
@@ -32,9 +27,8 @@ public class MainWindow extends JPanel {
 	}
 	
 	public void draw(Graphics2D g) {
-		for(Cuboid c : w.cuboids) {
-			c.draw(g);
-		}
+		for(Cuboid c : w.cuboids) if (c != w.floor) ((Dice) c).drawShadow(g);
+		for(Cuboid c : w.cuboids) c.draw(g);
 		int yOffset = 0;
 		g.drawString("Press space key to roll again", 10, yOffset =+ 20);
 		
@@ -66,9 +60,6 @@ public class MainWindow extends JPanel {
 	}
 
 	public static void main(String[] args) {
-		try {
-			out = new PrintWriter(new BufferedWriter(new FileWriter("debug.txt")));
-		} catch (IOException e) {}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -83,14 +74,6 @@ public class MainWindow extends JPanel {
 				frame.setVisible(true);
 				view.requestFocus();
 			}
-		});
-		Runtime.getRuntime().addShutdownHook(new Thread()
-		{
-		    @Override
-		    public void run()
-		    {
-		        out.close();
-		    }
 		});
 	}
 }
