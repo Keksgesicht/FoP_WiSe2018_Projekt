@@ -32,6 +32,13 @@ public class Dice extends Cube {
 	BufferedImage imgs[] = new BufferedImage[6];
 	private int randomisation = 0;
 
+	/**
+	 * make a new dice a position x, y, z with the size and set all internal values accordingly
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param size
+	 */
 	public Dice(double x, double y, double z, int size) {
 		super(x,y,z, size);
 		
@@ -79,17 +86,17 @@ public class Dice extends Cube {
 		face[2][3] = vertices.get(5);
 	}
 
-	public void randomise() {
-		int newRan = (int)(Math.random()*23);
-		randomisation += newRan;
-	}
-
+	/**
+	 * draw the dice
+	 */
 	public void draw(Graphics2D g) {
 		drawDice(g);
 	}
 
+	/**
+	 * reset the dice and roll it again
+	 */
 	public void reset() {
-		randomise();
 		for (Vertex v : vertices) {
 			v.reset();
 			Vector random = new Vector(Math.random()*5, -Math.random()*15 -7.5, Math.random()*5);
@@ -97,12 +104,17 @@ public class Dice extends Cube {
 		}
 	}
 	
+	/**
+	 * update the dice's position
+	 * best called every tick
+	 * also update the face being upside accessible via getNumberRolled()
+	 */
 	public void update(World w) {
 		for (Vertex v : vertices) v.update(w);
 		for (int i = 0; i < 5; i++) {
 			for (Edge e : edges) e.update(w);
 //			for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(c2);
-			updateCollision(w.floor);
+			updateCollision(w, w.floor);
 		}
 		double lowestHeight = 3210;
 		int lowestFace = 0;
@@ -127,6 +139,12 @@ public class Dice extends Cube {
 		return NumberRolled;
 	}
 	
+	/**
+	 * draw the given image img on a given face f displayed in the Graphics2D element g  
+	 * @param g
+	 * @param img
+	 * @param f
+	 */
 	private void drawFace(Graphics2D g, BufferedImage img, Vertex[] f) {
 		Plane p = new Plane(f[0].position, f[1].position, f[3].position);
 		for (double x = 0; x < img.getWidth(); x++) {
@@ -151,6 +169,10 @@ public class Dice extends Cube {
 		}
 	}
 
+	/**
+	 * draw the shadow of the dice on the hardcoded height of 400
+	 * @param g
+	 */
 	public void drawShadow(Graphics2D g) {
 		 for (int f = 0; f < 6; f++) {
         	Polygon polygon = new Polygon();
@@ -166,6 +188,12 @@ public class Dice extends Cube {
         }
 	}
 	
+	/**
+	 * draw the dice
+	 * if possible with textures
+	 * if not just write numbers on each visible face
+	 * @param g
+	 */
 	private void drawDice(Graphics2D g) {
 		for (int f = 0; f < 6; f++) {
 			Polygon polygon = new Polygon();

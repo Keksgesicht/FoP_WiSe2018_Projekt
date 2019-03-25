@@ -19,6 +19,11 @@ public class Edge {
 		designatedLength = length.getSize();
 	}
 
+	/**
+	 * fix the length of an edge to be keep it's size
+	 * just push both sides out/in the needed amount
+	 * @param w
+	 */
 	public void update(World w) {
 		Vector vTmp = new Vector();
 		vTmp.set(b.position);

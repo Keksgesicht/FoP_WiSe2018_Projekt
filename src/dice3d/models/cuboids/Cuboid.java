@@ -1,5 +1,4 @@
 package dice3d.models.cuboids;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
@@ -99,26 +98,45 @@ public class Cuboid {
 
 	}
 
+	/**
+	 * update the position with good looking physics
+	 * call me every tick
+	 * @param w
+	 * World to see, so I can feel when toushing someone
+	 */
 	public void update(World w) {
 		for (Vertex v : vertices) v.update(w);
 		for (int i = 0; i < 5; i++) {
 			for (Edge e : edges) e.update(w);
 //			for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(c2);
-			updateCollision(w.floor);
+			updateCollision(w, w.floor);
 		}
 	}
 
+	/**
+	 * reset all points
+	 */
 	public void reset() {
 		for (Vertex v : vertices) v.reset();
 	}
 
+	/**
+	 * draw the Cuboid
+	 * (we don't actually do anything, as we don't want to see the ground!)
+	 * @param g
+	 */
 	public void draw(Graphics2D g) {
-		g.setColor(Color.GREEN);
+		//g.setColor(Color.GREEN);
 		//for (Edge e: edges) e.draw(g);
-		g.setColor(Color.BLACK);
+		//g.setColor(Color.BLACK);
 		//for (Vertex point : vertices) point.draw(g);
 	}
 
+	/**
+	 * decide whether the element is (still) moving based on the
+	 * sum of the last absolute position change of each vertex
+	 * @return
+	 */
 	public boolean notMoving() {
 		double change = 0;
 		for (Vertex v : vertices) {
@@ -130,12 +148,27 @@ public class Cuboid {
 		return false;
 	}
 	
+	/**
+	 * @param x
+	 * @param b1
+	 * @param b2
+	 * @return
+	 * whether the value x is in between the border b1 and the border b2
+	 */
 	private boolean inBetween(double x, double b1, double b2) {
 		if (b1 <= x && x <= b2) return true;
 		if (b2 <= x && x <= b1) return true;
 		return false;
 	}
 	
+	/**
+	 * calculate whether a given point is in between all the points of
+	 * the current instance
+	 * @param vertex
+	 * @return
+	 * true when the vertex lays inside
+	 * false when not
+	 */
 	public boolean isInside(Vertex vertex) {
 		Vector p1 = null, p2 = null, p4 = null, p5 = null;
 		for (Vertex vert : vertices) {
@@ -158,22 +191,37 @@ public class Cuboid {
 		return true;
 	}
 	
-	private void Collision(Vertex vert, Cuboid d) {
-		double f = .4;
-		vert.a.set(vert.position);
-		vert.a.sub(vert.positionOld);
-		vert.a.scale(f);
-        vert.position.y = 400;
-        vert.positionOld.y = vert.position.y + (int) (vert.a.y * 3);
-        vert.positionOld.x += (vert.position.x - vert.positionOld.x) * f;
-        vert.positionOld.z += (vert.position.z - vert.positionOld.z) * f;
+	/**
+	 * check whether the object the vertex collided with is the ground and if so
+	 * set new position, movement (and the last position) to get a realistic movement
+	 * @param vert collided vertex
+	 * @param d Cuboid it collided with
+	 * @param w world it collided in
+	 */
+	private void Collision(Vertex vert, Cuboid d, World w) {
+		if (d == w.floor) {
+			double f = .4;
+			vert.a.set(vert.position);
+			vert.a.sub(vert.positionOld);
+			vert.a.scale(f);
+	        vert.position.y = 400;
+	        vert.positionOld.y = vert.position.y + (int) (vert.a.y * 3);
+	        vert.positionOld.x += (vert.position.x - vert.positionOld.x) * f;
+	        vert.positionOld.z += (vert.position.z - vert.positionOld.z) * f;
+        }
 	}
 	
-	public void updateCollision(Cuboid d) {
+	/**
+	 * check all vertices for collisions with the given cuboid
+	 * and triggers the Collision() function to maintain a nice movement
+	 * @param w world it collided in
+	 * @param d Cuboid to check for collision with
+	 */
+	public void updateCollision(World w, Cuboid d) {
 		//vertex in other cuboid
 		for (Vertex vertex : vertices) {
 			if (d.isInside(vertex)) {
-				Collision(vertex, d);
+				Collision(vertex, d, w);
 			}
 		}
 	}

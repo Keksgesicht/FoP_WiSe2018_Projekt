@@ -62,6 +62,10 @@ public class Vector {
         return Math.sqrt(x * x + y * y + z * z);
     }
     
+    /**
+     * crossmultiplicate the instance with the given vector and save the result in this instance
+     * @param v
+     */
     public void crossmult(Vector v) {
     	double xTemp = this.x;
     	double yTemp = this.y;
@@ -71,6 +75,11 @@ public class Vector {
     	this.z = xTemp * v.y - yTemp * v.x;
     }
     
+    /**
+     * calculate the scalar with the given vector v and return it
+     * @param v
+     * @return
+     */
     public double dotmult(Vector v) {
     	double result = x * v.x + y * v.y + z * v.z;
     	return result;
