@@ -22,12 +22,21 @@ public class Vertex {
 		a = new Vector();
 	}
 
+	/**
+	 * reset everything to the original position and
+	 * make the movement vector unequal to 0 so it's technically moving
+	 * and not falsely determined as not moving
+	 */
 	public void reset() {
 		position.set(positionReset);
 		positionOld.set(positionReset);
 		a = new Vector(1, 1, 1);
 	}
 
+	/**
+	 * keep the movement as before but add gravity
+	 * @param w
+	 */
 	public void update(World w) {
 		a.set(position);
         a.sub(positionOld);
