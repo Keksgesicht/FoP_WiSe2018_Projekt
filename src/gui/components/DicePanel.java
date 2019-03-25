@@ -17,7 +17,7 @@ public class DicePanel extends JPanel {
     public DicePanel(Resources resources) {
         this.diceValues = new int[3];
         this.resources = resources;
-        this.random = new Random();
+        this.random = new Random(System.currentTimeMillis());
         this.generateRandom(3);
     }
 
