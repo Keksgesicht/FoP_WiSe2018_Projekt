@@ -47,7 +47,7 @@ public class PathFinding extends GraphAlgorithm<Castle> {
                 return true;
 
             // Else both regions should belong to the current player
-            return castleA.getOwner() == castleB.getOwner() && castleA.getOwner() == currentPlayer;
+            return castleA.getOwner() == castleB.getOwner(); // line 38
         } else {
             return false;
         }

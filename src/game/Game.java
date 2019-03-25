@@ -9,7 +9,7 @@ import game.map.MapSize;
 import game.map.PathFinding;
 import gui.AttackThread;
 import gui.Resources;
-import gui.components.MapPanel.Action;;
+import gui.components.MapPanel.Action;
 
 public class Game {
 

@@ -105,7 +105,7 @@ public class Graph<T> {
     public List<Node<T>> getNodes(Node<T> node) {
     	return getEdges(node).stream()
     						 .map(e -> e.getOtherNode(node))
-    						 .collect(Collectors.toList());    				 
+    						 .collect(Collectors.toList());
     }
 
     /**

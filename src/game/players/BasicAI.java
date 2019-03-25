@@ -12,7 +12,6 @@ import game.AI;
 import game.Game;
 import game.map.Castle;
 import gui.AttackThread;
-import gui.components.MapPanel.Action;;
 
 public class BasicAI extends AI {
 
@@ -20,7 +19,7 @@ public class BasicAI extends AI {
         super(name, color);
     }
 
-    private Castle getCastleWithFewestTroops(List<Castle> castles) {
+    Castle getCastleWithFewestTroops(List<Castle> castles) {
         Castle fewestTroops = castles.get(0);
         for(Castle castle : castles) {
             if(castle.getTroopCount() < fewestTroops.getTroopCount()) {
@@ -68,15 +67,9 @@ public class BasicAI extends AI {
 
             do {
                 // 2. Move troops from inside to border
-                castleloop: for (Castle castle : this.getCastles(game)) {
+                for (Castle castle : this.getCastles(game)) {
                     if (!castleNearEnemy.contains(castle) && castle.getTroopCount() > 1) {
-                    	Castle fewestTroops = null;
-                    	do { // avoid teleporting
-                    		if(castleNearEnemy.isEmpty())
-                    			continue castleloop;
-                    		fewestTroops = getCastleWithFewestTroops(castleNearEnemy);
-                    		castleNearEnemy.remove(fewestTroops);
-                    	} while(!game.isPath(castle, fewestTroops, Action.MOVING));
+                        Castle fewestTroops = getCastleWithFewestTroops(castleNearEnemy);
                         game.moveTroops(castle, fewestTroops, castle.getTroopCount() - 1);
                     }
                 }
