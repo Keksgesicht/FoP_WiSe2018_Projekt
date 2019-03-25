@@ -1,12 +1,10 @@
 package dice3d.models.cuboids;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.util.ArrayList;
 
 import dice3d.main.World;
 import dice3d.math.Vector;
-import dice3d.math.geometry;
 import dice3d.models.Edge;
 import dice3d.models.Vertex;
 
@@ -14,8 +12,6 @@ public class Cuboid {
 
 	public ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 	public ArrayList<Edge> edges = new ArrayList<Edge>();
-
-	public boolean collided = false;
 
 	public Cuboid(double x, double y, double z, int length, int width, int height) {
 		
@@ -104,59 +100,34 @@ public class Cuboid {
 	}
 
 	public void update(World w) {
-		for (Vertex v : vertices) {
-			v.update(w);
-		}
+		for (Vertex v : vertices) v.update(w);
 		for (int i = 0; i < 5; i++) {
-			for (Edge e : edges) {
-				e.update(w);
-			}
+			for (Edge e : edges) e.update(w);
 //			for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(c2);
 			updateCollision(w.floor);
-		}	
+		}
 	}
 
 	public void reset() {
-		for (Vertex v : vertices) {
-			v.reset();
-		}
-		collided = false;
+		for (Vertex v : vertices) v.reset();
 	}
 
 	public void draw(Graphics2D g) {
-		// draw all edges, even inner ones
 		g.setColor(Color.GREEN);
-		if(collided) {
-			g.setColor(Color.RED);
-		}
-		for(Edge e: edges) {
-			e.draw(g);
-		}
+		//for (Edge e: edges) e.draw(g);
 		g.setColor(Color.BLACK);
-		for (Vertex point : vertices) {
-			point.draw(g);
-		}
-		 
-		Polygon polygon = new Polygon();
-		double vx = World.projectionDistance * vertices.get(1).position.x / vertices.get(1).position.z;
-		double vy = World.projectionDistance * vertices.get(1).position.y / vertices.get(1).position.z;
-		polygon.addPoint((int) vx, (int) vy);
-		vx = World.projectionDistance * vertices.get(0).position.x / vertices.get(0).position.z;
-		vy = World.projectionDistance * vertices.get(0).position.y / vertices.get(0).position.z;
-		polygon.addPoint((int) vx, (int) vy);
-		vx = World.projectionDistance * vertices.get(4).position.x / vertices.get(4).position.z;
-		vy = World.projectionDistance * vertices.get(4).position.y / vertices.get(4).position.z;
-		polygon.addPoint((int) vx, (int) vy);
-		vx = World.projectionDistance * vertices.get(5).position.x / vertices.get(5).position.z;
-		vy = World.projectionDistance * vertices.get(5).position.y / vertices.get(5).position.z;
-		polygon.addPoint((int) vx, (int) vy);
-		g.setColor(Color.WHITE);
-		g.fill(polygon);
-		g.draw(polygon);
+		//for (Vertex point : vertices) point.draw(g);
 	}
 
 	public boolean notMoving() {
-		return collided;
+		double change = 0;
+		for (Vertex v : vertices) {
+			change += Math.abs(v.a.x);
+			change += Math.abs(v.a.y);
+			change += Math.abs(v.a.z);
+		}
+		if (change < 0.4) return true;
+		return false;
 	}
 	
 	private boolean inBetween(double x, double b1, double b2) {
@@ -170,33 +141,17 @@ public class Cuboid {
 		for (Vertex vert : vertices) {
 			switch (vert.id) {
 			case "A":
-				p1 = vert.position;
-				break;
+				p1 = vert.position; break;
 			case "B":
-				p2 = vert.position;
-				break;
+				p2 = vert.position; break;
 			case "D":
-				p4 = vert.position;
-				break;
+				p4 = vert.position; break;
 			case "E":
-				p5 = vert.position;
-				break;
+				p5 = vert.position; break;
 		}}
-		Vector u = new Vector(p1);
-		u.sub(p4);
-		Vector u2 = new Vector(p1);
-		u2.sub(p5);
-		u.crossmult(u2);
-		Vector v = new Vector(p1);
-		v.sub(p2);
-		Vector v2 = new Vector(p1);
-		v2.sub(p5);
-		v.crossmult(v2);
-		Vector w = new Vector(p1);
-		w.sub(p2);
-		Vector w2 = new Vector(p1);
-		w2.sub(p4);
-		w.crossmult(w2);
+		Vector u = new Vector(p1); u.sub(p4); Vector u2 = new Vector(p1); u2.sub(p5); u.crossmult(u2);
+		Vector v = new Vector(p1); v.sub(p2); Vector v2 = new Vector(p1); v2.sub(p5); v.crossmult(v2);
+		Vector w = new Vector(p1); w.sub(p2); Vector w2 = new Vector(p1); w2.sub(p4); w.crossmult(w2);
 		if ( !inBetween(u.dotmult(vertex.position), u.dotmult(p1), u.dotmult(p2))) return false;
 		if ( !inBetween(v.dotmult(vertex.position), v.dotmult(p1), v.dotmult(p4))) return false;
 		if ( !inBetween(w.dotmult(vertex.position), w.dotmult(p1), w.dotmult(p5))) return false;
@@ -204,34 +159,14 @@ public class Cuboid {
 	}
 	
 	private void Collision(Vertex vert, Cuboid d) {
-		Vector vTemp = new Vector(vert.positionReal);
-		vert.position = vert.positionRealOld;
-		
-		//vert.positionOld = geometry.calcOutgoingVector(d, vert.position, vTemp);
-//		Vector aCpy = new Vector(vert.a);
-//		Vector vTmp = new Vector(vert.positionRealOld); 
-//		aCpy.scale(0.8);
-//		vTmp.sub(aCpy);
-//		
-//		vert.positionOld = new Vector(
-//			vTmp.x,
-//			vert.positionReal.y + 4,
-//			vTmp.z
-//		);
-		
-//		Vector newV = new Vector(vert.positionOld);
-//		newV.sub(vert.positionRealOld);
-//		newV.scale(0.4);
-//		// calc and set designated outgoing angle (position old)
-//		vert.positionOld.sub(newV);
-		
-        vert.a.set(vert.position);
-        vert.a.sub(vert.positionOld);
-        vert.a.scale(.5);
-        
-        vert.positionOld.y = vert.position.y + (int) (vert.a.y * 2.8);
-        vert.positionOld.x += (vert.position.x - vert.positionOld.x) * .5;
-        vert.positionOld.z += (vert.position.z - vert.positionOld.z) * .5;
+		double f = .4;
+		vert.a.set(vert.position);
+		vert.a.sub(vert.positionOld);
+		vert.a.scale(f);
+        vert.position.y = 400;
+        vert.positionOld.y = vert.position.y + (int) (vert.a.y * 3);
+        vert.positionOld.x += (vert.position.x - vert.positionOld.x) * f;
+        vert.positionOld.z += (vert.position.z - vert.positionOld.z) * f;
 	}
 	
 	public void updateCollision(Cuboid d) {
@@ -239,17 +174,7 @@ public class Cuboid {
 		for (Vertex vertex : vertices) {
 			if (d.isInside(vertex)) {
 				Collision(vertex, d);
-				
-				//bleib liegen
-				int slowCnt = 0;
-				for (Vertex vert : vertices) {
-					Vector forceVec = new Vector(vert.position);
-					forceVec.sub(vert.positionOld);
-					slowCnt += forceVec.getSize();
-				}
-				//if (slowCnt < 0.1) collided = true;
 			}
 		}
-		//watch out, this may not be perfect, but hopefully good enough
 	}
 }

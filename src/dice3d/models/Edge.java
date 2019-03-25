@@ -22,13 +22,13 @@ public class Edge {
 	public void update(World w) {
 		Vector vTmp = new Vector();
 		vTmp.set(b.position);
-		vTmp.sub(a.position);
-		double currentSize = vTmp.getSize();
-		double dif = (currentSize - designatedLength) * 0.5;
-		vTmp.normalize();
-		vTmp.scale(dif);
-		a.position.add(vTmp);
-		b.position.sub(vTmp);
+        vTmp.sub(a.position);
+        double currentSize = vTmp.getSize();
+        double dif = (currentSize - designatedLength) * 0.5;
+        vTmp.normalize();
+        vTmp.scale(dif);
+        a.position.add(vTmp);
+        b.position.sub(vTmp);
 	}
 
 	public void draw(Graphics2D g) {

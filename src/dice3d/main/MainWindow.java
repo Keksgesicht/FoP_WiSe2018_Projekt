@@ -42,7 +42,7 @@ public class MainWindow extends JPanel {
 			Cuboid c = w.cuboids.get(i);
 			if(c instanceof Dice) {
 				Dice d = (Dice) c;
-				g.drawString("dice[" + i + "]: moving=" + !d.notMoving() + " position=" + d.vertices.get(3).position.toString() + " velocity=" + d.vertices.get(3).a + " number_rolled=" + d.getNumberRolled(), 10, yOffset += 20);
+				g.drawString("dice[" + i + "]: moving=" + !d.notMoving() + " number_rolled=" + d.getNumberRolled(), 10, yOffset += 20);
 			} else {
 				g.drawString("cuboid[" + i + "]: moving=" + !c.notMoving(), 10, yOffset += 20);
 			}
