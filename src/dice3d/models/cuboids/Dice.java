@@ -22,6 +22,7 @@ import dice3d.math.Vector;
 import dice3d.math.plane;
 import dice3d.models.Edge;
 import dice3d.models.Vertex;
+import gui.Resources;
 
 @SuppressWarnings("unused")
 public class Dice extends Cube {
@@ -34,12 +35,12 @@ public class Dice extends Cube {
 	public Dice(double x, double y, double z, int size) {
 		super(x,y,z, size);
 		
-		try { imgs[0] = ImageIO.read(new File("res/dice1.jpg")); imgs[1] =
-		ImageIO.read(new File("res/dice2.jpg")); imgs[2] = ImageIO.read(new
-		File("res/dice3.jpg")); imgs[3] = ImageIO.read(new File("res/dice4.jpg"));
-		imgs[4] = ImageIO.read(new File("res/dice5.jpg")); imgs[5] = ImageIO.read(new
-		File("res/dice6.jpg")); } catch (IOException e) {}
-		
+		try {
+			for(int i=0 ; i < 6; i++)
+				imgs[i] = Resources.loadImage("dice" + (i + 1) + ".jpg");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		//1
 		face[0][0] = vertices.get(0); // a 

@@ -58,7 +58,7 @@ public class Resources {
      * @return das Bild als {@link BufferedImage}-Objekt
      * @throws IOException Eine IOException wird geworfen, falls das Bild nicht gefunden wurde oder andere Probleme beim Laden auftreten
      */
-    private BufferedImage loadImage(String name) throws IOException {
+    public static BufferedImage loadImage(String name) throws IOException {
         URL res = Resources.class.getClassLoader().getResource(name);
         if(res == null)
             throw new IOException("Resource not found: " + name);
