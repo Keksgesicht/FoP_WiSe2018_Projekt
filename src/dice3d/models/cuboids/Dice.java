@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
 
 import dice3d.main.World;
 import dice3d.math.Vector;
-import dice3d.math.plane;
+import dice3d.math.Plane;
 import dice3d.models.Edge;
 import dice3d.models.Vertex;
 import gui.Resources;
@@ -128,7 +128,7 @@ public class Dice extends Cube {
 	}
 	
 	private void drawFace(Graphics2D g, BufferedImage img, Vertex[] f) {
-		plane p = new plane(f[0].position, f[1].position, f[3].position);
+		Plane p = new Plane(f[0].position, f[1].position, f[3].position);
 		for (double x = 0; x < img.getWidth(); x++) {
 			for (double y = 0; y < img.getHeight(); y++) {
 				Vector pos = new Vector(p.getStuetzVektor());
