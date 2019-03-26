@@ -26,6 +26,8 @@ public class AdvancedAI extends AI {
 	
 	ArrayList<Castle> prioli;
 	ArrayList<Castle> prioli2;
+	Castle dick;
+	Castle doof;
 	
 	public AdvancedAI(String name, Color color) {
 		super(name, color);
@@ -817,6 +819,7 @@ public class AdvancedAI extends AI {
                 attackWon = false;
                 
                 List<Castle> xy = new ArrayList<Castle>(prioli2);
+                
                 for (Castle i : xy) {
                 	System.out.println(i.getName());
                 }
@@ -827,10 +830,11 @@ public class AdvancedAI extends AI {
                     if(castle.getTroopCount() < 2)
                         continue;
                     Node<Castle> node = graph.getNode(castle);
-                    for (Edge<Castle> edge : graph.getEdges(node)) {
-                        Castle otherCastle = edge.getOtherNode(node).getValue();
+                    for (Castle otherCastle : graph.getNodes(node).stream().map(n -> n.getValue()).collect(Collectors.toList())) {
                         if (otherCastle.getOwner() != this && castle.getTroopCount() >= otherCastle.getTroopCount()) {
                             AttackThread attackThread = game.startAttack(castle, otherCastle, castle.getTroopCount() - 1);
+                            dick = castle;
+                            doof = otherCastle;
                             if(fastForward)
                                 attackThread.fastForward();
 
@@ -841,8 +845,10 @@ public class AdvancedAI extends AI {
                     }
 
                     if(attackWon) {
-                    break;	
+                    	game.moveTroops(dick, doof, dick.getTroopCount() - 1);
+                    	  break;
                     }
+                    game.moveTroops(dick, doof, dick.getTroopCount() - 1);  	
                 }
             } while(attackWon);
             
