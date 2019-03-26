@@ -224,7 +224,7 @@ public class AdvancedAI extends AI {
 		    	}
 		     }
 		     
-			  if (!b) { // Wurden schon Burgen von anderen ausgewï¿½hlt ? Nein 
+			  if (!b) { // Wurden schon Burgen von anderen ausgewï¿½hlt ? Nein  
 				
 			  if (this.getCastles(game).size() == 0) { // Hat man schon selbst Burgen ausgewï¿½hlt ? Nein
 				  
@@ -235,9 +235,60 @@ public class AdvancedAI extends AI {
 			   }
 			  
 			   prioBurgen.forEach((k,v) -> { if (v==0) {trash.add(k);}});	  
-			  
+			   
 			   prioBurgen.keySet().removeAll(trash);
 			  
+			   int k01 = 0;
+				int k11 = 0;
+				int k21 = 0;
+				int k31 = 0;
+				int k41 = 0;
+				int k51 = 0;
+				
+			   for (Castle e : game.getMap().getCastles()) {
+					
+					if (e.getKingdom().getType() == 0) {
+						k01++;
+					} else if (e.getKingdom().getType() == 1) {
+						k11++;
+					} else if (e.getKingdom().getType() == 2) {
+						k21++;
+					} else if (e.getKingdom().getType() == 3) {
+						k31++;
+					} else if (e.getKingdom().getType() == 4) {
+						k41++;
+					} else if (e.getKingdom().getType() == 5) {
+						k51++;
+					}
+					
+				}
+				
+				HashMap<String,Integer> x = new HashMap<String,Integer>();
+				x.put("k0",k01);
+				x.put("k1",k11);
+				x.put("k2",k21);
+				x.put("k3",k31);
+				x.put("k4",k41);
+				x.put("k5",k51);
+				
+				
+				String kFinal = Collections.max(x.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey();
+				
+				int kFinalInt2 = 10;
+				if (kFinal == "k0") {
+					kFinalInt2 = 0;
+				} else if (kFinal == "k1") {
+					kFinalInt2 = 1;
+				} else if (kFinal == "k2") {
+					kFinalInt2 = 2;
+				} else if (kFinal == "k3") {
+					kFinalInt2 = 3;
+				} else if (kFinal == "k4") {
+					kFinalInt2 = 4;
+				} else if (kFinal == "k5") {
+					kFinalInt2 = 5;
+				}
+						   		   
 			   List<Castle> prio2 = new ArrayList<Castle>(prioBurgen.keySet());
 			   Collections.sort(prio2, new Comparator<Castle>() {
 				    
@@ -247,9 +298,18 @@ public class AdvancedAI extends AI {
 				        return prio1.compareTo(prio2);
 				    }
 			   });
-			
-			   prio = prio2;
+			   
+			   
+			   List<Castle> zux = prio2;
+			   
+			   for (int ups = 0; ups < zux.size();ups++) {
+				   if (zux.get(ups).getKingdom().getType() == kFinalInt2) {
+					   prio2.remove(ups);
+				   }
+			   } 
 			 
+			   prio = prio2;
+			   
 			   return prio;
 			   
 			   } else { // Hat man schon selbst Burgen ausgewï¿½hlt ? Ja  
@@ -740,14 +800,14 @@ public class AdvancedAI extends AI {
           			         if (c1.getOwner() == strongPlayer.get(0)) {
           			        	 Punkte.put(c1, Punkte.get(c1));
           			          } else {
-          			        	  Punkte.put(c1, Punkte.get(c1) + 5 );
+          			        	  Punkte.put(c1, Punkte.get(c1) + 5);
           			         }
           		         }
           		        
           		        
           		        if (strongPlayer.size() == 3) {
           		        	 if (c1.getOwner() == strongPlayer.get(0)) {
-          			        	 Punkte.put(c1, Punkte.get(c1) );
+          			        	 Punkte.put(c1, Punkte.get(c1));
           			          } else if (c1.getOwner() == strongPlayer.get(1)) {
           			        	  Punkte.put(c1, Punkte.get(c1) + 5);
           			          } else {
@@ -846,7 +906,7 @@ public class AdvancedAI extends AI {
 
                     if(attackWon) {
                     	game.moveTroops(dick, doof, dick.getTroopCount() - 1);
-                    	  break;
+                    	break;
                     }
                     game.moveTroops(dick, doof, dick.getTroopCount() - 1);  	
                 }
