@@ -272,7 +272,7 @@ public class AdvancedAI extends AI {
 				x.put("k5",k51);
 				
 				
-				String kFinal = Collections.max(x.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey();
+				String kFinal = Collections.min(x.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey();
 				
 				int kFinalInt2 = 10;
 				if (kFinal == "k0") {
@@ -300,14 +300,6 @@ public class AdvancedAI extends AI {
 			   });
 			   
 			   
-			   List<Castle> zux = prio2;
-			   
-			   for (int ups = 0; ups < zux.size();ups++) {
-				   if (zux.get(ups).getKingdom().getType() == kFinalInt2) {
-					   prio2.remove(ups);
-				   }
-			   } 
-			 
 			   prio = prio2;
 			   
 			   return prio;
@@ -475,8 +467,9 @@ public class AdvancedAI extends AI {
 						        return prio1.compareTo(prio2);
 						    }
 					   });
-				    
-				   
+				  
+					 
+					   
 				   prio = prio2;
 				
 				return prio;
