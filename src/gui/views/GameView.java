@@ -80,6 +80,7 @@ public class GameView extends View implements GameInterface {
 
     @Override
     protected void onInit() {
+
         this.cubeWorld = new World();
         this.add(this.map = new MapPanel(this, getWindow().getResources(), cubeWorld));
         this.map.showConnections(true);

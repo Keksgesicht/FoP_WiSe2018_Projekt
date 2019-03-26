@@ -66,16 +66,16 @@ public class World {
 		finished = false;
 		switch(cnt) {
 			case 1:
-				this.cuboids.get(2).reset();
+				((Dice)this.cuboids.get(2)).reset();
 				break;
 			case 2:
-				this.cuboids.get(1).reset();
-				this.cuboids.get(3).reset();
+				((Dice)this.cuboids.get(1)).reset();
+				((Dice)this.cuboids.get(3)).reset();
 				break;
 			case 3:
-				this.cuboids.get(1).reset();
-				this.cuboids.get(2).reset();
-				this.cuboids.get(3).reset();
+				((Dice)this.cuboids.get(1)).reset();
+				((Dice)this.cuboids.get(2)).reset();
+				((Dice)this.cuboids.get(3)).reset();
 				break;
 			default:
 				System.out.println("Jan hat gesagt, es gibt max 3 Wuerfel!");
