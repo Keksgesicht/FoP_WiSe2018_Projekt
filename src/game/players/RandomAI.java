@@ -43,7 +43,7 @@ public class RandomAI extends BasicAI {
             List<Castle> availableCastles = game.getMap().getCastles().stream().filter(c -> c.getOwner() == null).collect(Collectors.toList());
             while(availableCastles.size() > 0 && getRemainingTroops() > 0) {
 
-                sleep(10);
+                sleep(1000);
 
                 Castle randomCastle = availableCastles.remove(this.getRandom().nextInt(availableCastles.size()));
                 game.chooseCastle(randomCastle, this);
@@ -53,9 +53,9 @@ public class RandomAI extends BasicAI {
             // 1. Distribute remaining troops
             
             Castle fewestTroops = getCastleWithFewestTroops(this.getCastles(game));
-            sleep(5);
+            sleep(500);
             game.addTroops(this, fewestTroops, getRemainingTroops());
-            sleep(5);
+            sleep(500);
             boolean attackWon;
 
             do {
