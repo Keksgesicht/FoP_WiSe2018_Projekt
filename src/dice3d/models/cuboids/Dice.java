@@ -31,6 +31,7 @@ public class Dice extends Cube {
 	private Vertex[][] face = new Vertex[6][4];
 	BufferedImage imgs[] = new BufferedImage[6];
 	private int randomisation = 0;
+	public int diceCnt;
 
 	/**
 	 * make a new dice a position x, y, z with the size and set all internal values accordingly
@@ -39,8 +40,10 @@ public class Dice extends Cube {
 	 * @param z
 	 * @param size
 	 */
-	public Dice(double x, double y, double z, int size) {
+	public Dice(double x, double y, double z, int size, int cnt) {
 		super(x,y,z, size);
+		
+		diceCnt = cnt;
 		
 		try {
 			for(int i=0 ; i < 6; i++)
@@ -99,7 +102,7 @@ public class Dice extends Cube {
 	public void reset() {
 		for (Vertex v : vertices) {
 			v.reset();
-			Vector random = new Vector(Math.random()*5, -Math.random()*15 -7.5, Math.random()*5);
+			Vector random = new Vector(Math.random()*diceCnt+diceCnt+2, -Math.random()*15 -5.5, Math.random()*2*(3-diceCnt)+(3-diceCnt));
 			v.positionOld.sub(random);
 		}
 	}
@@ -113,8 +116,7 @@ public class Dice extends Cube {
 		for (Vertex v : vertices) v.update(w);
 		for (int i = 0; i < 5; i++) {
 			for (Edge e : edges) e.update(w);
-//			for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(c2);
-			updateCollision(w, w.floor);
+			for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(w, c2);
 		}
 		double lowestHeight = 3210;
 		int lowestFace = 0;

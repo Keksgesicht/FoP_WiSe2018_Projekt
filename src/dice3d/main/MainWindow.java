@@ -3,6 +3,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -28,7 +31,10 @@ public class MainWindow extends JPanel {
 	
 	public void draw(Graphics2D g) {
 		for(Cuboid c : w.cuboids) if (c != w.floor) ((Dice) c).drawShadow(g);
-		for(Cuboid c : w.cuboids) c.draw(g);
+		@SuppressWarnings("unchecked")
+		List<Cuboid> cubes = (ArrayList<Cuboid>) w.cuboids.clone();
+		cubes = cubes.stream().sorted((c1, c2) -> ((Integer)c2.getZSum()).compareTo(c1.getZSum())).collect(Collectors.toList());
+		for(Cuboid c : cubes) c.draw(g);
 		int yOffset = 0;
 		g.drawString("Press space key to roll again", 10, yOffset =+ 20);
 		

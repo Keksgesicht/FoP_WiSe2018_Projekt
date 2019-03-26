@@ -108,8 +108,7 @@ public class Cuboid {
 		for (Vertex v : vertices) v.update(w);
 		for (int i = 0; i < 5; i++) {
 			for (Edge e : edges) e.update(w);
-//			for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(c2);
-			updateCollision(w, w.floor);
+			for ( Cuboid c2 : w.cuboids ) if ( this != c2 ) updateCollision(w, c2);
 		}
 	}
 
@@ -200,6 +199,7 @@ public class Cuboid {
 	 */
 	private void Collision(Vertex vert, Cuboid d, World w) {
 		if (d == w.floor) {
+			//collision with floor
 			double f = .4;
 			vert.a.set(vert.position);
 			vert.a.sub(vert.positionOld);
@@ -209,6 +209,28 @@ public class Cuboid {
 	        vert.positionOld.x += (vert.position.x - vert.positionOld.x) * f;
 	        vert.positionOld.z += (vert.position.z - vert.positionOld.z) * f;
         }
+		else {
+			//collision with dice
+			w.col = true;
+//			Vector totalDir1 = new Vector();
+//			for (Vertex v : vertices) totalDir1.add(v.a);
+//			totalDir1.scale(1/10);
+//			for (Vertex v : d.vertices) v.position.add(totalDir1);
+//
+//			Vector tmp = new Vector(vert.positionOld);
+//			tmp.sub(vert.position);
+//			tmp.scale(4/6);
+//			vert.position.add(tmp);
+//			vert.a.scale(0.8);
+//			vert.positionOld.add(vert.a);
+			
+		}
+	}
+	
+	public int getZSum() {
+		int sum = 0;
+		for (Vertex v : vertices) sum += v.position.z;
+		return sum;
 	}
 	
 	/**
