@@ -889,7 +889,7 @@ public class AdvancedAI extends AI {
 
                             attackThread.join();
                             attackWon = attackThread.getWinner() == this;
-                            if (attackThread.getWinner() == this) {
+                            if (attackThread.getWinner() == this && Math.random() > 0.5) {
                             	counter++;
                             }
                             break;
@@ -899,7 +899,7 @@ public class AdvancedAI extends AI {
                     if(attackWon && counter >= 2) {
                     	game.moveTroops(dick, doof, dick.getTroopCount() - 1);
                     	break;
-                    }
+                    } 
                     game.moveTroops(dick, doof, dick.getTroopCount() - 1);  	
                 }
             } while(attackWon);
