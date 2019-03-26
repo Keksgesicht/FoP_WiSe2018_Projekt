@@ -641,7 +641,6 @@ public class AdvancedAI extends AI {
 
 	protected void actions(Game game) throws InterruptedException {
      //----------------------------------------------------------------------------------------------// Burgen verteilen
-		System.out.println(game.getRound());
 		if(game.getRound() == 1) {
 			 
 			 List<Castle> availableCastles = game.getMap().getCastles().stream().filter(c -> c.getOwner() == null).collect(Collectors.toList());
@@ -651,7 +650,7 @@ public class AdvancedAI extends AI {
 	                sleep(1000);
                    
 	                List<Castle> prioList = verteilenListe(availableCastles2,game); 
-	       
+	  
 	                game.chooseCastle(prioList.get(0), this);
 	                
 	      }
@@ -786,7 +785,7 @@ public class AdvancedAI extends AI {
           		   }
           	   }
             	   
-          	   int p2 = 0;
+          	  
           	   for(Player player : strongPlayer) {
           		   for (Castle c1: Punkte.keySet()) {
           			   
@@ -875,7 +874,7 @@ public class AdvancedAI extends AI {
                 List<Castle> xy = new ArrayList<Castle>(prioli2);
                 
                 Collections.reverse(xy);
-                
+                int counter = 0;
                 for (Castle castle : xy) {
                     if(castle.getTroopCount() < 2)
                         continue;
@@ -890,11 +889,14 @@ public class AdvancedAI extends AI {
 
                             attackThread.join();
                             attackWon = attackThread.getWinner() == this;
+                            if (attackThread.getWinner() == this) {
+                            	counter++;
+                            }
                             break;
                         }
                     }
 
-                    if(attackWon) {
+                    if(attackWon && counter >= 2) {
                     	game.moveTroops(dick, doof, dick.getTroopCount() - 1);
                     	break;
                     }
