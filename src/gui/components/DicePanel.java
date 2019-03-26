@@ -89,7 +89,7 @@ public class DicePanel extends JPanel {
             long start = System.currentTimeMillis();
             long end = start + duration;
         	while(System.currentTimeMillis() < end) Thread.sleep(10);
-    		for(Cuboid c : cubeWorld.cuboids) c.hide();
+    		for(Cuboid c : cubeWorld.cuboids) ((Dice)c).hide();
         	repaint();
         	return result;
         }
