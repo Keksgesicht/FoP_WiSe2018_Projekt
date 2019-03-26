@@ -817,6 +817,7 @@ public class AdvancedAI extends AI {
                 attackWon = false;
                 
                 List<Castle> xy = new ArrayList<Castle>(prioli2);
+                
                 for (Castle i : xy) {
                 	System.out.println(i.getName());
                 }
@@ -827,8 +828,7 @@ public class AdvancedAI extends AI {
                     if(castle.getTroopCount() < 2)
                         continue;
                     Node<Castle> node = graph.getNode(castle);
-                    for (Edge<Castle> edge : graph.getEdges(node)) {
-                        Castle otherCastle = edge.getOtherNode(node).getValue();
+                    for (Castle otherCastle : graph.getNodes(node).stream().map(n -> n.getValue()).collect(Collectors.toList())) {
                         if (otherCastle.getOwner() != this && castle.getTroopCount() >= otherCastle.getTroopCount()) {
                             AttackThread attackThread = game.startAttack(castle, otherCastle, castle.getTroopCount() - 1);
                             if(fastForward)
@@ -841,8 +841,22 @@ public class AdvancedAI extends AI {
                     }
 
                     if(attackWon) {
-                    break;	
+                    	List<Castle> castleMove2 = new ArrayList<Castle>(prioli2);
+                        castleloop: for (Castle castle2 : this.getCastles(game)) {
+                            if (!castleMove2.contains(castle2) && castle2.getTroopCount() > 1) {
+                            	Castle fewestTroops = null;
+                            	do { 
+                            		if(castleMove2.isEmpty())
+                            			continue castleloop;
+                            		fewestTroops = castleMove2.get(0);
+                            		castleMove2.remove(fewestTroops);
+                            	} while(!game.isPath(castle2, fewestTroops, Action.MOVING));
+                                game.moveTroops(castle2, fewestTroops, castle2.getTroopCount() - 1);
+                            }
+                        }
+                    	  break;
                     }
+                      	
                 }
             } while(attackWon);
             
