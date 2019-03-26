@@ -23,12 +23,14 @@ import dice3d.math.Plane;
 import dice3d.models.Edge;
 import dice3d.models.Vertex;
 import gui.Resources;
+import gui.components.MapPanel;
 
 @SuppressWarnings("unused")
 public class Dice extends Cube {
 
 	private int NumberRolled;
 	private Vertex[][] face = new Vertex[6][4];
+	private Vertex[][] facesToDraw = new Vertex[6][4];
 	BufferedImage imgs[] = new BufferedImage[6];
 	private int randomisation = 0;
 	public int diceCnt;
@@ -204,10 +206,11 @@ public class Dice extends Cube {
 	 * @param g
 	 */
 	private void drawDice(Graphics2D g) {
+		facesToDraw = face;
 		for (int f = 0; f < 6; f++) {
 			Polygon polygon = new Polygon();
 			for (int v = 0; v < 4; v++) {
-				Vertex vertex = face[f][v];
+				Vertex vertex = facesToDraw[f][v];
 				double vx = World.projectionDistance * vertex.position.x / vertex.position.z;
 				double vy = World.projectionDistance * vertex.position.y / vertex.position.z;
 				polygon.addPoint((int) vx, (int) vy);

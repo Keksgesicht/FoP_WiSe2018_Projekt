@@ -211,26 +211,10 @@ public class Cuboid {
 			vert.a.sub(vert.positionOld);
 			vert.a.scale(f);
 	        vert.position.y = 400;
-	        vert.positionOld.y = vert.position.y + (int) (vert.a.y * 3);
+	        vert.positionOld.y = vert.position.y + vert.a.y * 3;
 	        vert.positionOld.x += (vert.position.x - vert.positionOld.x) * f;
 	        vert.positionOld.z += (vert.position.z - vert.positionOld.z) * f;
         }
-		else {
-			//collision with dice
-			w.col = true;
-//			Vector totalDir1 = new Vector();
-//			for (Vertex v : vertices) totalDir1.add(v.a);
-//			totalDir1.scale(1/10);
-//			for (Vertex v : d.vertices) v.position.add(totalDir1);
-//
-//			Vector tmp = new Vector(vert.positionOld);
-//			tmp.sub(vert.position);
-//			tmp.scale(4/6);
-//			vert.position.add(tmp);
-//			vert.a.scale(0.8);
-//			vert.positionOld.add(vert.a);
-			
-		}
 	}
 	
 	public int getZSum() {
