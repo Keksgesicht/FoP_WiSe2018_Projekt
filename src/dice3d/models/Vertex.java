@@ -34,6 +34,16 @@ public class Vertex {
 	}
 
 	/**
+	 * 
+	 */
+	public void hide() {
+		Vector vTmp = new Vector(-300, 0, 0);
+		position.set(vTmp);
+		positionOld.set(vTmp);
+		a = new Vector();
+	}
+	
+	/**
 	 * keep the movement as before but add gravity
 	 * @param w
 	 */

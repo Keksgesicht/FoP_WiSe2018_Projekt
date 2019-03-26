@@ -35,19 +35,19 @@ public class MainWindow extends JPanel {
 		List<Cuboid> cubes = (ArrayList<Cuboid>) w.cuboids.clone();
 		cubes = cubes.stream().sorted((c1, c2) -> ((Integer)c2.getZSum()).compareTo(c1.getZSum())).collect(Collectors.toList());
 		for(Cuboid c : cubes) c.draw(g);
-		int yOffset = 0;
-		g.drawString("Press space key to roll again", 10, yOffset =+ 20);
+//		int yOffset = 0;
+//		g.drawString("Press space key to roll again", 10, yOffset =+ 20);
 		
-		for(int i = 0; i < w.cuboids.size(); i++) {
-			Cuboid c = w.cuboids.get(i);
-			if(c instanceof Dice) {
-				Dice d = (Dice) c;
-				g.drawString("dice[" + i + "]: moving=" + !d.notMoving() + " number_rolled=" + d.getNumberRolled(), 10, yOffset += 20);
-			} else {
-				g.drawString("cuboid[" + i + "]: moving=" + !c.notMoving(), 10, yOffset += 20);
-			}
-			
-		}
+//		for(int i = 0; i < w.cuboids.size(); i++) {
+//			Cuboid c = w.cuboids.get(i);
+//			if(c instanceof Dice) {
+//				Dice d = (Dice) c;
+//				g.drawString("dice[" + i + "]: moving=" + !d.notMoving() + " number_rolled=" + d.getNumberRolled(), 10, yOffset += 20);
+//			} else {
+//				g.drawString("cuboid[" + i + "]: moving=" + !c.notMoving(), 10, yOffset += 20);
+//			}
+//			
+//		}
 		repaint();
 	}
 
@@ -58,9 +58,10 @@ public class MainWindow extends JPanel {
 				return;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				for(Cuboid c : w.cuboids) {
-					c.reset();
-				}
+//				for(Cuboid c : w.cuboids) {
+//					c.reset();
+//				}
+				w.roll(1);
 			}
 		}
 	}

@@ -172,6 +172,13 @@ public class Dice extends Cube {
 	}
 
 	/**
+	 * hide all points
+	 */
+	public void hide() {
+		for (Vertex v : vertices) v.hide();
+	}
+	
+	/**
 	 * draw the shadow of the dice on the hardcoded height of 400
 	 * @param g
 	 */
@@ -185,7 +192,7 @@ public class Dice extends Cube {
                 double py = World.projectionDistance * (400 / point.position.z);
                 polygon.addPoint((int) px, (int) py);
             }
-            g.setColor(Color.DARK_GRAY);
+            g.setColor(new Color(30, 30, 30, 150));
             g.fill(polygon);
         }
 	}

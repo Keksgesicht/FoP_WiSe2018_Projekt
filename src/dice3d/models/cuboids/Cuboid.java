@@ -118,7 +118,13 @@ public class Cuboid {
 	public void reset() {
 		for (Vertex v : vertices) v.reset();
 	}
-
+	
+	/**
+	 * hide all points but only for dices!
+	 */
+	public void hide() {
+	}
+	
 	/**
 	 * draw the Cuboid
 	 * (we don't actually do anything, as we don't want to see the ground!)

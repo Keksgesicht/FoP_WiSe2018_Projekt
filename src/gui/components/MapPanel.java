@@ -4,12 +4,17 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import base.Edge;
+import dice3d.main.World;
+import dice3d.models.cuboids.Cuboid;
+import dice3d.models.cuboids.Dice;
 import game.AI;
 import game.Game;
 import game.map.PathFinding;
@@ -45,8 +50,9 @@ public class MapPanel extends JScrollPane {
     private PathFinding pathFinding;
     private List<Edge<Castle>> highlightedEdges;
     private Castle targetCastle;
+    private World cubeWorld;
 
-    public MapPanel(GameView gameView, Resources resources) {
+    public MapPanel(GameView gameView, Resources resources, World cubeWorld) {
         super();
         this.gameView = gameView;
         this.setBorder(new LineBorder(Color.BLACK));
@@ -57,6 +63,7 @@ public class MapPanel extends JScrollPane {
         this.setAutoscrolls(true);
         this.resources = resources;
         this.currentAction = Action.NONE;
+        this.cubeWorld = cubeWorld;
 
         this.getActionMap().put("Escape", new AbstractAction("Escape") {
             @Override
@@ -481,9 +488,17 @@ public class MapPanel extends JScrollPane {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
+        
+        // draw those dices!
+		for(Cuboid c : cubeWorld.cuboids)
+			if (c != cubeWorld.floor)
+				((Dice) c).drawShadow((Graphics2D) g);
+		@SuppressWarnings("unchecked")
+		List<Cuboid> cubes = (ArrayList<Cuboid>) cubeWorld.cuboids.clone();
+		cubes = cubes.stream().sorted((c1, c2) -> ((Integer)c2.getZSum()).compareTo(c1.getZSum())).collect(Collectors.toList());
+		for(Cuboid c : cubes) c.draw((Graphics2D) g);
+        
         if(selectedCastle != null) {
-
             String titleText;
             if(currentAction == Action.NONE) {
                 StringBuilder text = new StringBuilder();
@@ -514,6 +529,7 @@ public class MapPanel extends JScrollPane {
             g.setColor(Color.BLACK);
             g.drawString(titleText, textPos.x + 3, textPos.y + titleSize.height - 5);
         }
+        repaint();
     }
 
     public void clearSelection() {

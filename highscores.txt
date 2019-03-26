@@ -1,2 +1,10 @@
 Spieler 2;1553547732926;4755;Eroberung
 Spieler 1;1553547732926;4410;Eroberung
+Spieler 2;1553620471917;1700;Eroberung
+Spieler 2;1553625834870;1405;Eroberung
+Spieler 1;1553619862698;1330;Eroberung
+Spieler 2;1553619455339;1185;Eroberung
+Spieler 1;1553620471917;1010;Eroberung
+Spieler 1;1553625834870;590;Eroberung
+Spieler 2;1553619862698;440;Eroberung
+Spieler 1;1553619455339;265;Eroberung

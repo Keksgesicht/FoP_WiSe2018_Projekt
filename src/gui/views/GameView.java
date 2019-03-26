@@ -10,6 +10,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import dice3d.main.World;
 import game.AI;
 import game.Game;
 import game.GameInterface;
@@ -27,6 +28,7 @@ public class GameView extends View implements GameInterface {
     private JScrollPane scrollLog;
     private JTextPane txtStats;
     private DicePanel dices;
+	private World cubeWorld;
     private JTextPane gameLog;
     private JButton button;
     private Game game;
@@ -78,14 +80,14 @@ public class GameView extends View implements GameInterface {
 
     @Override
     protected void onInit() {
-
-        this.add(this.map = new MapPanel(this, getWindow().getResources()));
+        this.cubeWorld = new World();
+        this.add(this.map = new MapPanel(this, getWindow().getResources(), cubeWorld));
         this.map.showConnections(true);
 
         this.txtStats = createTextPane();
         this.txtStats.addStyle("PlayerColors", null);
         this.add(txtStats);
-        this.dices = new DicePanel(getWindow().getResources());
+        this.dices = new DicePanel(getWindow().getResources(), cubeWorld);
         this.dices.setBorder(new LineBorder(Color.BLACK));
         this.add(dices);
         this.gameLog = createTextPane();
@@ -93,7 +95,7 @@ public class GameView extends View implements GameInterface {
         this.scrollLog = new JScrollPane(gameLog);
         this.add(scrollLog);
         this.button = createButton("Nächste Runde");
-
+        
         getWindow().setSize(1080, 780);
         getWindow().setMinimumSize(new Dimension(750, 450));
     }
