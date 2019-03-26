@@ -63,6 +63,7 @@ public class World {
 	 * @param cnt
 	 */
 	public void roll(int cnt) {
+		for(Cuboid c : cuboids) if(c != floor) ((Dice)c).hide();
 		finished = false;
 		switch(cnt) {
 			case 1:

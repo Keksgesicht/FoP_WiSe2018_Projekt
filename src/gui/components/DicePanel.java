@@ -85,7 +85,7 @@ public class DicePanel extends JPanel {
             		result[2] = ((Dice)this.cubeWorld.cuboids.get(3)).getNumberRolled();
             		break;
         	}
-            long duration = 1500;
+            long duration = 1000;
             long start = System.currentTimeMillis();
             long end = start + duration;
         	while(System.currentTimeMillis() < end) Thread.sleep(10);
