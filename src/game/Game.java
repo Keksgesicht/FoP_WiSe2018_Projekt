@@ -190,7 +190,23 @@ public class Game {
 
         if(player.getRemainingTroops() == 0 || allCastlesChosen()) {
             player.removeTroops(player.getRemainingTroops());
-            nextTurn();
+            System.out.println("y");
+            if(allCastlesChosen()) {
+            		System.out.println("n");
+            		startingPlayer = players.stream().min((p1,p2) -> ((Integer) p1.getNumRegions(this)).compareTo(p2.getNumRegions(this))).orElse(currentPlayer);
+            		
+            		playerQueue = new ArrayDeque<>();
+            		playerQueue.add(startingPlayer);
+            		
+            		List<Player> tempList = new ArrayList<>(players);
+            		tempList.remove(startingPlayer);
+            		
+            		while(!tempList.isEmpty()) {
+            			Player temp = tempList.remove((int) (Math.random() * tempList.size()));
+            			player.reset();
+            			playerQueue.add(temp);
+            		} System.out.println(playerQueue);
+            } nextTurn();
         }
     }
 
@@ -224,7 +240,7 @@ public class Game {
     }
 
     public void nextTurn() {
-
+    	
         if(goal.isCompleted()) {
             endGame();
             return;
@@ -253,6 +269,7 @@ public class Game {
         currentPlayer = nextPlayer;
         if(round == 0 || (round == 1 && allCastlesChosen()) || (round > 1 && currentPlayer == startingPlayer)) {
             round++;
+            System.out.println(round);
             gameInterface.onNewRound(round);
         }
 
@@ -262,9 +279,6 @@ public class Game {
         if(round == 1)
             addTroops = GameConstants.CASTLES_AT_BEGINNING;
         else {
-        	if (round == 2)
-        		currentPlayer = players.stream().min((p1,p2) -> ((Integer) p1.getNumRegions(this)).compareTo(p2.getNumRegions(this))).orElse(currentPlayer);
-        		
             addTroops = Math.max(3, numRegions / GameConstants.TROOPS_PER_ROUND_DIVISOR);
             addScore(currentPlayer, addTroops * 5);
 
