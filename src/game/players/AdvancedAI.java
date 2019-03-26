@@ -31,7 +31,6 @@ public class AdvancedAI extends AI {
 		super(name, color);
 	}
 	
-	
 	private HashMap<Castle, Integer> getCastlesWithFewestTroops(List<Castle> castles) {
 		HashMap<Castle, Integer> fewestTroops1 = new HashMap<Castle,Integer>();
         for(Castle castle : castles) {
@@ -632,158 +631,166 @@ public class AdvancedAI extends AI {
      	//--------------------------------------//Adding Troops
             while(this.getRemainingTroops() > 0) {
             	
-              //--------------------------------------// castleNearEnemy in verschiedene Prioritätslisten aufteilen
-              //-----------------------------------//Prioliste 0 : remainingTroops + Truppen die man schon im Spiel hat
-            	int h = 0;
-            	for (Castle z0 :this.getCastles(game)) {
-            	 	h += z0.getTroopCount();
-            	}
-            	h += this.getRemainingTroops()-this.getCastles(game).size();
-          	   //-----------------------------------//Prioliste 1: mostTroops
-          	   HashMap<Castle,Integer> mostTroops = getCastlesWithMostTroops(enemyNearCastle);
-          	   
-          	   //-----------------------------------//Prioliste 2: fewestTroops
-          	   HashMap<Castle,Integer> fewestTroops = getCastlesWithFewestTroops(enemyNearCastle);
-          	   
-          	   //-----------------------------------//Prioliste 3: kingdomeTypess
-          	   HashMap<Castle,Integer> sameKingdome = getKingdomeType(enemyNearCastle);
-          	   
-          	   //-----------------------------------//Prioliste 4: strongPlayer
-          	   ArrayList<Player> strongPlayer = getStrongPlayer(enemyNearCastle,game); 
-          	   
-          	   //-----------------------------------//Auswertung der Listen:
-          	   HashMap<Castle,Integer> Punkte = new HashMap<Castle,Integer>();
-          	   
-          	   for (Castle z : enemyNearCastle) {
-          		   Punkte.put(z, 0) ;
+            	//--------------------------------------// castleNearEnemy in verschiedene Prioritätslisten aufteilen
+                //-----------------------------------//Prioliste 0 : remainingTroops + Truppen die man schon im Spiel hat
+              	int h = 0;
+              	for (Castle z0 :this.getCastles(game)) {
+              	 	h += z0.getTroopCount();
+              	}
+              	h += this.getRemainingTroops()-this.getCastles(game).size();
+            	   //-----------------------------------//Prioliste 1: mostTroops
+            	   HashMap<Castle,Integer> mostTroops = getCastlesWithMostTroops(enemyNearCastle);
+            	   
+            	   //-----------------------------------//Prioliste 2: fewestTroops
+            	   HashMap<Castle,Integer> fewestTroops = getCastlesWithFewestTroops(enemyNearCastle);
+            	   
+            	   //-----------------------------------//Prioliste 3: kingdomeTypess
+            	   HashMap<Castle,Integer> sameKingdome = getKingdomeType(enemyNearCastle);
+            	   
+            	   //-----------------------------------//Prioliste 4: strongPlayer
+            	   ArrayList<Player> strongPlayer = getStrongPlayer(enemyNearCastle,game); 
+            	   
+            	   //-----------------------------------//Auswertung der Listen:
+            	   HashMap<Castle,Integer> Punkte = new HashMap<Castle,Integer>();
+            	   
+            	   for (Castle z : enemyNearCastle) {
+            		   Punkte.put(z, 0) ;
+            	   }
+            	   
+            	   int p = 0;
+            	   for(Castle z1 : fewestTroops.keySet()) {
+            		   if (z1.getTroopCount() == 1) {
+            			   p = 30;
+            		   } else if (z1.getTroopCount() > 1 && z1.getTroopCount() <= 10) {
+            			   p = 10;
+            		   } else if (z1.getTroopCount() > 10 && z1.getTroopCount() <= 20) {
+            			   p = 5;
+            		   }  else {
+            			   p = 0;
+            		   }
+            		   Punkte.put(z1, Punkte.get(z1) + p); 
+            	   }
+            	     
+            	   int k0 = 0;
+      		   int k1 = 0;
+      		   int k2 = 0;
+      		   int k3 = 0;
+      		   int k4 = 0;
+      		   int k5 = 0;
+      		   for (Castle e : this.getCastles(game)) {
+      				
+      				if (e.getKingdom().getType() == 0) {
+      					k0++;
+      				} else if (e.getKingdom().getType() == 1) {
+      					k1++;
+      				} else if (e.getKingdom().getType() == 2) {
+      					k2++;
+      				} else if (e.getKingdom().getType() == 3) {
+      					k3++;
+      				} else if (e.getKingdom().getType() == 4) {
+      					k4++;
+      				} else if (e.getKingdom().getType() == 5) {
+      					k5++;
+      				}
+      				
+      			}
+                  
+               HashMap<String,Integer> x1 = new HashMap<String,Integer>();
+      			x1.put("k0",k0);
+      			x1.put("k1",k1);
+      			x1.put("k2",k2);
+      			x1.put("k3",k3);
+      			x1.put("k4",k4);
+      			x1.put("k5",k5);
+      			
+      			while(x1.values().contains(0)) {
+      			x1.values().remove(0);
+      			}
+      			
+      			String kFinal = Collections.max(x1.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey();
+            	     
+      			int kFinalInt = 6;
+  				if (kFinal == "k0") {
+  					kFinalInt = 0;
+  				} else if (kFinal == "k1") {
+  					kFinalInt = 1;
+  				} else if (kFinal == "k2") {
+  					kFinalInt = 2;
+  				} else if (kFinal == "k3") {
+  					kFinalInt = 3;
+  				} else if (kFinal == "k4") {
+  					kFinalInt = 4;
+  				} else if (kFinal == "k5") {
+  					kFinalInt = 5;
+  				}
+  				
+          	   for(Castle z1 : sameKingdome.keySet()) {
+          		   if (kFinalInt == z1.getKingdom().getType()) {
+          			   Punkte.put(z1, Punkte.get(z1) + 5); 
+          		   }
           	   }
-          	   
-          	   int p = 0;
-          	   for(Castle z1 : fewestTroops.keySet()) {
-          		   p = h - fewestTroops.get(z1);
-          		   Punkte.put(z1, Punkte.get(z1) + p); 
-          	   }
-          	   
-          	 int k0 = 0;
-    		 int k1 = 0;
-    		 int k2 = 0;
-    		 int k3 = 0;
-    		 int k4 = 0;
-    		 int k5 = 0;
-    		 for (Castle e : this.getCastles(game)) {
-    				
-    				if (e.getKingdom().getType() == 0) {
-    					k0++;
-    				} else if (e.getKingdom().getType() == 1) {
-    					k1++;
-    				} else if (e.getKingdom().getType() == 2) {
-    					k2++;
-    				} else if (e.getKingdom().getType() == 3) {
-    					k3++;
-    				} else if (e.getKingdom().getType() == 4) {
-    					k4++;
-    				} else if (e.getKingdom().getType() == 5) {
-    					k5++;
-    				}
-    				
-    			}
-                
-             HashMap<String,Integer> x1 = new HashMap<String,Integer>();
-    			x1.put("k0",k0);
-    			x1.put("k1",k1);
-    			x1.put("k2",k2);
-    			x1.put("k3",k3);
-    			x1.put("k4",k4);
-    			x1.put("k5",k5);
-    			
-    			while(x1.values().contains(0)) {
-    			x1.values().remove(0);
-    			}
-    			
-    			String kFinal = Collections.max(x1.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey();
-          	     
-    			int kFinalInt = 6;
-				if (kFinal == "k0") {
-					kFinalInt = 0;
-				} else if (kFinal == "k1") {
-					kFinalInt = 1;
-				} else if (kFinal == "k2") {
-					kFinalInt = 2;
-				} else if (kFinal == "k3") {
-					kFinalInt = 3;
-				} else if (kFinal == "k4") {
-					kFinalInt = 4;
-				} else if (kFinal == "k5") {
-					kFinalInt = 5;
-				}
-				
-        	   for(Castle z1 : sameKingdome.keySet()) {
-        		   if (kFinalInt == z1.getKingdom().getType()) {
-        			   Punkte.put(z1, Punkte.get(z1) + 5); 
-        		   }
-        	   }
-          	   
-        	   int p2 = 0;
-        	   for(Player player : strongPlayer) {
-        		   for (Castle c1: Punkte.keySet()) {
-        			   
-        		        if (strongPlayer.size() == 2) {
-        			         if (c1.getOwner() == strongPlayer.get(0)) {
-        			        	 Punkte.put(c1, Punkte.get(c1) + 10);
-        			          } else {
-        			        	  Punkte.put(c1, Punkte.get(c1) + 20);
-        			         }
-        		         }
-        		        
-        		        
-        		        if (strongPlayer.size() == 3) {
-        		        	 if (c1.getOwner() == strongPlayer.get(0)) {
-        			        	 Punkte.put(c1, Punkte.get(c1) + 10);
-        			          } else if (c1.getOwner() == strongPlayer.get(1)) {
-        			        	  Punkte.put(c1, Punkte.get(c1) + 20);
-        			          } else {
-        			        	  Punkte.put(c1, Punkte.get(c1) + 30);
+            	   
+          	   int p2 = 0;
+          	   for(Player player : strongPlayer) {
+          		   for (Castle c1: Punkte.keySet()) {
+          			   
+          		        if (strongPlayer.size() == 2) {
+          			         if (c1.getOwner() == strongPlayer.get(0)) {
+          			        	 Punkte.put(c1, Punkte.get(c1));
+          			          } else {
+          			        	  Punkte.put(c1, Punkte.get(c1) + 5 );
+          			         }
+          		         }
+          		        
+          		        
+          		        if (strongPlayer.size() == 3) {
+          		        	 if (c1.getOwner() == strongPlayer.get(0)) {
+          			        	 Punkte.put(c1, Punkte.get(c1) );
+          			          } else if (c1.getOwner() == strongPlayer.get(1)) {
+          			        	  Punkte.put(c1, Punkte.get(c1) + 5);
+          			          } else {
+          			        	  Punkte.put(c1, Punkte.get(c1) + 10);
+          		              }
+         		             }
+          		        
+          		        if (strongPlayer.size() == 4) {
+         		        	 if (c1.getOwner() == strongPlayer.get(0)) {
+         			        	 Punkte.put(c1, Punkte.get(c1) );
+         			          } else if (c1.getOwner() == strongPlayer.get(1)) {
+         			        	  Punkte.put(c1, Punkte.get(c1) + 5);
+         			          } else if (c1.getOwner() == strongPlayer.get(2)) {
+         			        	  Punkte.put(c1, Punkte.get(c1) + 10);
+        		              } else {
+        		            	 Punkte.put(c1, Punkte.get(c1) + 15);
         		              }
-       		             }
-        		        
-        		        if (strongPlayer.size() == 4) {
-       		        	 if (c1.getOwner() == strongPlayer.get(0)) {
-       			        	 Punkte.put(c1, Punkte.get(c1) + 10);
-       			          } else if (c1.getOwner() == strongPlayer.get(1)) {
-       			        	  Punkte.put(c1, Punkte.get(c1) + 20);
-       			          } else if (c1.getOwner() == strongPlayer.get(2)) {
-       			        	  Punkte.put(c1, Punkte.get(c1) + 30);
-      		              } else {
-      		            	 Punkte.put(c1, Punkte.get(c1) + 40);
-      		              }
-        		   }
-        	   }
-        	  }  
-        		   
-        	   prioli = new ArrayList<Castle>(Punkte.keySet());
-        	          	   
-			   Collections.sort(prioli, new Comparator<Castle>() {
-				    
-				    public int compare(Castle s1, Castle s2) {
-				        Integer prio1 = Punkte.get(s1);
-				        Integer prio2 = Punkte.get(s2);
-				        return prio1.compareTo(prio2);
-				    }
-			   });	
-			   
-			   prioli2 = new ArrayList<Castle>();
-			   
-			   for(Castle t : this.getCastles(game)) {	   
-	                Node<Castle> node2 = graph.getNode(t);
-	                for(Edge<Castle> edge2 : graph.getEdges(node2)) {
-	                	Castle otherCastle2 = edge2.getOtherNode(node2).getValue();
-	                	for (Castle s : prioli) {
-	                      if(otherCastle2 == s) {
-	                    	prioli2.add(t);
-	                      }
-	                	}
-	                }
-			   }
+          		   }
+          	   }
+          	  }  
+          		   
+          	   prioli = new ArrayList<Castle>(Punkte.keySet());
+          	          	   
+  			   Collections.sort(prioli, new Comparator<Castle>() {
+  				    
+  				    public int compare(Castle s1, Castle s2) {
+  				        Integer prio1 = Punkte.get(s1);
+  				        Integer prio2 = Punkte.get(s2);
+  				        return prio1.compareTo(prio2);
+  				    }
+  			   });	
+  			   
+  			   prioli2 = new ArrayList<Castle>();
+  			   
+  			   for(Castle t : this.getCastles(game)) {	   
+  	                Node<Castle> node2 = graph.getNode(t);
+  	                for(Edge<Castle> edge2 : graph.getEdges(node2)) {
+  	                	Castle otherCastle2 = edge2.getOtherNode(node2).getValue();
+  	                	for (Castle s : prioli) {
+  	                      if(otherCastle2 == s) {
+  	                    	prioli2.add(t);
+  	                      }
+  	                	}
+  	                }
+  			   }
 			   
                sleep(500);
                game.addTroops(this, prioli2.get(0), 1);
@@ -833,9 +840,9 @@ public class AdvancedAI extends AI {
                         }
                     }
 
-                    if(attackWon)
-                    	
-                    break;
+                    if(attackWon) {
+                    break;	
+                    }
                 }
             } while(attackWon);
             
