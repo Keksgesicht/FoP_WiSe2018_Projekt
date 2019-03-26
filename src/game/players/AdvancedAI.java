@@ -119,10 +119,10 @@ public class AdvancedAI extends AI {
 			x1.put("k5",k5);
 			
 			while(x1.values().contains(0)) {
-			x1.values().remove(0);
+				x1.values().remove(0);
 			}
 			
-			String kFinal1 = Collections.min(x1.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey(); 
+		    String kFinal1 = Collections.min(x1.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey();	
 			
 			int kFinalInt1 = 10;
 			if (kFinal1 == "k0") {
@@ -638,10 +638,10 @@ public class AdvancedAI extends AI {
 		
 	}
 	
-	
-	@SuppressWarnings("unused")
+
 	protected void actions(Game game) throws InterruptedException {
      //----------------------------------------------------------------------------------------------// Burgen verteilen
+		System.out.println(game.getRound());
 		if(game.getRound() == 1) {
 			 
 			 List<Castle> availableCastles = game.getMap().getCastles().stream().filter(c -> c.getOwner() == null).collect(Collectors.toList());
@@ -650,10 +650,11 @@ public class AdvancedAI extends AI {
 	        	    List<Castle> availableCastles2 = game.getMap().getCastles().stream().filter(c -> c.getOwner() == null).collect(Collectors.toList());
 	                sleep(1000);
                    
-	                List<Castle> prioList = verteilenListe(availableCastles2,game);
+	                List<Castle> prioList = verteilenListe(availableCastles2,game); 
+	       
 	                game.chooseCastle(prioList.get(0), this);
 	                
-	           }
+	      }
 	 //-----------------------------------------------------------------------------------------------// Verteilen
 		} else {
 			
@@ -873,10 +874,6 @@ public class AdvancedAI extends AI {
                 
                 List<Castle> xy = new ArrayList<Castle>(prioli2);
                 
-                for (Castle i : xy) {
-                	System.out.println(i.getName());
-                }
-                System.out.println("------------------------");
                 Collections.reverse(xy);
                 
                 for (Castle castle : xy) {

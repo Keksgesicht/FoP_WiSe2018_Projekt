@@ -190,23 +190,7 @@ public class Game {
 
         if(player.getRemainingTroops() == 0 || allCastlesChosen()) {
             player.removeTroops(player.getRemainingTroops());
-            System.out.println("y");
-            if(allCastlesChosen()) {
-            		System.out.println("n");
-            		startingPlayer = players.stream().min((p1,p2) -> ((Integer) p1.getNumRegions(this)).compareTo(p2.getNumRegions(this))).orElse(currentPlayer);
-            		
-            		playerQueue = new ArrayDeque<>();
-            		playerQueue.add(startingPlayer);
-            		
-            		List<Player> tempList = new ArrayList<>(players);
-            		tempList.remove(startingPlayer);
-            		
-            		while(!tempList.isEmpty()) {
-            			Player temp = tempList.remove((int) (Math.random() * tempList.size()));
-            			player.reset();
-            			playerQueue.add(temp);
-            		} System.out.println(playerQueue);
-            } nextTurn();
+            nextTurn();
         }
     }
 
@@ -240,7 +224,7 @@ public class Game {
     }
 
     public void nextTurn() {
-    	
+
         if(goal.isCompleted()) {
             endGame();
             return;
@@ -269,7 +253,6 @@ public class Game {
         currentPlayer = nextPlayer;
         if(round == 0 || (round == 1 && allCastlesChosen()) || (round > 1 && currentPlayer == startingPlayer)) {
             round++;
-            System.out.println(round);
             gameInterface.onNewRound(round);
         }
 
