@@ -262,6 +262,9 @@ public class Game {
         if(round == 1)
             addTroops = GameConstants.CASTLES_AT_BEGINNING;
         else {
+        	if (round == 2)
+        		currentPlayer = players.stream().min((p1,p2) -> ((Integer) p1.getNumRegions(this)).compareTo(p2.getNumRegions(this))).orElse(currentPlayer);
+        		
             addTroops = Math.max(3, numRegions / GameConstants.TROOPS_PER_ROUND_DIVISOR);
             addScore(currentPlayer, addTroops * 5);
 
